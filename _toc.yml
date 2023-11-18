@@ -1,0 +1,43 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: "0"
+chapters:
+- file: "1"
+  sections:
+  - file: 1a # built-in functions, numbers, and strings
+  - file: 1b # lists, sets, stacks, and queues
+  - file: 1c # dictionaries, heaps
+  - file: 1d # classes
+- file: "3" # intro to strings, arrays, and hashing problems
+  sections:
+  - file: 3a # Two Pointers
+  - file: 3b # Sliding Window
+  - file: 3c # Stack Problems
+  - file: 3d # Binary Search
+  - file: 3e # Intervals
+- file: "4" # Matrics and Math
+  sections:
+  - file: 4a # indexing a matrix
+  - file: 4b # iterating through a matrix
+- file: "5" # intro to linked list
+- file: "6" # intro to trees
+  sections:
+  - file: "6a" # Tree Traversal Strategies: DFS, BFS, preorder, inorder, etc.
+- file: "7" # intro to graphs
+  sections:
+  - file: "7a" # Using BFS and DFS to solve matrix problems
+  - file: "7b" # Topological Sorting and Union Find
+  - file: "7c" # Shortest Path Algorithms
+- file: "8" # heaps
+- file: "9" # DP
+  sections:
+  - file: "9a" # Knapsack DP
+- file: "10" # Backtracking
+- file: "11" # Math
+- file: "12" # Greedy
+- file: "13" # Bit Manipulation
+- file: "14" # Misc
+
+
