@@ -25,6 +25,7 @@ chapters:
 - file: "6" # intro to trees
   sections:
   - file: "6a" # Tree Traversal Strategies: DFS, BFS, preorder, inorder, etc.
+  - file: "6b" # Tries
 - file: "7" # intro to graphs
   sections:
   - file: "7a" # Using BFS and DFS to solve matrix problems
