@@ -17,6 +17,7 @@ chapters:
   - file: 3c # Stack Problems
   - file: 3d # Binary Search
   - file: 3e # Intervals
+  - file: 3f # Subarray Algorithms (Kadane's, Prefix Sum)
 - file: "4" # Matrics and Math
   sections:
   - file: 4a # indexing a matrix
