@@ -35,7 +35,11 @@ chapters:
 - file: "8" # heaps
 - file: "9" # DP
   sections:
-  - file: "9a" # Knapsack DP
+  - file: "9b" # 1D DP
+  - file: "9c" # 2D DP (Grid and String)
+  - file: "9a" # Knapsack DP (0/1 and Unbounded)
+  - file: "9e" # 3D DP and Beyond
+  - file: "9d" # Complex DP (Interval, Tree, Bit, Digit)
 - file: "10" # Backtracking
 - file: "11" # Math
 - file: "12" # Greedy
