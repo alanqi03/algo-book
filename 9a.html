@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -64,8 +64,8 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Backtracking" href="10.html" />
-    <link rel="prev" title="Dynamic Programming" href="9.html" />
+    <link rel="next" title="3D DP and Beyond" href="9e.html" />
+    <link rel="prev" title="2D DP" href="9c.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -243,8 +243,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.html">Trees</a></li>
-
+<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="7a.html">Using BFS and DFS in a Matrix (Graph)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7b.html">Topological Sorting and Union Find</a></li>
@@ -253,7 +256,11 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Knapsack DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
@@ -451,6 +458,17 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knapsack">0/1 Knapsack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-down">Top-down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up">Bottom-up</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unbounded-knapsack">Unbounded Knapsack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Top-down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Bottom-up</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
@@ -465,17 +483,109 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="knapsack-dp">
 <h1>Knapsack DP<a class="headerlink" href="#knapsack-dp" title="Link to this heading">#</a></h1>
-<p>Several DP problems asks you to solve the following problem (or similar variations):</p>
-<p>Given N items where each item has some weight and profit associated with it and also given a bag with capacity W, [i.e., the bag can hold at most W weight in it]. The task is to put the items into the bag such that the sum of profits associated with them is the maximum possible.</p>
-<p>There are two possible choices for one item:</p>
+<p>Several DP problems ask you to solve the following problem (or similar variations):</p>
+<p>Given N items where each item has some weight and profit associated with it, and a bag with capacity W (the bag can hold at most W weight), put items into the bag such that the sum of profits is the maximum possible.</p>
+<p>The state is <code class="docutils literal notranslate"><span class="pre">dp(i,</span> <span class="pre">c)</span></code> = the best profit achievable considering items from index <code class="docutils literal notranslate"><span class="pre">i</span></code> onward with remaining capacity <code class="docutils literal notranslate"><span class="pre">c</span></code>. There are two major variants depending on how many times each item can be used.</p>
+<p>Top-down (recursion with memoization) is the most intuitive way to write knapsack, since it mirrors the decision directly: for item <code class="docutils literal notranslate"><span class="pre">i</span></code> with remaining capacity <code class="docutils literal notranslate"><span class="pre">c</span></code>, do I take it or skip it? The only difference between the two variants is what happens <em>after</em> you take an item.</p>
+<section id="knapsack">
+<h2>0/1 Knapsack<a class="headerlink" href="#knapsack" title="Link to this heading">#</a></h2>
+<p>Each item can be taken <strong>at most once</strong>. For each item, you either skip it (move to the next item) or take it (move to the next item with reduced capacity).</p>
+<section id="top-down">
+<h3>Top-down<a class="headerlink" href="#top-down" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">knapsack_01</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">profits</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="nd">@lru_cache</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="linenos"> 4</span>        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="linenos"> 5</span>            <span class="k">return</span> <span class="mi">0</span>                    <span class="c1"># no items left</span>
+<span class="linenos"> 6</span>        <span class="n">skip</span> <span class="o">=</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="linenos"> 7</span>        <span class="n">take</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 8</span>        <span class="k">if</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">:</span>
+<span class="linenos"> 9</span>            <span class="n">take</span> <span class="o">=</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">skip</span><span class="p">,</span> <span class="n">take</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
 <ul class="simple">
-<li><p>You can either take the item and place it in the bag OR don’t take the item</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dp(i,</span> <span class="pre">c)</span></code> is the max profit considering items from index <code class="docutils literal notranslate"><span class="pre">i</span></code> onward with capacity <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p></li>
+<li><p><strong>skip</strong>: move to item <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> with the same capacity.</p></li>
+<li><p><strong>take</strong> (only if it fits): earn its profit and move to item <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> with less capacity.</p></li>
+<li><p>Because both branches advance to <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code>, each item is considered exactly once.</p></li>
 </ul>
-<p>Of course, there are various conditions that you have to consider, but that is the general gist of 0/1 knapsack problems.</p>
+</section>
+<section id="bottom-up">
+<h3>Bottom-up<a class="headerlink" href="#bottom-up" title="Link to this heading">#</a></h3>
+<p>The same recurrence, filled iteratively into a 1D array where <code class="docutils literal notranslate"><span class="pre">dp[c]</span></code> is the best profit for capacity <code class="docutils literal notranslate"><span class="pre">c</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">knapsack_01</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">profits</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">W</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">3</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)):</span>
+<span class="linenos">4</span>        <span class="c1"># iterate capacity DOWNWARD so each item is used at most once</span>
+<span class="linenos">5</span>        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="linenos">6</span>            <span class="n">dp</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="linenos">7</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">W</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The capacity loop goes <strong>downward</strong> so that <code class="docutils literal notranslate"><span class="pre">dp[c</span> <span class="pre">-</span> <span class="pre">weight]</span></code> still refers to a state from <em>before</em> the current item was added — this enforces “use each item at most once”.</p></li>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">O(W)</span></code> space instead of the recursion’s <code class="docutils literal notranslate"><span class="pre">O(N*W)</span></code> memo.</p></li>
+</ul>
+</section>
+</section>
+<section id="unbounded-knapsack">
+<h2>Unbounded Knapsack<a class="headerlink" href="#unbounded-knapsack" title="Link to this heading">#</a></h2>
+<p>Each item can be taken <strong>any number of times</strong>. The only change from 0/1 is that when you take an item, it remains available.</p>
+<section id="id1">
+<h3>Top-down<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">knapsack_unbounded</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">profits</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="nd">@lru_cache</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="linenos"> 4</span>        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+<span class="linenos"> 5</span>            <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos"> 6</span>        <span class="n">skip</span> <span class="o">=</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="linenos"> 7</span>        <span class="n">take</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 8</span>        <span class="k">if</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">:</span>
+<span class="linenos"> 9</span>            <span class="n">take</span> <span class="o">=</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>   <span class="c1"># stay on i to reuse</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">skip</span><span class="p">,</span> <span class="n">take</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The single difference from 0/1: the <strong>take</strong> branch recurses on <code class="docutils literal notranslate"><span class="pre">dp(i,</span> <span class="pre">...)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">dp(i</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">...)</span></code>.</p></li>
+<li><p>Staying on index <code class="docutils literal notranslate"><span class="pre">i</span></code> lets the same item be chosen again, allowing unlimited reuse.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Bottom-up<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">knapsack_unbounded</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">profits</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">W</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">3</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)):</span>
+<span class="linenos">4</span>        <span class="c1"># iterate capacity UPWARD so an item can be reused</span>
+<span class="linenos">5</span>        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">W</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos">6</span>            <span class="n">dp</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="linenos">7</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">W</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The capacity loop goes <strong>upward</strong>, so <code class="docutils literal notranslate"><span class="pre">dp[c</span> <span class="pre">-</span> <span class="pre">weight]</span></code> may already include the current item — allowing it to be picked multiple times.</p></li>
+</ul>
+</section>
+</section>
+<section id="tips-and-tricks">
+<h2>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Top-down mirrors the decision most directly; the key difference between variants is the recursive call after taking an item: <strong><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> = 0/1</strong> (each item once), <strong><code class="docutils literal notranslate"><span class="pre">i</span></code> = unbounded</strong> (unlimited reuse).</p></li>
+<li><p>In bottom-up, that same distinction becomes the inner loop direction: <strong>downward = 0/1</strong>, <strong>upward = unbounded</strong>.</p></li>
+<li><p>Many problems are knapsack in disguise: a “subset that sums to a target” is 0/1 with weights = values and capacity = target; “coin change” (min coins / count ways) is unbounded knapsack.</p></li>
+</ul>
+</section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>House Robber</p></li>
+<li><p>Partition Equal Subset Sum</p></li>
+<li><p>Target Sum</p></li>
+<li><p>Coin Change</p></li>
+<li><p>Coin Change II</p></li>
+<li><p>Combination Sum IV</p></li>
 </ol>
 </section>
 </section>
@@ -511,20 +621,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="9.html"
+       href="9c.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Dynamic Programming</p>
+        <p class="prev-next-title">2D DP</p>
       </div>
     </a>
     <a class="right-next"
-       href="10.html"
+       href="9e.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Backtracking</p>
+        <p class="prev-next-title">3D DP and Beyond</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -546,6 +656,17 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knapsack">0/1 Knapsack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-down">Top-down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up">Bottom-up</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unbounded-knapsack">Unbounded Knapsack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Top-down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Bottom-up</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>

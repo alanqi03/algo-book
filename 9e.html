@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Stacks &#8212; Cracking the Technical Interview</title>
+    <title>3D DP and Beyond &#8212; Cracking the Technical Interview</title>
   
   
   
@@ -60,12 +60,12 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '3c';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '9e';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Binary Search" href="3d.html" />
-    <link rel="prev" title="Sliding Window" href="3b.html" />
+    <link rel="next" title="Complex DP" href="9d.html" />
+    <link rel="prev" title="Knapsack DP" href="9a.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -228,10 +228,10 @@
 
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="3a.html">Two Pointers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3b.html">Sliding Window</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Stacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3c.html">Stacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3d.html">Binary Search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3e.html">Intervals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3f.html">Subarray Algorithms</a></li>
@@ -255,11 +255,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3D DP and Beyond</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
@@ -342,7 +342,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F3c.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F9e.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -372,7 +372,7 @@
       
       
       
-      <li><a href="_sources/3c.md" target="_blank"
+      <li><a href="_sources/9e.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -448,7 +448,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Stacks</h1>
+    <h1>3D DP and Beyond</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -459,15 +459,10 @@
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-stack">Monotonic Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-smallest-result">Building the smallest result</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-savings-with-bottom-up">Memory savings with bottom-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
         </div>
@@ -479,109 +474,76 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="stacks">
-<h1>Stacks<a class="headerlink" href="#stacks" title="Link to this heading">#</a></h1>
-<p>This section will go over problems that are easily solvable using the stack data structure.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="d-dp-and-beyond">
+<h1>3D DP and Beyond<a class="headerlink" href="#d-dp-and-beyond" title="Link to this heading">#</a></h1>
+<p>Some problems need three or more variables to describe a state, giving a table like <code class="docutils literal notranslate"><span class="pre">dp[i][j][k]</span></code>. The idea is identical to lower dimensions — define the state, write the recurrence, handle base cases — but memory becomes the main concern, since the table grows as the product of every dimension’s size.</p>
 <section id="when-to-use">
 <h2>When to use<a class="headerlink" href="#when-to-use" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Nested elements in an array: operations in a calculator, parentheses</p></li>
-<li><p>When a problem involves monotonically increasing or decreasing elements</p></li>
-</ol>
-</section>
-<section id="data-structure">
-<h2>Data Structure<a class="headerlink" href="#data-structure" title="Link to this heading">#</a></h2>
-<p>Stacks typically either store single elements or tuples (e.g. (a, b)).</p>
-<ul class="simple">
-<li><p>Tuples can conveniently keep track of any combination of local minima, maxima, index, and value</p></li>
-</ul>
-<p>Some advantages of stacks include:</p>
-<ul class="simple">
-<li><p>Most problems will typically compare some value with the top-most element of the stack (e.g. stack[-1])</p></li>
-<li><p>Monotonic stack: can keep track of the local maxima or local minima element in some array by appending only when greater or less than top-most element of stack.</p></li>
-<li><p>Stacks are also very useful for elements of the “destructive” or “combining” nature, e.g. (5 + 3) becomes 8, two meteors hit each other and break, etc.</p></li>
-</ul>
-</section>
-<section id="monotonic-stack">
-<h2>Monotonic Stack<a class="headerlink" href="#monotonic-stack" title="Link to this heading">#</a></h2>
-<p>A monotonic stack is a stack whose elements are always kept in sorted order (either entirely increasing or entirely decreasing from bottom to top). Before pushing a new element, you first pop every element that would break that order. This lets you find, for each element, the <strong>nearest greater or smaller</strong> element in <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time overall.</p>
-<section id="id1">
-<h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>For each element, you need the next (or previous) greater/smaller element.</p></li>
-<li><p>You’re asked about spans, ranges, or “how far until a bigger/smaller value” — e.g. daily temperatures, stock spans, largest rectangle in a histogram.</p></li>
-<li><p>A brute-force solution would compare every pair (<code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code>) but the answer only depends on the nearest qualifying neighbor.</p></li>
+<li><p>A single index pair isn’t enough to capture the state — you’re tracking an extra quantity such as a count, a budget, a number of transactions, or a second capacity.</p></li>
+<li><p>Examples: 0/1 knapsack with two constraints, buy/sell stock with at most <code class="docutils literal notranslate"><span class="pre">k</span></code> transactions, or paths through a grid with a remaining “fuel” budget.</p></li>
 </ol>
 </section>
 <section id="algorithm">
-<h3>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h3>
-<p>The key rule: maintain the invariant by popping before you push. Whatever gets popped has just found its “answer” (the current element). This example finds, for each element, the number of days until a warmer temperature:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">daily_temperatures</span><span class="p">(</span><span class="n">temps</span><span class="p">):</span>
-<span class="linenos">2</span>    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span>
-<span class="linenos">3</span>    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>                          <span class="c1"># holds indices, temps decreasing bottom-&gt;top</span>
-<span class="linenos">4</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">temps</span><span class="p">):</span>
-<span class="linenos">5</span>        <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">temps</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
-<span class="linenos">6</span>            <span class="n">j</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>             <span class="c1"># temps[i] is the next warmer day for j</span>
-<span class="linenos">7</span>            <span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span>
-<span class="linenos">8</span>        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-<span class="linenos">9</span>    <span class="k">return</span> <span class="n">res</span>
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
+<p>A common 3D problem is <strong>Ones and Zeroes</strong>: given binary strings and budgets of <code class="docutils literal notranslate"><span class="pre">m</span></code> zeros and <code class="docutils literal notranslate"><span class="pre">n</span></code> ones, find the largest subset you can form. This is a 0/1 knapsack with <em>two</em> capacities, so the full state is <code class="docutils literal notranslate"><span class="pre">dp[i][z][o]</span></code> — using the first <code class="docutils literal notranslate"><span class="pre">i</span></code> strings, with <code class="docutils literal notranslate"><span class="pre">z</span></code> zeros and <code class="docutils literal notranslate"><span class="pre">o</span></code> ones available.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">find_max_form</span><span class="p">(</span><span class="n">strs</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">counts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">),</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strs</span><span class="p">]</span>
+<span class="linenos"> 3</span>    <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">strs</span><span class="p">)</span>
+<span class="linenos"> 4</span>    <span class="c1"># dp[i][z][o] = max subset size using first i strings with z zeros, o ones</span>
+<span class="linenos"> 5</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="linenos"> 6</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="n">zeros</span><span class="p">,</span> <span class="n">ones</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<span class="linenos"> 8</span>        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 9</span>            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos">10</span>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">]</span>              <span class="c1"># skip string i</span>
+<span class="linenos">11</span>                <span class="k">if</span> <span class="n">z</span> <span class="o">&gt;=</span> <span class="n">zeros</span> <span class="ow">and</span> <span class="n">o</span> <span class="o">&gt;=</span> <span class="n">ones</span><span class="p">:</span>               <span class="c1"># take string i</span>
+<span class="linenos">12</span>                    <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">],</span>
+<span class="linenos">13</span>                                      <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">z</span> <span class="o">-</span> <span class="n">zeros</span><span class="p">][</span><span class="n">o</span> <span class="o">-</span> <span class="n">ones</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">14</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">L</span><span class="p">][</span><span class="n">m</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The stack stores <strong>indices</strong> whose temperatures are decreasing from bottom to top.</p></li>
-<li><p>When the current temperature is warmer than the top, that top element has found its answer, so we pop and record it.</p></li>
-<li><p>Each index is pushed and popped at most once, giving <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> total time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dp[i][z][o]</span></code> is the best subset size using the first <code class="docutils literal notranslate"><span class="pre">i</span></code> strings within both budgets.</p></li>
+<li><p>As in 0/1 knapsack, each string is either skipped or taken; taking it consumes its zeros and ones.</p></li>
+<li><p>The answer is <code class="docutils literal notranslate"><span class="pre">dp[L][m][n]</span></code> — all strings considered, full budgets available.</p></li>
 </ul>
 </section>
-<section id="building-the-smallest-result">
-<h3>Building the smallest result<a class="headerlink" href="#building-the-smallest-result" title="Link to this heading">#</a></h3>
-<p>A closely related class of problems asks you to remove elements to produce the <strong>smallest (or lexicographically smallest) possible result</strong>. The same monotonic stack applies, but now popping is a <em>greedy</em> choice: a larger element sitting to the left of a smaller one should be removed, because putting the smaller element earlier makes the result smaller.</p>
-<p>This example removes <code class="docutils literal notranslate"><span class="pre">k</span></code> digits from a number to make it as small as possible:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">remove_k_digits</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="linenos">2</span>    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>                          <span class="c1"># kept increasing bottom-&gt;top</span>
-<span class="linenos">3</span>    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">num</span><span class="p">:</span>
-<span class="linenos">4</span>        <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">:</span>
-<span class="linenos">5</span>            <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                 <span class="c1"># a bigger digit earlier -&gt; pop to shrink result</span>
-<span class="linenos">6</span>            <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="linenos">7</span>        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="linenos">8</span>    <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>      <span class="c1"># if removals remain, drop from the end</span>
-<span class="linenos">9</span>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;0&quot;</span>
+<section id="memory-savings-with-bottom-up">
+<h2>Memory savings with bottom-up<a class="headerlink" href="#memory-savings-with-bottom-up" title="Link to this heading">#</a></h2>
+<p>The full table above uses <code class="docutils literal notranslate"><span class="pre">O(L</span> <span class="pre">*</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">n)</span></code> memory. But notice <code class="docutils literal notranslate"><span class="pre">dp[i][...]</span></code> only ever reads from <code class="docutils literal notranslate"><span class="pre">dp[i</span> <span class="pre">-</span> <span class="pre">1][...]</span></code> — the previous “layer.” This is where bottom-up shines: <strong>we can drop the first dimension entirely</strong> and reuse a single 2D array, updating it in place.</p>
+<p>The trick is the same as the 1D knapsack loop direction: iterate the capacity dimensions <strong>downward</strong> so each string is used at most once.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">find_max_form</span><span class="p">(</span><span class="n">strs</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>        <span class="c1"># drop the i dimension</span>
+<span class="linenos">3</span>    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strs</span><span class="p">:</span>
+<span class="linenos">4</span>        <span class="n">zeros</span><span class="p">,</span> <span class="n">ones</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">),</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<span class="linenos">5</span>        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>             <span class="c1"># downward = use each string once</span>
+<span class="linenos">6</span>            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ones</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<span class="linenos">7</span>                <span class="n">dp</span><span class="p">[</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">z</span><span class="p">][</span><span class="n">o</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">z</span> <span class="o">-</span> <span class="n">zeros</span><span class="p">][</span><span class="n">o</span> <span class="o">-</span> <span class="n">ones</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">8</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The stack stays increasing, so smaller digits bubble toward the front.</p></li>
-<li><p>Each pop uses one of the <code class="docutils literal notranslate"><span class="pre">k</span></code> allowed removals; we stop popping once <code class="docutils literal notranslate"><span class="pre">k</span></code> runs out.</p></li>
-<li><p>Any leftover removals are taken from the end (the largest trailing digits), and we strip leading zeros.</p></li>
+<li><p>We collapsed a 3D table into a 2D one, cutting memory from <code class="docutils literal notranslate"><span class="pre">O(L</span> <span class="pre">*</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">n)</span></code> to <code class="docutils literal notranslate"><span class="pre">O(m</span> <span class="pre">*</span> <span class="pre">n)</span></code>.</p></li>
+<li><p>Iterating <code class="docutils literal notranslate"><span class="pre">z</span></code> and <code class="docutils literal notranslate"><span class="pre">o</span></code> downward ensures <code class="docutils literal notranslate"><span class="pre">dp[z</span> <span class="pre">-</span> <span class="pre">zeros][o</span> <span class="pre">-</span> <span class="pre">ones]</span></code> still refers to the previous layer (before this string), preserving the 0/1 semantics.</p></li>
 </ul>
 </section>
 <section id="tips-and-tricks">
-<h3>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h3>
+<h2>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Decreasing</strong> stack → finds the next <em>greater</em> element; <strong>increasing</strong> stack → finds the next <em>smaller</em> element.</p></li>
-<li><p>For “smallest result” problems, keep an <strong>increasing</strong> stack and pop a larger element whenever a smaller one arrives (subject to a removal budget or a “must keep” constraint).</p></li>
-<li><p>Store <strong>indices</strong> rather than values when you need distances or spans (you can still look up the value with <code class="docutils literal notranslate"><span class="pre">arr[stack[-1]]</span></code>).</p></li>
-<li><p>Iterate left-to-right for “next” relationships, or right-to-left for “previous” relationships.</p></li>
-<li><p>Anything left on the stack at the end never found a qualifying neighbor (use a sentinel or default value for these).</p></li>
+<li><p><strong>The dimension you iterate over is usually the one you can drop.</strong> If <code class="docutils literal notranslate"><span class="pre">dp[i]</span></code> only depends on <code class="docutils literal notranslate"><span class="pre">dp[i</span> <span class="pre">-</span> <span class="pre">1]</span></code>, keep just one or two layers instead of the whole thing (a “rolling array”). A 3D table often collapses to 2D, and a 2D table to 1D.</p></li>
+<li><p>The savings grow with dimensions: dropping one axis of a <code class="docutils literal notranslate"><span class="pre">d</span></code>-dimensional table divides memory by that axis’s size — far more impactful than in low-dimensional DP.</p></li>
+<li><p>Top-down memoization can’t drop dimensions this way (it may revisit any state at any time), so <strong>bottom-up is the tool for tight memory</strong>. Reach for it when the full table would be too large to fit.</p></li>
+<li><p>Order matters when reusing an array in place: loop <strong>downward</strong> to reuse the previous layer (0/1, each item once), <strong>upward</strong> to allow the current layer (unbounded reuse) — the same rule as <a class="reference internal" href="9a.html"><span class="std std-doc">Knapsack DP</span></a>.</p></li>
 </ul>
 </section>
-</section>
-<section id="example-problems">
-<h2>Example Problems<a class="headerlink" href="#example-problems" title="Link to this heading">#</a></h2>
+<section id="problems">
+<h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Valid Parentheses (E)</p></li>
-<li><p>Min Stack (M)</p></li>
-<li><p>Evaluate Reverse Polish Notation (M)</p></li>
-<li><p>Generate Parentheses (M)</p></li>
-<li><p>Daily Temperatures (M)</p></li>
-<li><p>Car Fleet (M)</p></li>
-</ol>
-<ul class="simple">
-<li><p>Hint: Given two cars and their time to target (distance-position/speed), if t1 &lt; t2, then t1 can “reach” t2 before target, but if t1 &gt;= t2, then t1 can never “reach” t2.</p></li>
-</ul>
-<ol class="arabic simple" start="7">
-<li><p>Largest Rectangle in Histogram (H)</p></li>
-<li><p>Remove K Digits (M)</p></li>
-<li><p>Remove Duplicate Letters (M)</p></li>
+<li><p>Ones and Zeroes</p></li>
+<li><p>Best Time to Buy and Sell Stock IV</p></li>
+<li><p>Cherry Pickup II</p></li>
+<li><p>Knight Dialer</p></li>
 </ol>
 </section>
 </section>
@@ -617,20 +579,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="3b.html"
+       href="9a.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sliding Window</p>
+        <p class="prev-next-title">Knapsack DP</p>
       </div>
     </a>
     <a class="right-next"
-       href="3d.html"
+       href="9d.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Binary Search</p>
+        <p class="prev-next-title">Complex DP</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -653,15 +615,10 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-stack">Monotonic Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-smallest-result">Building the smallest result</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-savings-with-bottom-up">Memory savings with bottom-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Stacks &#8212; Cracking the Technical Interview</title>
+    <title>2D DP &#8212; Cracking the Technical Interview</title>
   
   
   
@@ -60,12 +60,12 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '3c';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '9c';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Binary Search" href="3d.html" />
-    <link rel="prev" title="Sliding Window" href="3b.html" />
+    <link rel="next" title="Knapsack DP" href="9a.html" />
+    <link rel="prev" title="1D DP" href="9b.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -228,10 +228,10 @@
 
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="3a.html">Two Pointers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3b.html">Sliding Window</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Stacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3c.html">Stacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3d.html">Binary Search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3e.html">Intervals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3f.html">Subarray Algorithms</a></li>
@@ -255,11 +255,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
@@ -342,7 +341,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F3c.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F9c.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -372,7 +371,7 @@
       
       
       
-      <li><a href="_sources/3c.md" target="_blank"
+      <li><a href="_sources/9c.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -448,7 +447,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Stacks</h1>
+    <h1>2D DP</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -458,16 +457,18 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-stack">Monotonic Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-dp">Grid DP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-smallest-result">Building the smallest result</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-dp">String DP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
         </div>
@@ -479,109 +480,86 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="stacks">
-<h1>Stacks<a class="headerlink" href="#stacks" title="Link to this heading">#</a></h1>
-<p>This section will go over problems that are easily solvable using the stack data structure.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="d-dp">
+<h1>2D DP<a class="headerlink" href="#d-dp" title="Link to this heading">#</a></h1>
+<p>2D DP problems use two variables to describe each subproblem, stored in a 2D table <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code>. The two most common flavors are <strong>grid</strong> problems (moving through a matrix) and <strong>string</strong> problems (comparing two strings or two ranges of one string).</p>
+<section id="grid-dp">
+<h2>Grid DP<a class="headerlink" href="#grid-dp" title="Link to this heading">#</a></h2>
+<p>Here <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> is the answer for the cell at row <code class="docutils literal notranslate"><span class="pre">i</span></code>, column <code class="docutils literal notranslate"><span class="pre">j</span></code>, usually built from the cells above and to the left.</p>
 <section id="when-to-use">
-<h2>When to use<a class="headerlink" href="#when-to-use" title="Link to this heading">#</a></h2>
+<h3>When to use<a class="headerlink" href="#when-to-use" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>Nested elements in an array: operations in a calculator, parentheses</p></li>
-<li><p>When a problem involves monotonically increasing or decreasing elements</p></li>
-</ol>
-</section>
-<section id="data-structure">
-<h2>Data Structure<a class="headerlink" href="#data-structure" title="Link to this heading">#</a></h2>
-<p>Stacks typically either store single elements or tuples (e.g. (a, b)).</p>
-<ul class="simple">
-<li><p>Tuples can conveniently keep track of any combination of local minima, maxima, index, and value</p></li>
-</ul>
-<p>Some advantages of stacks include:</p>
-<ul class="simple">
-<li><p>Most problems will typically compare some value with the top-most element of the stack (e.g. stack[-1])</p></li>
-<li><p>Monotonic stack: can keep track of the local maxima or local minima element in some array by appending only when greater or less than top-most element of stack.</p></li>
-<li><p>Stacks are also very useful for elements of the “destructive” or “combining” nature, e.g. (5 + 3) becomes 8, two meteors hit each other and break, etc.</p></li>
-</ul>
-</section>
-<section id="monotonic-stack">
-<h2>Monotonic Stack<a class="headerlink" href="#monotonic-stack" title="Link to this heading">#</a></h2>
-<p>A monotonic stack is a stack whose elements are always kept in sorted order (either entirely increasing or entirely decreasing from bottom to top). Before pushing a new element, you first pop every element that would break that order. This lets you find, for each element, the <strong>nearest greater or smaller</strong> element in <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time overall.</p>
-<section id="id1">
-<h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>For each element, you need the next (or previous) greater/smaller element.</p></li>
-<li><p>You’re asked about spans, ranges, or “how far until a bigger/smaller value” — e.g. daily temperatures, stock spans, largest rectangle in a histogram.</p></li>
-<li><p>A brute-force solution would compare every pair (<code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code>) but the answer only depends on the nearest qualifying neighbor.</p></li>
+<li><p>You move through a 2D grid, typically only right and/or down.</p></li>
+<li><p>You’re asked for the number of paths, or the min/max cost path, to reach each cell.</p></li>
 </ol>
 </section>
 <section id="algorithm">
 <h3>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h3>
-<p>The key rule: maintain the invariant by popping before you push. Whatever gets popped has just found its “answer” (the current element). This example finds, for each element, the number of days until a warmer temperature:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">daily_temperatures</span><span class="p">(</span><span class="n">temps</span><span class="p">):</span>
-<span class="linenos">2</span>    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span>
-<span class="linenos">3</span>    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>                          <span class="c1"># holds indices, temps decreasing bottom-&gt;top</span>
-<span class="linenos">4</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">temps</span><span class="p">):</span>
-<span class="linenos">5</span>        <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">temps</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
-<span class="linenos">6</span>            <span class="n">j</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>             <span class="c1"># temps[i] is the next warmer day for j</span>
-<span class="linenos">7</span>            <span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span>
-<span class="linenos">8</span>        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-<span class="linenos">9</span>    <span class="k">return</span> <span class="n">res</span>
+<p>Counting unique paths from the top-left to the bottom-right, moving only right or down:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">unique_paths</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+<span class="linenos">3</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+<span class="linenos">4</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos">5</span>            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<span class="linenos">6</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The stack stores <strong>indices</strong> whose temperatures are decreasing from bottom to top.</p></li>
-<li><p>When the current temperature is warmer than the top, that top element has found its answer, so we pop and record it.</p></li>
-<li><p>Each index is pushed and popped at most once, giving <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> total time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> is the number of ways to reach cell <code class="docutils literal notranslate"><span class="pre">(i,</span> <span class="pre">j)</span></code>.</p></li>
+<li><p>Each cell is reached from directly above (<code class="docutils literal notranslate"><span class="pre">i-1,</span> <span class="pre">j</span></code>) or directly left (<code class="docutils literal notranslate"><span class="pre">i,</span> <span class="pre">j-1</span></code>).</p></li>
+<li><p>The first row and column are all <code class="docutils literal notranslate"><span class="pre">1</span></code>, since there is only one straight-line path to them.</p></li>
 </ul>
 </section>
-<section id="building-the-smallest-result">
-<h3>Building the smallest result<a class="headerlink" href="#building-the-smallest-result" title="Link to this heading">#</a></h3>
-<p>A closely related class of problems asks you to remove elements to produce the <strong>smallest (or lexicographically smallest) possible result</strong>. The same monotonic stack applies, but now popping is a <em>greedy</em> choice: a larger element sitting to the left of a smaller one should be removed, because putting the smaller element earlier makes the result smaller.</p>
-<p>This example removes <code class="docutils literal notranslate"><span class="pre">k</span></code> digits from a number to make it as small as possible:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">remove_k_digits</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="linenos">2</span>    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>                          <span class="c1"># kept increasing bottom-&gt;top</span>
-<span class="linenos">3</span>    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">num</span><span class="p">:</span>
-<span class="linenos">4</span>        <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">:</span>
-<span class="linenos">5</span>            <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>                 <span class="c1"># a bigger digit earlier -&gt; pop to shrink result</span>
-<span class="linenos">6</span>            <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="linenos">7</span>        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="linenos">8</span>    <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>      <span class="c1"># if removals remain, drop from the end</span>
-<span class="linenos">9</span>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;0&quot;</span>
+</section>
+<section id="string-dp">
+<h2>String DP<a class="headerlink" href="#string-dp" title="Link to this heading">#</a></h2>
+<p>Here <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> describes a relationship between the first <code class="docutils literal notranslate"><span class="pre">i</span></code> characters of one string and the first <code class="docutils literal notranslate"><span class="pre">j</span></code> characters of another (or two indices into the same string).</p>
+<section id="id1">
+<h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>You’re comparing two strings (edit distance, common subsequence) or two ends of one string (palindromes).</p></li>
+<li><p>The answer for a pair of prefixes depends on smaller prefixes.</p></li>
+</ol>
+</section>
+<section id="id2">
+<h3>Algorithm<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Longest Common Subsequence (LCS) of strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">lcs</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="linenos"> 4</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 5</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 6</span>            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+<span class="linenos"> 7</span>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos"> 8</span>            <span class="k">else</span><span class="p">:</span>
+<span class="linenos"> 9</span>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+<span class="linenos">10</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The stack stays increasing, so smaller digits bubble toward the front.</p></li>
-<li><p>Each pop uses one of the <code class="docutils literal notranslate"><span class="pre">k</span></code> allowed removals; we stop popping once <code class="docutils literal notranslate"><span class="pre">k</span></code> runs out.</p></li>
-<li><p>Any leftover removals are taken from the end (the largest trailing digits), and we strip leading zeros.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> is the LCS length using the first <code class="docutils literal notranslate"><span class="pre">i</span></code> characters of <code class="docutils literal notranslate"><span class="pre">a</span></code> and the first <code class="docutils literal notranslate"><span class="pre">j</span></code> of <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p></li>
+<li><p>If the current characters match, extend the diagonal subproblem <code class="docutils literal notranslate"><span class="pre">dp[i-1][j-1]</span></code> by 1.</p></li>
+<li><p>Otherwise take the better of dropping a character from either string.</p></li>
 </ul>
+</section>
 </section>
 <section id="tips-and-tricks">
-<h3>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h3>
+<h2>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Decreasing</strong> stack → finds the next <em>greater</em> element; <strong>increasing</strong> stack → finds the next <em>smaller</em> element.</p></li>
-<li><p>For “smallest result” problems, keep an <strong>increasing</strong> stack and pop a larger element whenever a smaller one arrives (subject to a removal budget or a “must keep” constraint).</p></li>
-<li><p>Store <strong>indices</strong> rather than values when you need distances or spans (you can still look up the value with <code class="docutils literal notranslate"><span class="pre">arr[stack[-1]]</span></code>).</p></li>
-<li><p>Iterate left-to-right for “next” relationships, or right-to-left for “previous” relationships.</p></li>
-<li><p>Anything left on the stack at the end never found a qualifying neighbor (use a sentinel or default value for these).</p></li>
+<li><p>Adding an extra row and column of base cases (index <code class="docutils literal notranslate"><span class="pre">0</span></code> meaning “empty”) avoids special-casing the boundaries.</p></li>
+<li><p>Since each cell usually depends only on the previous row, you can often reduce space to two rows (or one) — <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">O(m*n)</span></code>.</p></li>
+<li><p>For string problems, be careful with off-by-one: <code class="docutils literal notranslate"><span class="pre">dp[i]</span></code> refers to the first <code class="docutils literal notranslate"><span class="pre">i</span></code> characters, so the character itself is at index <code class="docutils literal notranslate"><span class="pre">i-1</span></code>.</p></li>
 </ul>
 </section>
-</section>
-<section id="example-problems">
-<h2>Example Problems<a class="headerlink" href="#example-problems" title="Link to this heading">#</a></h2>
+<section id="problems">
+<h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Valid Parentheses (E)</p></li>
-<li><p>Min Stack (M)</p></li>
-<li><p>Evaluate Reverse Polish Notation (M)</p></li>
-<li><p>Generate Parentheses (M)</p></li>
-<li><p>Daily Temperatures (M)</p></li>
-<li><p>Car Fleet (M)</p></li>
-</ol>
-<ul class="simple">
-<li><p>Hint: Given two cars and their time to target (distance-position/speed), if t1 &lt; t2, then t1 can “reach” t2 before target, but if t1 &gt;= t2, then t1 can never “reach” t2.</p></li>
-</ul>
-<ol class="arabic simple" start="7">
-<li><p>Largest Rectangle in Histogram (H)</p></li>
-<li><p>Remove K Digits (M)</p></li>
-<li><p>Remove Duplicate Letters (M)</p></li>
+<li><p>Unique Paths</p></li>
+<li><p>Minimum Path Sum</p></li>
+<li><p>Longest Common Subsequence</p></li>
+<li><p>Edit Distance</p></li>
+<li><p>Longest Palindromic Substring</p></li>
+<li><p>Interleaving String</p></li>
 </ol>
 </section>
 </section>
@@ -617,20 +595,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="3b.html"
+       href="9b.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Sliding Window</p>
+        <p class="prev-next-title">1D DP</p>
       </div>
     </a>
     <a class="right-next"
-       href="3d.html"
+       href="9a.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Binary Search</p>
+        <p class="prev-next-title">Knapsack DP</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -652,16 +630,18 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-stack">Monotonic Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-dp">Grid DP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-smallest-result">Building the smallest result</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-dp">String DP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>
 

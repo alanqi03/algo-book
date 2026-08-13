@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -64,7 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Knapsack DP" href="9a.html" />
+    <link rel="next" title="1D DP" href="9b.html" />
     <link rel="prev" title="Heap" href="8.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -243,8 +243,11 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.html">Trees</a></li>
-
+<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="7a.html">Using BFS and DFS in a Matrix (Graph)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7b.html">Topological Sorting and Union Find</a></li>
@@ -253,7 +256,11 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Dynamic Programming</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
@@ -459,7 +466,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up-dp-with-tabulation">Bottom-up DP with Tabulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-identify-a-dp-problem">How to identify a DP Problem</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-for-solving-dp-problems">Framework for solving DP Problems</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flavors-of-dp">Flavors of DP</a></li>
 </ul>
             </nav>
         </div>
@@ -545,12 +552,15 @@
 <li><p>Define the base cases</p></li>
 </ol>
 </section>
-<section id="problems">
-<h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
+<section id="flavors-of-dp">
+<h2>Flavors of DP<a class="headerlink" href="#flavors-of-dp" title="Link to this heading">#</a></h2>
+<p>The subchapters break DP down by the <em>shape</em> of the state, from most to least common:</p>
 <ol class="arabic simple">
-<li><p>Climbing Stairs</p></li>
-<li><p>Min Cost Climbing Stairs</p></li>
-<li><p>Predict the Winner</p></li>
+<li><p><strong>1D DP</strong> — a single index into a sequence.</p></li>
+<li><p><strong>2D DP</strong> — two indices, covering grid and string problems.</p></li>
+<li><p><strong>Knapsack DP</strong> — choosing items under a capacity, in 0/1 and unbounded forms.</p></li>
+<li><p><strong>3D DP and Beyond</strong> — three or more state variables, where bottom-up dimension reduction saves the most memory.</p></li>
+<li><p><strong>Complex DP</strong> — less common state shapes: interval, tree, bitmask, and digit DP.</p></li>
 </ol>
 </section>
 <div class="toctree-wrapper compound">
@@ -597,11 +607,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="9a.html"
+       href="9b.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Knapsack DP</p>
+        <p class="prev-next-title">1D DP</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -631,7 +641,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up-dp-with-tabulation">Bottom-up DP with Tabulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-identify-a-dp-problem">How to identify a DP Problem</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-for-solving-dp-problems">Framework for solving DP Problems</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flavors-of-dp">Flavors of DP</a></li>
 </ul>
   </nav></div>
 
