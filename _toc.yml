@@ -31,7 +31,8 @@ chapters:
   sections:
   - file: "7a" # Using BFS and DFS to solve matrix problems
   - file: "7b" # Topological Sorting and Union Find
-  - file: "7c" # Shortest Path Algorithms
+  - file: "7c" # Minimum Spanning Trees
+  - file: "7d" # Shortest Path Algorithms
 - file: "8" # heaps
 - file: "9" # DP
   sections:
