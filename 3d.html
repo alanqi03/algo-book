@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -243,17 +243,25 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.html">Trees</a></li>
-
+<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="7a.html">Using BFS and DFS in a Matrix (Graph)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7b.html">Topological Sorting and Union Find</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7c.html">Minimum Spanning Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7d.html">Shortest Path Algorithms</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
@@ -452,7 +460,11 @@
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-an-exact-target">Finding an Exact Target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-a-boundary">Finding a Boundary</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bisect-library">Bisect Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
@@ -484,26 +496,39 @@
 </section>
 <section id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
-<p>Here is a basic binary search implementation:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">while</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-<span class="linenos"> 3</span>    <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
-<span class="linenos"> 4</span>        <span class="k">return</span> <span class="n">mid</span>
-<span class="linenos"> 5</span>    <span class="k">elif</span> <span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
-<span class="linenos"> 6</span>        <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="linenos"> 7</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos"> 8</span>        <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span>
-<span class="linenos"> 9</span><span class="o">//</span> <span class="n">Check</span> <span class="n">here</span> <span class="k">for</span> <span class="n">the</span> <span class="n">edge</span> <span class="n">case</span> <span class="n">when</span> <span class="n">l</span> <span class="o">==</span> <span class="n">r</span>
-<span class="linenos">10</span><span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
-<span class="linenos">11</span>    <span class="k">return</span> <span class="n">l</span>
-<span class="linenos">12</span><span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<section id="finding-an-exact-target">
+<h3>Finding an Exact Target<a class="headerlink" href="#finding-an-exact-target" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">left</span> <span class="pre">&lt;=</span> <span class="pre">right</span></code> when searching a sorted array for one exact target. Both ends of <code class="docutils literal notranslate"><span class="pre">[left,</span> <span class="pre">right]</span></code> are still possible answers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">binary_search</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">while</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">:</span>
+<span class="linenos"> 5</span>        <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="k">return</span> <span class="n">mid</span>
+<span class="linenos"> 9</span>        <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">11</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">12</span>            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>Why not <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">left</span> <span class="pre">&lt;=</span> <span class="pre">right</span></code> classic binary search?</p>
-<ul class="simple">
-<li><p>This above implementation avoids the possibility when the target is not found in arr, so the code won’t error by going into an infinite loop</p></li>
-<li><p>Remember, left is either the target or the element that is &gt;= target</p></li>
-</ul>
+<p>Each update removes <code class="docutils literal notranslate"><span class="pre">mid</span></code> from the search space because it has already been checked. If the target is absent, the boundaries cross (<code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">&gt;</span> <span class="pre">right</span></code>) and the loop ends.</p>
+</section>
+<section id="finding-a-boundary">
+<h3>Finding a Boundary<a class="headerlink" href="#finding-a-boundary" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">left</span> <span class="pre">&lt;</span> <span class="pre">right</span></code> when looking for a boundary, such as the first value greater than or equal to a target. This version narrows the search space to one candidate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">while</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
+<span class="linenos">2</span>    <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="linenos">3</span>    <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">4</span>        <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">5</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">6</span>        <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span>
+</pre></div>
+</div>
+<p>When the loop ends, <code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">==</span> <span class="pre">right</span></code>. That index is the first element greater than or equal to <code class="docutils literal notranslate"><span class="pre">target</span></code>, assuming the search space contains such an element.</p>
 <p>Here is a binary search implementation for the minimal k satisfying some <code class="docutils literal notranslate"><span class="pre">condition</span></code> function:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">left</span></code> is the MINIMAL k satisfying the <code class="docutils literal notranslate"><span class="pre">condition</span></code> function</p></li>
@@ -538,6 +563,7 @@
 <span class="linenos">12</span>    <span class="k">return</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span>
 </pre></div>
 </div>
+</section>
 </section>
 <section id="bisect-library">
 <h2>Bisect Library<a class="headerlink" href="#bisect-library" title="Link to this heading">#</a></h2>
@@ -643,7 +669,11 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use">When to use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-an-exact-target">Finding an Exact Target</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-a-boundary">Finding a Boundary</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bisect-library">Bisect Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>

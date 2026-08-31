@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -64,6 +64,8 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Heap" href="8.html" />
+    <link rel="prev" title="Minimum Spanning Trees" href="7c.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -165,8 +167,6 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
@@ -219,7 +219,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="1.html">Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="1a.html">Basics, Functions, Numbers, and Strings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1b.html">Lists, Sets, Stacks, and Queues</a></li>
@@ -243,17 +243,25 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.html">Trees</a></li>
-
-<li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="7.html">Graphs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="7a.html">Using BFS and DFS in a Matrix (Graph)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7b.html">Topological Sorting and Union Find</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7c.html">Minimum Spanning Trees</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Shortest Path Algorithms</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
@@ -451,8 +459,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellman-ford-algorithm">Bellman-Ford Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -466,126 +478,126 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="shortest-path-algorithms">
 <h1>Shortest Path Algorithms<a class="headerlink" href="#shortest-path-algorithms" title="Link to this heading">#</a></h1>
-<p>This section will go over algorithms to find the shortest path between point A and point B, just one of many different applications.</p>
-<ul class="simple">
-<li><p>They can help determine the length (weight) of shortest path to each node starting from some point A. With this information,</p>
-<ul>
-<li><p>You can calculate the shortest path from point A to any point B</p></li>
-<li><p>The maximum length (weight) of shortest path to some point B will be the minimum length (weight) to traverse every node in the graph for networks (in signals).</p></li>
-</ul>
-</li>
-<li><p>They can also help with finding other paths such as maximum probability by using a slightly different update for weights.</p></li>
-</ul>
-<p>One possible shortest path algorithm is DFS, but DFS is typically the most suboptimal algorithm and will not be covered in this section.</p>
-<p>All of the algorithms below can handle the following graphs:</p>
-<ul class="simple">
-<li><p>Directed or undirected graphs</p></li>
-<li><p>Positive cycles (if used for shortest path)</p></li>
-</ul>
+<p>Shortest-path algorithms find the minimum total edge weight from a source node to other nodes. The best algorithm depends mainly on the edge weights.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Edge weights</p></th>
+<th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>All edges have the same weight</p></td>
+<td><p>BFS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>All weights are non-negative</p></td>
+<td><p>Dijkstra</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O((V</span> <span class="pre">+</span> <span class="pre">E)</span> <span class="pre">log</span> <span class="pre">V)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Negative weights may exist</p></td>
+<td><p>Bellman–Ford</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(VE)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Both directed and undirected graphs are supported. However, a negative edge in an undirected graph immediately creates a negative cycle: traverse the edge in both directions.</p>
+<section id="relaxing-an-edge">
+<h2>Relaxing an Edge<a class="headerlink" href="#relaxing-an-edge" title="Link to this heading">#</a></h2>
+<p>Both Dijkstra and Bellman–Ford repeatedly <strong>relax</strong> edges. For an edge <code class="docutils literal notranslate"><span class="pre">u</span> <span class="pre">-&gt;</span> <span class="pre">v</span></code> with weight <code class="docutils literal notranslate"><span class="pre">w</span></code>, ask whether reaching <code class="docutils literal notranslate"><span class="pre">v</span></code> through <code class="docutils literal notranslate"><span class="pre">u</span></code> is cheaper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+    <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span>
+</pre></div>
+</div>
+<p>Initially, the source has distance <code class="docutils literal notranslate"><span class="pre">0</span></code> and every other node has distance infinity.</p>
+</section>
 <section id="dijkstra-s-algorithm">
 <h2>Dijkstra’s Algorithm<a class="headerlink" href="#dijkstra-s-algorithm" title="Link to this heading">#</a></h2>
-<p>Preconditions for Dijkstra’s Algorithm to work:</p>
+<p>Dijkstra’s algorithm works only when every edge weight is non-negative. It greedily processes the closest known node using a min-heap.</p>
 <ol class="arabic simple">
-<li><p>The graph cannot have negative weights.</p></li>
-<li><p>The graph cannot have negative cycles.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">dist[source]</span> <span class="pre">=</span> <span class="pre">0</span></code> and push <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">source)</span></code> onto the heap.</p></li>
+<li><p>Pop the node with the smallest distance.</p></li>
+<li><p>Relax each outgoing edge and push any improved distance.</p></li>
+<li><p>Repeat until the heap is empty.</p></li>
 </ol>
-<p>The steps to conduct Dijkstra’s in order to determine the shortest path is as follows:</p>
-<ul class="simple">
-<li><p>Define the adjacency list, a dictionary of node as key and neighbors as a tuple of (values, weight).</p></li>
-<li><p>Initialize a list or dict for each node that has a value of infinity for each value, which signifies the shortest path to node.</p></li>
-<li><p>Given a starting point A, set <code class="docutils literal notranslate"><span class="pre">shortestPath[A]</span> <span class="pre">=</span> <span class="pre">0</span></code>, and add <code class="docutils literal notranslate"><span class="pre">(shortestPath[A],</span> <span class="pre">A)</span></code> to a priority queue (min heap)</p></li>
-<li><p>while pq:</p>
-<ul>
-<li><p>Pop dist and node from pq</p></li>
-<li><p>For each neighbor of the node, if dist + weight is less than <code class="docutils literal notranslate"><span class="pre">shortestPath[nei]</span></code>, update and add to pq; else, do nothing.</p></li>
-</ul>
-</li>
-</ul>
-<p>Now, you should have a shortestPath array to all nodes in the graph, which you can use to solve a bunch of graph problems.</p>
-<ul class="simple">
-<li><p>You can see which nodes are unreachable if their <code class="docutils literal notranslate"><span class="pre">shortestPath</span></code> is still infinity.</p></li>
-<li><p>You can see the point X that is the farthest away from point A, which is the min combined weight to reach all points (in networks)</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="nf">networkDelayTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="linenos"> 3</span>        <span class="n">neighbors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-<span class="linenos"> 4</span>        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span> <span class="c1"># Create adjacency list</span>
-<span class="linenos"> 5</span>            <span class="n">neighbors</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span> 
-<span class="linenos"> 6</span>        <span class="n">signalReceivedAt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 7</span>        <span class="n">pq</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos"> 8</span>        <span class="n">pq</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
-<span class="linenos"> 9</span>        <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">pq</span><span class="p">)</span> <span class="c1">#Create pq and add point A and dist to pq</span>
-<span class="linenos">10</span>        <span class="n">signalReceivedAt</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> 
-<span class="linenos">11</span>        <span class="k">while</span> <span class="n">pq</span><span class="p">:</span>
-<span class="linenos">12</span>            <span class="n">dist</span><span class="p">,</span> <span class="n">node</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">pq</span><span class="p">)</span>
-<span class="linenos">13</span>            <span class="k">for</span> <span class="n">nei</span><span class="p">,</span> <span class="n">delay</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
-<span class="linenos">14</span>                <span class="k">if</span> <span class="n">dist</span> <span class="o">+</span> <span class="n">delay</span> <span class="o">&lt;</span> <span class="n">signalReceivedAt</span><span class="p">[</span><span class="n">nei</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span> <span class="c1"># update</span>
-<span class="linenos">15</span>                    <span class="n">signalReceivedAt</span><span class="p">[</span><span class="n">nei</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">+</span> <span class="n">delay</span>
-<span class="linenos">16</span>                    <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">pq</span><span class="p">,</span> <span class="p">(</span><span class="n">signalReceivedAt</span><span class="p">[</span><span class="n">nei</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nei</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">dijkstra</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="sd">"""graph[u] contains (v, weight) pairs; nodes are 0 through n - 1."""</span>
+<span class="linenos"> 5</span>    <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 6</span>    <span class="n">dist</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 7</span>    <span class="n">heap</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">source</span><span class="p">)]</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">while</span> <span class="n">heap</span><span class="p">:</span>
+<span class="linenos">10</span>        <span class="n">curr_dist</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>        <span class="c1"># A shorter route to u was added after this entry.</span>
+<span class="linenos">13</span>        <span class="k">if</span> <span class="n">curr_dist</span> <span class="o">!=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">14</span>            <span class="k">continue</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">17</span>            <span class="n">new_dist</span> <span class="o">=</span> <span class="n">curr_dist</span> <span class="o">+</span> <span class="n">weight</span>
+<span class="linenos">18</span>            <span class="k">if</span> <span class="n">new_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="linenos">19</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_dist</span>
+<span class="linenos">20</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">new_dist</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="k">return</span> <span class="n">dist</span>
 </pre></div>
 </div>
-<p>Here are some notes about Dijkstra’s Algorithm:</p>
 <ul class="simple">
-<li><p>A BFS algorithm for shortest path is essentially the same as Dijkstra’s Algorithm excepts it uses a normal queue instead of a priority queue.</p></li>
-<li><p>The time complexity of Dijkstra’s Algorithm is <code class="docutils literal notranslate"><span class="pre">O(ElogN)</span></code> and the space complexity is <code class="docutils literal notranslate"><span class="pre">O(N</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></li>
-<li><p>Dijkstra’s Algorithm will always greedily pick the smallest cost’s path first regardless of number of edges</p>
-<ul>
-<li><p>In some edge cases, you want to force Dijkstra’s Algorithm to revisit nodes whose path has less number of edges than the number of edges in its shortest path.</p></li>
-</ul>
-</li>
+<li><p>A node is unreachable when its distance remains infinity.</p></li>
+<li><p>BFS is the simpler equivalent when all edges have the same weight.</p></li>
+<li><p>To reconstruct paths, store <code class="docutils literal notranslate"><span class="pre">parent[v]</span> <span class="pre">=</span> <span class="pre">u</span></code> whenever <code class="docutils literal notranslate"><span class="pre">dist[v]</span></code> improves.</p></li>
 </ul>
 </section>
-<section id="bellman-ford-algorithm">
-<h2>Bellman-Ford Algorithm<a class="headerlink" href="#bellman-ford-algorithm" title="Link to this heading">#</a></h2>
-<p>Advantages of Bellman-Ford Algorithm over Dijkstra’s Algorithm</p>
+<section id="bellmanford-algorithm">
+<h2>Bellman–Ford Algorithm<a class="headerlink" href="#bellmanford-algorithm" title="Link to this heading">#</a></h2>
+<p>Bellman–Ford is slower than Dijkstra, but it supports negative edge weights and detects reachable negative cycles.</p>
+<p>Why <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> passes? Any shortest <strong>simple</strong> path visits at most <code class="docutils literal notranslate"><span class="pre">V</span></code> vertices, so it uses at most <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> edges. Each full pass can extend known shortest paths by one edge.</p>
 <ol class="arabic simple">
-<li><p>Can handle negative weights (edges)</p></li>
-<li><p>Can detect negative cycles.</p></li>
-<li><p>Can limit the number of edges in the shortest path to an arbitrary k.</p></li>
+<li><p>Relax every edge <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> times.</p></li>
+<li><p>Stop early if a complete pass makes no changes.</p></li>
+<li><p>Make one extra pass. If any distance improves, a negative cycle is reachable from the source.</p></li>
 </ol>
-<p>Disadvantages of Bellman-Ford Algorithm over Dijkstra’s Algorithm</p>
-<ol class="arabic simple">
-<li><p>Is typically slower because it iterates over all edges <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> times.</p></li>
-</ol>
-<p>The steps to conduct the Bellman-Ford Algorithm to determine the shortest path is as follows:</p>
-<ul class="simple">
-<li><p>Create a list of all edges in the graph.</p></li>
-<li><p>Initialize a list or dict for each node that has a value of infinity for each value, which signifies the shortest path to node.</p></li>
-<li><p>Given a starting point A, set <code class="docutils literal notranslate"><span class="pre">shortestPath[A]</span> <span class="pre">=</span> <span class="pre">0</span></code>.</p></li>
-<li><p>for k times (<code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> to guarantee shortest path to any node is found)</p>
-<ul>
-<li><p>Define a temp array that is a copy of <code class="docutils literal notranslate"><span class="pre">shortestPath</span></code></p></li>
-<li><p>Iterate through every edge, and update <code class="docutils literal notranslate"><span class="pre">temp</span></code> if <code class="docutils literal notranslate"><span class="pre">shortestPath[u]</span> <span class="pre">+</span> <span class="pre">weight</span> <span class="pre">&lt;</span> <span class="pre">temp[v]</span></code></p></li>
-</ul>
-</li>
-<li><p>After k times, you should have the <code class="docutils literal notranslate"><span class="pre">shortestPath</span></code> fully defined; if any node still has infinity, then it is unreachable in k edges.</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="nf">findCheapestPrice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">flights</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="linenos"> 3</span>        <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 4</span>        <span class="n">dist</span><span class="p">[</span><span class="n">src</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 5</span>        <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos"> 6</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span> 
-<span class="linenos"> 7</span>            <span class="n">temp</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:]</span> <span class="c1"># Make a copy, don&#39;t assign a pointer</span>
-<span class="linenos"> 8</span>            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">price</span> <span class="ow">in</span> <span class="n">flights</span><span class="p">:</span>
-<span class="linenos"> 9</span>                <span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="n">temp</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
-<span class="linenos">10</span>                    <span class="n">temp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">price</span>
-<span class="linenos">11</span>            <span class="n">dist</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[:]</span> 
-<span class="linenos">12</span>        <span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">dst</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
-<span class="linenos">13</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">14</span>        <span class="k">return</span> <span class="n">dist</span><span class="p">[</span><span class="n">dst</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">bellman_ford</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""edges contains (u, v, weight) tuples; nodes are 0 through n - 1."""</span>
+<span class="linenos"> 3</span>    <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 4</span>    <span class="n">dist</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="n">changed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="linenos">11</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span>
+<span class="linenos">12</span>                <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
+<span class="linenos">15</span>            <span class="k">break</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="c1"># Only detects negative cycles reachable from source.</span>
+<span class="linenos">18</span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+<span class="linenos">19</span>        <span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="linenos">20</span>            <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="kc">True</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="kc">False</span>
 </pre></div>
 </div>
-<p>Here are some notes on the algorithm:</p>
-<ul class="simple">
-<li><p>You can detect a negative cycle if instead of iterating through all edges <code class="docutils literal notranslate"><span class="pre">n-1</span></code> times, run through it one more <code class="docutils literal notranslate"><span class="pre">nth</span></code> time:</p>
-<ul>
-<li><p>If an update is completed, then there is a negative cycle.</p></li>
-<li><p>Otherwise, there are no negative cycles.</p></li>
-</ul>
-</li>
-<li><p>For a small optimization that can handle edges cases in certain problems, abort the loop if no edges update anything.</p></li>
-</ul>
+<p>A <strong>negative cycle</strong> has a total weight below zero. Repeating it makes a path cheaper forever, so no finite shortest path exists for nodes reachable through that cycle.</p>
+<section id="limiting-the-number-of-edges">
+<h3>Limiting the Number of Edges<a class="headerlink" href="#limiting-the-number-of-edges" title="Link to this heading">#</a></h3>
+<p>Some problems ask for the cheapest path using at most <code class="docutils literal notranslate"><span class="pre">k</span></code> edges. Copy <code class="docutils literal notranslate"><span class="pre">dist</span></code> before each pass so one pass cannot use multiple new edges:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="n">next_dist</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[:]</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">):</span>
+            <span class="n">next_dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">next_dist</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">next_dist</span>
+</pre></div>
+</div>
+<p>For example, “at most <code class="docutils literal notranslate"><span class="pre">k</span></code> stops” allows at most <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">+</span> <span class="pre">1</span></code> edges, so run <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">+</span> <span class="pre">1</span></code> passes.</p>
+</section>
 </section>
 </section>
 
@@ -619,6 +631,24 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="7c.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Minimum Spanning Trees</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="8.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Heap</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -637,8 +667,12 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellman-ford-algorithm">Bellman-Ford Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

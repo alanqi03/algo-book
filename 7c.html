@@ -55,18 +55,16 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '7c';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Heap" href="8.html" />
+    <link rel="next" title="Shortest Path Algorithms" href="7d.html" />
     <link rel="prev" title="Topological Sorting and Union Find" href="7b.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -245,17 +243,25 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6.html">Trees</a></li>
-
+<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="7.html">Graphs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="7a.html">Using BFS and DFS in a Matrix (Graph)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7b.html">Topological Sorting and Union Find</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Minimum Spanning Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7d.html">Shortest Path Algorithms</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="8.html">Heap</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="9.html">Dynamic Programming</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="9b.html">1D DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9c.html">2D DP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="9a.html">Knapsack DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9e.html">3D DP and Beyond</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9d.html">Complex DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
@@ -453,11 +459,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-spanning-tree">Minimum Spanning Tree</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heap-implementation">Heap Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation">Linear-Scan Implementation</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
 </ul>
             </nav>
         </div>
@@ -471,115 +478,205 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="minimum-spanning-trees">
 <h1>Minimum Spanning Trees<a class="headerlink" href="#minimum-spanning-trees" title="Link to this heading">#</a></h1>
-<p>This section will go over algorithms to find the Minimum Spanning Tree for graphs, which are used in several graph problems.</p>
+<p>A <strong>minimum spanning tree (MST)</strong> connects every vertex in a weighted, undirected graph with the smallest possible total edge weight.</p>
+<p>A spanning tree:</p>
 <ul class="simple">
-<li><p>Before you begin this section, please review union find, which will be utilized in Kruskal’s algorithm.</p></li>
+<li><p>Includes every vertex</p></li>
+<li><p>Has no cycles</p></li>
+<li><p>Has exactly <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> edges</p></li>
 </ul>
-<section id="minimum-spanning-tree">
-<h2>Minimum Spanning Tree<a class="headerlink" href="#minimum-spanning-tree" title="Link to this heading">#</a></h2>
-<p>The Minimum Spanning Tree (MST) defined for a graph is a subset of edges that connect all vertices while the total weights of these edges are minimum among all possible subsets.
-There are two common algorithms to solve for the MST of a graph:</p>
-<ul class="simple">
-<li><p>Kruskal’s Algorithm, which utilizes union find and edge sorting</p></li>
-<li><p>Prim’s Algorithm</p></li>
-</ul>
-<section id="kruskal-s-algorithm">
-<h3>Kruskal’s Algorithm<a class="headerlink" href="#kruskal-s-algorithm" title="Link to this heading">#</a></h3>
-<p>Kruskal’s Algorithm is a greedy algorithm that builds a MST in a weighted, undirected graph.</p>
-<ul class="simple">
-<li><p>The runtime of this algorithm is typically bounded by sorting all edges.</p></li>
-</ul>
-<p>The steps for this algorithm are as follows:</p>
-<ol class="arabic simple">
-<li><p>Define the Union Find (DSU) data structure</p></li>
-<li><p>Generate all possible edges in the graph and sort them by weight</p></li>
-<li><p>Iterate through the sorted edges, union nodes until <code class="docutils literal notranslate"><span class="pre">n-1</span></code> edges chosen.</p></li>
-</ol>
-<p>Here is the following code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
-<span class="linenos"> 4</span>    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="linenos"> 5</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-<span class="linenos"> 6</span>            <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
-<span class="linenos"> 7</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-<span class="linenos"> 8</span>    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="linenos"> 9</span>        <span class="n">x_par</span><span class="p">,</span> <span class="n">y_par</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="linenos">10</span>        <span class="k">if</span> <span class="n">x_par</span> <span class="o">==</span> <span class="n">y_par</span><span class="p">:</span>
-<span class="linenos">11</span>            <span class="k">return</span> <span class="kc">False</span>
-<span class="linenos">12</span>        <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x_par</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_par</span>
-<span class="linenos">13</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
-<span class="linenos">16</span>    <span class="k">def</span><span class="w"> </span><span class="nf">minCostConnectPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="linenos">17</span>        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-<span class="linenos">18</span>        <span class="n">all_edges</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos">19</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c1">#generates all possible edges (distance between two points)</span>
-<span class="linenos">20</span>            <span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="linenos">21</span>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="linenos">22</span>                <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-<span class="linenos">23</span>                <span class="n">dist</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="linenos">24</span>                <span class="n">all_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dist</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
-<span class="linenos">25</span>        <span class="n">all_edges</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c1">#sorts the edges</span>
-<span class="linenos">26</span>        <span class="n">num_edges</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos">27</span>        <span class="n">weight</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos">28</span>        <span class="n">dsu</span> <span class="o">=</span> <span class="n">DSU</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="linenos">29</span>        <span class="k">for</span> <span class="n">dist</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">all_edges</span><span class="p">:</span> <span class="c1">#performs unions until the num_edges = n - 1</span>
-<span class="linenos">30</span>            <span class="k">if</span> <span class="n">num_edges</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-<span class="linenos">31</span>                <span class="k">break</span>
-<span class="linenos">32</span>            <span class="k">if</span> <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="linenos">33</span>                <span class="n">num_edges</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="linenos">34</span>                <span class="n">weight</span> <span class="o">+=</span> <span class="n">dist</span>
-<span class="linenos">35</span>        <span class="k">return</span> <span class="n">weight</span>
-</pre></div>
+<p>An MST exists only if the graph is connected. It may not be unique when multiple edges have the same weight.</p>
+<p>The two common greedy algorithms are:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Main idea</p></th>
+<th class="head"><p>Typical input</p></th>
+<th class="head"><p>Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Prim’s with a heap</p></td>
+<td><p>Grow one tree using its cheapest outgoing edge</p></td>
+<td><p>Sparse adjacency list</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(E</span> <span class="pre">log</span> <span class="pre">V)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Prim’s with a linear scan</p></td>
+<td><p>Grow one tree using its cheapest outgoing edge</p></td>
+<td><p>Dense adjacency matrix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V²)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Kruskal’s</p></td>
+<td><p>Add the cheapest edge that does not create a cycle</p></td>
+<td><p>Edge list</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(E</span> <span class="pre">log</span> <span class="pre">E)</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
 <section id="prim-s-algorithm">
-<h3>Prim’s Algorithm<a class="headerlink" href="#prim-s-algorithm" title="Link to this heading">#</a></h3>
-<p>Prim’s Algorithm is also a greedy algorithm that builds a MST in a weighted, undirected graph.</p>
-<p>The steps for this algorithm are as follows:</p>
+<h2>Prim’s Algorithm<a class="headerlink" href="#prim-s-algorithm" title="Link to this heading">#</a></h2>
+<p>Prim’s algorithm starts at any vertex and grows one connected tree by repeatedly adding its cheapest outgoing edge.</p>
+<section id="heap-implementation">
+<h3>Heap Implementation<a class="headerlink" href="#heap-implementation" title="Link to this heading">#</a></h3>
+<p>A min-heap efficiently stores candidate edges that connect the current tree to another vertex.</p>
 <ol class="arabic simple">
-<li><p>Start with an arbitrary node.</p></li>
-<li><p>Calculate all edge weights, if needed, to neighboring nodes</p></li>
-<li><p>Connect to the node with lowest edge weight</p></li>
-<li><p>Repeat steps 2-3 (the order can also be changed depending on how you coded the solution)</p></li>
+<li><p>Push a zero-cost edge to any starting vertex.</p></li>
+<li><p>Pop the cheapest edge.</p></li>
+<li><p>If its destination is already in the MST, skip it.</p></li>
+<li><p>Otherwise, add its cost and push its outgoing edges.</p></li>
+<li><p>Continue until all vertices are included.</p></li>
 </ol>
-<p>The data structure determines the time complexity of Prim’s algorithm:</p>
-<ul class="simple">
-<li><p>Linear search is typically optimal if edges are not given (O(<span class="math notranslate nohighlight">\(V^2\)</span>))</p></li>
-<li><p>Heap search is typically optimal if edges are given (Elog(V))</p></li>
-</ul>
-<p>I present the Prim’s algorithm using linear search:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="nf">minCostConnectPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="linenos"> 3</span>        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-<span class="linenos"> 4</span>        <span class="n">edges_used</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 5</span>        <span class="n">mst_cost</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>        <span class="n">in_mst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 8</span>        <span class="n">min_dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 9</span>        <span class="n">min_dist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span>        <span class="k">while</span> <span class="n">edges_used</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
-<span class="linenos">12</span>            <span class="n">curr_min_edge</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-<span class="linenos">13</span>            <span class="n">curr_node</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">14</span>            <span class="k">for</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="linenos">15</span>                <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span> <span class="ow">and</span> <span class="n">curr_min_edge</span> <span class="o">&gt;</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]:</span>
-<span class="linenos">16</span>                    <span class="n">curr_min_edge</span> <span class="o">=</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span>
-<span class="linenos">17</span>                    <span class="n">curr_node</span> <span class="o">=</span> <span class="n">next_node</span>
-<span class="linenos">18</span>            <span class="n">mst_cost</span> <span class="o">+=</span> <span class="n">curr_min_edge</span>
-<span class="linenos">19</span>            <span class="n">edges_used</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="linenos">20</span>            <span class="n">in_mst</span><span class="p">[</span><span class="n">curr_node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="linenos">21</span>
-<span class="linenos">22</span>            <span class="k">for</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="linenos">23</span>                <span class="n">weight</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">curr_node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">next_node</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>\
-<span class="linenos">24</span>                         <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">curr_node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">next_node</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-<span class="linenos">25</span>                <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span> <span class="ow">and</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">weight</span><span class="p">:</span>
-<span class="linenos">26</span>                    <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight</span>
-<span class="linenos">27</span>        <span class="k">return</span> <span class="n">mst_cost</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">prim</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="sd">"""graph[u] contains (weight, v) pairs; vertices are 0 through n - 1."""</span>
+<span class="linenos"> 5</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 6</span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 9</span>    <span class="n">vertices_used</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">10</span>    <span class="n">in_mst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos">11</span>    <span class="n">heap</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># (edge weight, destination)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="k">while</span> <span class="n">heap</span> <span class="ow">and</span> <span class="n">vertices_used</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+<span class="linenos">14</span>        <span class="n">weight</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>        <span class="k">if</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">17</span>            <span class="k">continue</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>        <span class="n">in_mst</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">20</span>        <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">weight</span>
+<span class="linenos">21</span>        <span class="n">vertices_used</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>        <span class="k">for</span> <span class="n">next_weight</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">24</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="linenos">25</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">next_weight</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>    <span class="k">return</span> <span class="n">total_cost</span> <span class="k">if</span> <span class="n">vertices_used</span> <span class="o">==</span> <span class="n">n</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
 </pre></div>
 </div>
+<p>Returning <code class="docutils literal notranslate"><span class="pre">-1</span></code> means the graph is disconnected, so one spanning tree cannot reach every vertex.</p>
 </section>
+<section id="linear-scan-implementation">
+<h3>Linear-Scan Implementation<a class="headerlink" href="#linear-scan-implementation" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code> version keeps two pieces of information for each vertex:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">in_mst[v]</span></code>: whether vertex <code class="docutils literal notranslate"><span class="pre">v</span></code> has already been added</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cheapest_connection[v]</span></code>: the cheapest known edge from the current MST to <code class="docutils literal notranslate"><span class="pre">v</span></code></p></li>
+</ul>
+<p>Each outer-loop iteration adds exactly one vertex:</p>
+<ol class="arabic simple">
+<li><p>Scan all vertices to find the unvisited vertex with the cheapest connection.</p></li>
+<li><p>Add that vertex and its connection cost to the MST.</p></li>
+<li><p>Scan its edges to see whether it offers a cheaper connection to any unvisited vertex.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">prim_dense</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""matrix[u][v] is the edge weight, or infinity if no edge exists."""</span>
+<span class="linenos"> 3</span>    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="linenos"> 4</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 5</span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="n">in_mst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 8</span>    <span class="n">cheapest_connection</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 9</span>    <span class="n">cheapest_connection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Start at vertex 0 for free.</span>
+<span class="linenos">10</span>    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">13</span>        <span class="c1"># 1. Find the cheapest vertex that is not in the MST.</span>
+<span class="linenos">14</span>        <span class="n">next_vertex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">15</span>        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">16</span>            <span class="k">if</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">candidate</span><span class="p">]:</span>
+<span class="linenos">17</span>                <span class="k">continue</span>
+<span class="linenos">18</span>            <span class="k">if</span> <span class="p">(</span>
+<span class="linenos">19</span>                <span class="n">next_vertex</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">20</span>                <span class="ow">or</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span>
+<span class="linenos">21</span>                <span class="o">&lt;</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span>
+<span class="linenos">22</span>            <span class="p">):</span>
+<span class="linenos">23</span>                <span class="n">next_vertex</span> <span class="o">=</span> <span class="n">candidate</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>        <span class="c1"># No edge can connect the remaining vertices.</span>
+<span class="linenos">26</span>        <span class="k">if</span> <span class="p">(</span>
+<span class="linenos">27</span>            <span class="n">next_vertex</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">28</span>            <span class="ow">or</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+<span class="linenos">29</span>        <span class="p">):</span>
+<span class="linenos">30</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>        <span class="c1"># 2. Add that vertex using its cheapest connection.</span>
+<span class="linenos">33</span>        <span class="n">in_mst</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">34</span>        <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>        <span class="c1"># 3. Update the cheapest connection to each remaining vertex.</span>
+<span class="linenos">37</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">38</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]:</span>
+<span class="linenos">39</span>                <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+<span class="linenos">40</span>                    <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">neighbor</span><span class="p">],</span>
+<span class="linenos">41</span>                    <span class="n">matrix</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">][</span><span class="n">neighbor</span><span class="p">],</span>
+<span class="linenos">42</span>                <span class="p">)</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="k">return</span> <span class="n">total_cost</span>
+</pre></div>
+</div>
+<p>The first scan answers, “Which vertex is cheapest to add next?” The second scan answers, “Now that this vertex is in the tree, does it give us a cheaper way to add any others?”</p>
+<p>The outer loop runs <code class="docutils literal notranslate"><span class="pre">V</span></code> times, and both inner scans examine at most <code class="docutils literal notranslate"><span class="pre">V</span></code> vertices. Therefore, the total time is <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code>.</p>
+<p>For example, if adding vertex <code class="docutils literal notranslate"><span class="pre">2</span></code> reveals an edge of weight <code class="docutils literal notranslate"><span class="pre">4</span></code> to vertex <code class="docutils literal notranslate"><span class="pre">3</span></code>, but the best known connection to vertex <code class="docutils literal notranslate"><span class="pre">3</span></code> was <code class="docutils literal notranslate"><span class="pre">7</span></code>, update it to <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
+<p>This version also works well for an <strong>implicit</strong> graph. For example, when every pair of points is connected, calculate the distance between <code class="docutils literal notranslate"><span class="pre">next_vertex</span></code> and <code class="docutils literal notranslate"><span class="pre">neighbor</span></code> inside the final loop instead of building an <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code> matrix.</p>
+</section>
+</section>
+<section id="kruskal-s-algorithm">
+<h2>Kruskal’s Algorithm<a class="headerlink" href="#kruskal-s-algorithm" title="Link to this heading">#</a></h2>
+<p>Kruskal’s algorithm considers all edges from cheapest to most expensive. It uses a Disjoint Set Union (DSU) to check whether two vertices are already connected.</p>
+<ol class="arabic simple">
+<li><p>Sort all edges by weight.</p></li>
+<li><p>Add an edge if it connects two different components.</p></li>
+<li><p>Stop after choosing <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> edges.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
+<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="linenos"> 4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span>
+<span class="linenos"> 8</span>            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+<span class="linenos"> 9</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="linenos">12</span>        <span class="n">root_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="linenos">13</span>        <span class="n">root_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>        <span class="k">if</span> <span class="n">root_a</span> <span class="o">==</span> <span class="n">root_b</span><span class="p">:</span>
+<span class="linenos">16</span>            <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">root_a</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">root_b</span><span class="p">]:</span>
+<span class="linenos">19</span>            <span class="n">root_a</span><span class="p">,</span> <span class="n">root_b</span> <span class="o">=</span> <span class="n">root_b</span><span class="p">,</span> <span class="n">root_a</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">root_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_a</span>
+<span class="linenos">22</span>        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">root_a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">root_b</span><span class="p">]</span>
+<span class="linenos">23</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="k">def</span><span class="w"> </span><span class="nf">kruskal</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="linenos">27</span><span class="w">    </span><span class="sd">"""edges contains (weight, u, v) tuples; vertices are 0 through n - 1."""</span>
+<span class="linenos">28</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">29</span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="n">dsu</span> <span class="o">=</span> <span class="n">DSU</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="linenos">32</span>    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">33</span>    <span class="n">edges_used</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>    <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+<span class="linenos">36</span>        <span class="k">if</span> <span class="n">dsu</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="linenos">37</span>            <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">weight</span>
+<span class="linenos">38</span>            <span class="n">edges_used</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>            <span class="k">if</span> <span class="n">edges_used</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">41</span>                <span class="k">return</span> <span class="n">total_cost</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>DSU’s <code class="docutils literal notranslate"><span class="pre">find</span></code> operation identifies a vertex’s component. If two vertices have the same root, adding their edge would create a cycle, so Kruskal skips it.</p>
 </section>
 </section>
 
@@ -623,11 +720,11 @@ There are two common algorithms to solve for the MST of a graph:</p>
       </div>
     </a>
     <a class="right-next"
-       href="8.html"
+       href="7d.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Heap</p>
+        <p class="prev-next-title">Shortest Path Algorithms</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -649,11 +746,12 @@ There are two common algorithms to solve for the MST of a graph:</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-spanning-tree">Minimum Spanning Tree</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heap-implementation">Heap Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation">Linear-Scan Implementation</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
 </ul>
   </nav></div>
 
