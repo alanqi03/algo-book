@@ -422,17 +422,37 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-the-problem">Before the Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentinel-dummy-node">Sentinel (Dummy) Node</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-traversal">Basic Traversal</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithms">Algorithms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floyd-s-tortoise-and-hare-algorithm">Floyd’s Tortoise and Hare Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-linked-list">Reverse Linked List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pointer-safety">Pointer Safety</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentinel-dummy-nodes">Sentinel (Dummy) Nodes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-a-linked-list">Reverse a Linked List</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-reversal">Iterative Reversal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursive-reversal">Recursive Reversal</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-two-sorted-lists">Merge Two Sorted Lists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-and-slow-pointers">Fast and Slow Pointers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-middle">Find the Middle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-a-cycle">Detect a Cycle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-start-of-a-cycle">Find the Start of a Cycle</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-gap-two-pointers">Fixed-Gap Two Pointers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-the-nth-node-from-the-end">Remove the Nth Node From the End</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-intersection-of-two-lists">Find the Intersection of Two Lists</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reorder-a-list">Reorder a List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-whether-a-list-is-a-palindrome">Check Whether a List Is a Palindrome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-numbers-digit-by-digit">Add Numbers Digit by Digit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-a-list-with-random-pointers">Copy a List With Random Pointers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lru-cache-hash-map-doubly-linked-list">LRU Cache: Hash Map + Doubly Linked List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern-summary">Pattern Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neetcode-problems">Neetcode Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neetcode-problems">NeetCode Problems</a></li>
 </ul>
             </nav>
         </div>
@@ -446,70 +466,500 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linked-lists">
 <h1>Linked Lists<a class="headerlink" href="#linked-lists" title="Link to this heading">#</a></h1>
-<p>Problems involving Linked Lists involve many different strategies and algorithms to solve them.</p>
-<p>The sections in this chapter talk about some of the most commonly used algorithms to solve these types of problems.</p>
-<section id="before-the-problem">
-<h2>Before the Problem<a class="headerlink" href="#before-the-problem" title="Link to this heading">#</a></h2>
-<p>Before going into the problem, think about what transformations you can perform on the input/output that are most appropriate:</p>
-<section id="sentinel-dummy-node">
-<h3>Sentinel (Dummy) Node<a class="headerlink" href="#sentinel-dummy-node" title="Link to this heading">#</a></h3>
-<p>A sentinel, or dummy, node is essentially a placeholder node typically created at the beginning of some output, which can handle some edge cases.</p>
-<ul class="simple">
-<li><p>Initialized as <code class="docutils literal notranslate"><span class="pre">Node(0,</span> <span class="pre">None)</span></code></p></li>
-<li><p>When you return the output, make sure to return <code class="docutils literal notranslate"><span class="pre">head.next</span></code> as to not include the dummy node in your output</p></li>
-</ul>
+<p>Linked-list problems are mostly pointer-management problems. Unlike an array, a linked list does not support direct indexing. To reach a node, you must follow the chain from the head, but nodes can be inserted, removed, or rearranged in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> time once you have the correct pointers.</p>
+<p>This chapter covers the reusable patterns behind most linked-list interview problems.</p>
+<section id="data-structure">
+<h2>Data Structure<a class="headerlink" href="#data-structure" title="Link to this heading">#</a></h2>
+<p>A singly linked-list node stores a value and a pointer to the next node:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">class</span><span class="w"> </span><span class="nc">ListNode</span><span class="p">:</span>
+<span class="linenos">2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="linenos">3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+<span class="linenos">4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="nb">next</span>
+</pre></div>
+</div>
+<p>A list such as <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">3</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code> is represented by a <code class="docutils literal notranslate"><span class="pre">head</span></code> pointer to the node containing <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<section id="basic-traversal">
+<h3>Basic Traversal<a class="headerlink" href="#basic-traversal" title="Link to this heading">#</a></h3>
+<p>Use a separate pointer when traversing so that the original <code class="docutils literal notranslate"><span class="pre">head</span></code> is not lost:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">to_list</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">3</span>    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span>    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+<span class="linenos">6</span>        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="linenos">7</span>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">8</span>
+<span class="linenos">9</span>    <span class="k">return</span> <span class="n">values</span>
+</pre></div>
+</div>
+<p>Traversal takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space, excluding the returned values.</p>
 </section>
 </section>
-<section id="algorithms">
-<h2>Algorithms<a class="headerlink" href="#algorithms" title="Link to this heading">#</a></h2>
-<section id="floyd-s-tortoise-and-hare-algorithm">
-<h3>Floyd’s Tortoise and Hare Algorithm<a class="headerlink" href="#floyd-s-tortoise-and-hare-algorithm" title="Link to this heading">#</a></h3>
-<p>This algorithm utilizes two pointers that moves at the same time: a fast pointer and a slow pointer.</p>
+<section id="pointer-safety">
+<h2>Pointer Safety<a class="headerlink" href="#pointer-safety" title="Link to this heading">#</a></h2>
+<p>Before changing <code class="docutils literal notranslate"><span class="pre">curr.next</span></code>, decide whether the rest of the list still needs to be reached. If so, save it first:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">next_node</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev</span>
+<span class="n">curr</span> <span class="o">=</span> <span class="n">next_node</span>
+</pre></div>
+</div>
+<p>The most common linked-list bugs come from:</p>
+<ol class="arabic simple">
+<li><p>Losing the remainder of the list after overwriting a <code class="docutils literal notranslate"><span class="pre">next</span></code> pointer.</p></li>
+<li><p>Dereferencing <code class="docutils literal notranslate"><span class="pre">None</span></code>, especially with expressions such as <code class="docutils literal notranslate"><span class="pre">fast.next.next</span></code>.</p></li>
+<li><p>Forgetting that an operation can replace the head.</p></li>
+<li><p>Creating a cycle accidentally while reconnecting nodes.</p></li>
+</ol>
+<p>Always test an empty list, a one-node list, a two-node list, and a case where the head changes.</p>
+</section>
+<section id="sentinel-dummy-nodes">
+<h2>Sentinel (Dummy) Nodes<a class="headerlink" href="#sentinel-dummy-nodes" title="Link to this heading">#</a></h2>
+<p>A sentinel node is a temporary node placed before the real head. It makes the head behave like every other node, which removes special cases when inserting or deleting at the front.</p>
+<p>This example removes every node with a target value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">remove_elements</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">dummy</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">prev</span> <span class="o">=</span> <span class="n">dummy</span>
+<span class="linenos"> 4</span>    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">curr</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="n">prev</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 9</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span>
+<span class="linenos">11</span>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="k">return</span> <span class="n">dummy</span><span class="o">.</span><span class="n">next</span>
+</pre></div>
+</div>
+<p>Notice that <code class="docutils literal notranslate"><span class="pre">prev</span></code> advances only when <code class="docutils literal notranslate"><span class="pre">curr</span></code> is kept. Return <code class="docutils literal notranslate"><span class="pre">dummy.next</span></code>, not <code class="docutils literal notranslate"><span class="pre">dummy</span></code>, because the sentinel is not part of the result.</p>
+<p>Dummy nodes are especially useful for:</p>
 <ul class="simple">
-<li><p>The fast pointer moves twice as fast as the slow pointer: <code class="docutils literal notranslate"><span class="pre">fast</span> <span class="pre">=</span> <span class="pre">fast.next.next</span></code></p></li>
-<li><p>The slow pointer moves similarly to iteration: <code class="docutils literal notranslate"><span class="pre">slow</span> <span class="pre">=</span> <span class="pre">slow.next</span></code></p></li>
-</ul>
-<p>This algorithm can find the middle node of the linked list:</p>
-<ul class="simple">
-<li><p>When the fast pointer hits the end of the Linked List, the slow pointer should be at the middle node.</p></li>
-</ul>
-<p>This algorithm is useful for cycle detection:</p>
-<ul class="simple">
-<li><p>If the fast pointer reaches None (e.g. <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">fast</span> <span class="pre">or</span> <span class="pre">not</span> <span class="pre">fast.next</span></code>), then there is no cycle.</p></li>
-<li><p>If the fast pointer equals the slow pointer, then there is a cycle (not at the beginning)</p></li>
-</ul>
-<p>This algorithm can also find the beginning of a cycle:</p>
-<ul class="simple">
-<li><p>At the node where the fast pointer equals the slow pointer, the distance from the start of the LL to the beginning of the cycle is the same as the node to the beginning of the cycle.</p></li>
+<li><p>deleting the head;</p></li>
+<li><p>merging lists;</p></li>
+<li><p>constructing a new result list;</p></li>
+<li><p>keeping stable <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span></code> boundaries in a doubly linked list.</p></li>
 </ul>
 </section>
-<section id="reverse-linked-list">
-<h3>Reverse Linked List<a class="headerlink" href="#reverse-linked-list" title="Link to this heading">#</a></h3>
-<p>This algorithm is useful in several Linked List problems.</p>
-<ul class="simple">
-<li><p>Maintain a temp, curr, and prev pointer</p></li>
-</ul>
+<section id="reverse-a-linked-list">
+<h2>Reverse a Linked List<a class="headerlink" href="#reverse-a-linked-list" title="Link to this heading">#</a></h2>
+<p>Reversal is a building block for palindrome, reorder, and sublist problems.</p>
+<section id="iterative-reversal">
+<h3>Iterative Reversal<a class="headerlink" href="#iterative-reversal" title="Link to this heading">#</a></h3>
+<p>Maintain <code class="docutils literal notranslate"><span class="pre">prev</span></code> and <code class="docutils literal notranslate"><span class="pre">curr</span></code>. Save the next node before reversing the current edge:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">reverse_list</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">prev</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos"> 3</span>    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+<span class="linenos"> 6</span>        <span class="n">next_node</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 7</span>        <span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev</span>
+<span class="linenos"> 8</span>        <span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span>
+<span class="linenos"> 9</span>        <span class="n">curr</span> <span class="o">=</span> <span class="n">next_node</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="k">return</span> <span class="n">prev</span>
+</pre></div>
+</div>
+<p>The final <code class="docutils literal notranslate"><span class="pre">prev</span></code> is the new head. This takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space.</p>
 </section>
+<section id="recursive-reversal">
+<h3>Recursive Reversal<a class="headerlink" href="#recursive-reversal" title="Link to this heading">#</a></h3>
+<p>The recursive version reverses the suffix, then attaches the current node to its end:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">reverse_list_recursive</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos">3</span>        <span class="k">return</span> <span class="n">head</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span>    <span class="n">new_head</span> <span class="o">=</span> <span class="n">reverse_list_recursive</span><span class="p">(</span><span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+<span class="linenos">6</span>    <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">7</span>    <span class="n">head</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos">8</span>    <span class="k">return</span> <span class="n">new_head</span>
+</pre></div>
+</div>
+<p>This also takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time, but it uses <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> call-stack space. Prefer the iterative version when the list may be long.</p>
+</section>
+</section>
+<section id="merge-two-sorted-lists">
+<h2>Merge Two Sorted Lists<a class="headerlink" href="#merge-two-sorted-lists" title="Link to this heading">#</a></h2>
+<p>Use a dummy node to build the result and a <code class="docutils literal notranslate"><span class="pre">tail</span></code> pointer to track where the next node belongs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">merge_sorted_lists</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">dummy</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">()</span>
+<span class="linenos"> 3</span>    <span class="n">tail</span> <span class="o">=</span> <span class="n">dummy</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">while</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">b</span><span class="p">:</span>
+<span class="linenos"> 6</span>        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+<span class="linenos"> 7</span>            <span class="n">tail</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span>
+<span class="linenos"> 8</span>            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 9</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="n">tail</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span>
+<span class="linenos">11</span>            <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">12</span>        <span class="n">tail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="n">tail</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="k">else</span> <span class="n">b</span>
+<span class="linenos">15</span>    <span class="k">return</span> <span class="n">dummy</span><span class="o">.</span><span class="n">next</span>
+</pre></div>
+</div>
+<p>Each node is visited once, so the algorithm takes <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">+</span> <span class="pre">m)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space. It reuses the input nodes rather than creating copies.</p>
+</section>
+<section id="fast-and-slow-pointers">
+<h2>Fast and Slow Pointers<a class="headerlink" href="#fast-and-slow-pointers" title="Link to this heading">#</a></h2>
+<p>Floyd’s tortoise-and-hare pattern uses two pointers moving at different speeds:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">slow</span></code> moves one node at a time;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fast</span></code> moves two nodes at a time.</p></li>
+</ul>
+<p>Always check both <code class="docutils literal notranslate"><span class="pre">fast</span></code> and <code class="docutils literal notranslate"><span class="pre">fast.next</span></code> before evaluating <code class="docutils literal notranslate"><span class="pre">fast.next.next</span></code>.</p>
+<section id="find-the-middle">
+<h3>Find the Middle<a class="headerlink" href="#find-the-middle" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">middle_node</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos">5</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">6</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span>    <span class="k">return</span> <span class="n">slow</span>
+</pre></div>
+</div>
+<p>When the list has even length, this version returns the second middle node. It takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> space.</p>
+</section>
+<section id="detect-a-cycle">
+<h3>Detect a Cycle<a class="headerlink" href="#detect-a-cycle" title="Link to this heading">#</a></h3>
+<p>If there is no cycle, <code class="docutils literal notranslate"><span class="pre">fast</span></code> eventually reaches <code class="docutils literal notranslate"><span class="pre">None</span></code>. If there is a cycle, the faster pointer eventually catches the slower pointer inside it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">has_cycle</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 5</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 6</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">slow</span> <span class="ow">is</span> <span class="n">fast</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Use identity (<code class="docutils literal notranslate"><span class="pre">is</span></code>) rather than comparing node values. Different nodes may contain the same value.</p>
+</section>
+<section id="find-the-start-of-a-cycle">
+<h3>Find the Start of a Cycle<a class="headerlink" href="#find-the-start-of-a-cycle" title="Link to this heading">#</a></h3>
+<p>After <code class="docutils literal notranslate"><span class="pre">slow</span></code> and <code class="docutils literal notranslate"><span class="pre">fast</span></code> meet, place one pointer back at <code class="docutils literal notranslate"><span class="pre">head</span></code>. Move both pointers one step at a time; their next meeting point is the cycle entrance.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">cycle_start</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 5</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 6</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">slow</span> <span class="ow">is</span> <span class="n">fast</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="k">break</span>
+<span class="linenos"> 9</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="kc">None</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">finder</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">13</span>    <span class="k">while</span> <span class="n">finder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">slow</span><span class="p">:</span>
+<span class="linenos">14</span>        <span class="n">finder</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">15</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="k">return</span> <span class="n">finder</span>
+</pre></div>
+</div>
+<p>Both cycle algorithms take <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> space.</p>
+</section>
+</section>
+<section id="fixed-gap-two-pointers">
+<h2>Fixed-Gap Two Pointers<a class="headerlink" href="#fixed-gap-two-pointers" title="Link to this heading">#</a></h2>
+<p>Move one pointer ahead by a fixed number of nodes, then move both pointers together. The gap between them remains constant.</p>
+<section id="remove-the-nth-node-from-the-end">
+<h3>Remove the Nth Node From the End<a class="headerlink" href="#remove-the-nth-node-from-the-end" title="Link to this heading">#</a></h3>
+<p>Move <code class="docutils literal notranslate"><span class="pre">fast</span></code> <code class="docutils literal notranslate"><span class="pre">n</span></code> nodes ahead of <code class="docutils literal notranslate"><span class="pre">slow</span></code>. When <code class="docutils literal notranslate"><span class="pre">fast</span></code> reaches the last node, <code class="docutils literal notranslate"><span class="pre">slow.next</span></code> is the node to remove.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">remove_nth_from_end</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">dummy</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">dummy</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 6</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 9</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">10</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">slow</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">13</span>    <span class="k">return</span> <span class="n">dummy</span><span class="o">.</span><span class="n">next</span>
+</pre></div>
+</div>
+<p>The dummy node handles the case where the original head is removed. This solution assumes <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">length</span></code> and takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> space.</p>
+</section>
+<section id="find-the-intersection-of-two-lists">
+<h3>Find the Intersection of Two Lists<a class="headerlink" href="#find-the-intersection-of-two-lists" title="Link to this heading">#</a></h3>
+<p>When a pointer reaches the end of one list, redirect it to the other list’s head. Each pointer then travels the same total distance: <code class="docutils literal notranslate"><span class="pre">length_a</span> <span class="pre">+</span> <span class="pre">length_b</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">intersection_node</span><span class="p">(</span><span class="n">head_a</span><span class="p">,</span> <span class="n">head_b</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">head_a</span><span class="p">,</span> <span class="n">head_b</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="k">while</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">b</span><span class="p">:</span>
+<span class="linenos">5</span>        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">a</span> <span class="k">else</span> <span class="n">head_b</span>
+<span class="linenos">6</span>        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="n">head_a</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span>    <span class="k">return</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>The pointers meet at the shared node or at <code class="docutils literal notranslate"><span class="pre">None</span></code>. The algorithm takes <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">+</span> <span class="pre">m)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> space.</p>
+</section>
+</section>
+<section id="reorder-a-list">
+<h2>Reorder a List<a class="headerlink" href="#reorder-a-list" title="Link to this heading">#</a></h2>
+<p>To transform <code class="docutils literal notranslate"><span class="pre">L0</span> <span class="pre">-&gt;</span> <span class="pre">L1</span> <span class="pre">-&gt;</span> <span class="pre">...</span> <span class="pre">-&gt;</span> <span class="pre">Ln</span></code> into <code class="docutils literal notranslate"><span class="pre">L0</span> <span class="pre">-&gt;</span> <span class="pre">Ln</span> <span class="pre">-&gt;</span> <span class="pre">L1</span> <span class="pre">-&gt;</span> <span class="pre">Ln-1</span> <span class="pre">-&gt;</span> <span class="pre">...</span></code>:</p>
+<ol class="arabic simple">
+<li><p>Find the end of the first half.</p></li>
+<li><p>Reverse the second half.</p></li>
+<li><p>Weave the two halves together.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">reorder_list</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="c1"># 1. Find the final node of the first half.</span>
+<span class="linenos"> 6</span>    <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 7</span>    <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 8</span>        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 9</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="c1"># 2. Detach and reverse the second half.</span>
+<span class="linenos">12</span>    <span class="n">second</span> <span class="o">=</span> <span class="n">reverse_list</span><span class="p">(</span><span class="n">slow</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="n">slow</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="c1"># 3. Alternate nodes from the two halves.</span>
+<span class="linenos">16</span>    <span class="n">first</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">17</span>    <span class="k">while</span> <span class="n">second</span><span class="p">:</span>
+<span class="linenos">18</span>        <span class="n">first_next</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">19</span>        <span class="n">second_next</span> <span class="o">=</span> <span class="n">second</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>        <span class="n">first</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">second</span>
+<span class="linenos">22</span>        <span class="n">second</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">first_next</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>        <span class="n">first</span> <span class="o">=</span> <span class="n">first_next</span>
+<span class="linenos">25</span>        <span class="n">second</span> <span class="o">=</span> <span class="n">second_next</span>
+</pre></div>
+</div>
+<p>The split is important: <code class="docutils literal notranslate"><span class="pre">slow.next</span> <span class="pre">=</span> <span class="pre">None</span></code> prevents an accidental cycle. The algorithm takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> space.</p>
+</section>
+<section id="check-whether-a-list-is-a-palindrome">
+<h2>Check Whether a List Is a Palindrome<a class="headerlink" href="#check-whether-a-list-is-a-palindrome" title="Link to this heading">#</a></h2>
+<p>Find the first half’s end, reverse the second half, and compare corresponding values. Restoring the second half afterward avoids surprising the caller by mutating the input permanently.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">is_palindrome</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">head</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">first_half_end</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 6</span>    <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 7</span>    <span class="k">while</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+<span class="linenos"> 8</span>        <span class="n">first_half_end</span> <span class="o">=</span> <span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos"> 9</span>        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="n">second_half</span> <span class="o">=</span> <span class="n">reverse_list</span><span class="p">(</span><span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">head</span><span class="p">,</span> <span class="n">second_half</span>
+<span class="linenos">14</span>    <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">15</span>    <span class="k">while</span> <span class="n">right</span><span class="p">:</span>
+<span class="linenos">16</span>        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">val</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+<span class="linenos">17</span>            <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">18</span>            <span class="k">break</span>
+<span class="linenos">19</span>        <span class="n">left</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">20</span>        <span class="n">right</span> <span class="o">=</span> <span class="n">right</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">first_half_end</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">reverse_list</span><span class="p">(</span><span class="n">second_half</span><span class="p">)</span>
+<span class="linenos">23</span>    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>This takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space.</p>
+</section>
+<section id="add-numbers-digit-by-digit">
+<h2>Add Numbers Digit by Digit<a class="headerlink" href="#add-numbers-digit-by-digit" title="Link to this heading">#</a></h2>
+<p>When digits are stored in reverse order, process both lists from left to right while carrying overflow into the next place.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">add_two_numbers</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">dummy</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">()</span>
+<span class="linenos"> 3</span>    <span class="n">tail</span> <span class="o">=</span> <span class="n">dummy</span>
+<span class="linenos"> 4</span>    <span class="n">carry</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">while</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">b</span> <span class="ow">or</span> <span class="n">carry</span><span class="p">:</span>
+<span class="linenos"> 7</span>        <span class="n">a_val</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">a</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="linenos"> 8</span>        <span class="n">b_val</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="linenos"> 9</span>        <span class="n">carry</span><span class="p">,</span> <span class="n">digit</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">a_val</span> <span class="o">+</span> <span class="n">b_val</span> <span class="o">+</span> <span class="n">carry</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>        <span class="n">tail</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">digit</span><span class="p">)</span>
+<span class="linenos">12</span>        <span class="n">tail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">a</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="linenos">15</span>        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="k">return</span> <span class="n">dummy</span><span class="o">.</span><span class="n">next</span>
+</pre></div>
+</div>
+<p>The loop continues while <code class="docutils literal notranslate"><span class="pre">carry</span></code> is nonzero so that a final digit is not lost. The algorithm takes <code class="docutils literal notranslate"><span class="pre">O(max(n,</span> <span class="pre">m))</span></code> time and uses <code class="docutils literal notranslate"><span class="pre">O(max(n,</span> <span class="pre">m))</span></code> space for the result.</p>
+</section>
+<section id="copy-a-list-with-random-pointers">
+<h2>Copy a List With Random Pointers<a class="headerlink" href="#copy-a-list-with-random-pointers" title="Link to this heading">#</a></h2>
+<p>Suppose every node has both <code class="docutils literal notranslate"><span class="pre">next</span></code> and <code class="docutils literal notranslate"><span class="pre">random</span></code>, where <code class="docutils literal notranslate"><span class="pre">random</span></code> may point anywhere in the list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">RandomNode</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="nb">next</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">random</span>
+</pre></div>
+</div>
+<p>A hash map can copy this structure in <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> extra space:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">copy_random_list</span><span class="p">(</span><span class="n">head</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">head</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="kc">None</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">copies</span> <span class="o">=</span> <span class="p">{</span><span class="kc">None</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos"> 8</span>    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+<span class="linenos"> 9</span>        <span class="n">copies</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span> <span class="o">=</span> <span class="n">RandomNode</span><span class="p">(</span><span class="n">curr</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="linenos">10</span>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">curr</span> <span class="o">=</span> <span class="n">head</span>
+<span class="linenos">13</span>    <span class="k">while</span> <span class="n">curr</span><span class="p">:</span>
+<span class="linenos">14</span>        <span class="n">copies</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">copies</span><span class="p">[</span><span class="n">curr</span><span class="o">.</span><span class="n">next</span><span class="p">]</span>
+<span class="linenos">15</span>        <span class="n">copies</span><span class="p">[</span><span class="n">curr</span><span class="p">]</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">copies</span><span class="p">[</span><span class="n">curr</span><span class="o">.</span><span class="n">random</span><span class="p">]</span>
+<span class="linenos">16</span>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="k">return</span> <span class="n">copies</span><span class="p">[</span><span class="n">head</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The key idea is to map each original node object—not its value—to its corresponding copied node.</p>
+</section>
+<section id="lru-cache-hash-map-doubly-linked-list">
+<h2>LRU Cache: Hash Map + Doubly Linked List<a class="headerlink" href="#lru-cache-hash-map-doubly-linked-list" title="Link to this heading">#</a></h2>
+<p>An LRU (least recently used) cache combines two data structures:</p>
+<ul class="simple">
+<li><p>a hash map finds a cached key in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> time;</p></li>
+<li><p>a doubly linked list maintains usage order in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> time.</p></li>
+</ul>
+<p>The most recently used item is kept near <code class="docutils literal notranslate"><span class="pre">right</span></code>; the least recently used item is kept near <code class="docutils literal notranslate"><span class="pre">left</span></code>. Both boundary nodes are sentinels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DoublyNode</span><span class="p">:</span>
+<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+<span class="linenos"> 4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+<span class="linenos"> 5</span>        <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos"> 6</span>        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">class</span><span class="w"> </span><span class="nc">LRUCache</span><span class="p">:</span>
+<span class="linenos">10</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+<span class="linenos">11</span>        <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
+<span class="linenos">12</span>        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">DoublyNode</span><span class="p">()</span>   <span class="c1"># LRU sentinel</span>
+<span class="linenos">15</span>        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">DoublyNode</span><span class="p">()</span>  <span class="c1"># MRU sentinel</span>
+<span class="linenos">16</span>        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+<span class="linenos">17</span>        <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="k">def</span><span class="w"> </span><span class="nf">_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="linenos">20</span>        <span class="n">node</span><span class="o">.</span><span class="n">prev</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">21</span>        <span class="n">node</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">prev</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="k">def</span><span class="w"> </span><span class="nf">_insert_mru</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="linenos">24</span>        <span class="n">previous_mru</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">prev</span>
+<span class="linenos">25</span>        <span class="n">previous_mru</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">node</span>
+<span class="linenos">26</span>        <span class="n">node</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">previous_mru</span>
+<span class="linenos">27</span>        <span class="n">node</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+<span class="linenos">28</span>        <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">node</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="linenos">31</span>        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+<span class="linenos">32</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="linenos">35</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos">36</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_mru</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos">37</span>        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>    <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="linenos">40</span>        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+<span class="linenos">41</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">DoublyNode</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="linenos">44</span>        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+<span class="linenos">45</span>        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_mru</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+<span class="linenos">48</span>            <span class="n">lru</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">next</span>
+<span class="linenos">49</span>            <span class="bp">self</span><span class="o">.</span><span class="n">_remove</span><span class="p">(</span><span class="n">lru</span><span class="p">)</span>
+<span class="linenos">50</span>            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">lru</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">get</span></code> and <code class="docutils literal notranslate"><span class="pre">put</span></code> take <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> average time, while the cache uses <code class="docutils literal notranslate"><span class="pre">O(capacity)</span></code> space.</p>
+</section>
+<section id="pattern-summary">
+<h2>Pattern Summary<a class="headerlink" href="#pattern-summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pattern</p></th>
+<th class="head"><p>Typical use</p></th>
+<th class="head text-right"><p>Time</p></th>
+<th class="head text-right"><p>Auxiliary space</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Dummy node</p></td>
+<td><p>Insert or delete near the head</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code> traversal</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Iterative reversal</p></td>
+<td><p>Reverse a list or one of its halves</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Fast and slow pointers</p></td>
+<td><p>Middle, cycle detection, cycle entrance</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fixed pointer gap</p></td>
+<td><p>Nth node from the end</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Pointer switching</p></td>
+<td><p>Intersection of two lists</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">+</span> <span class="pre">m)</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Split, reverse, merge</p></td>
+<td><p>Reorder and palindrome problems</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Hash map + linked list</p></td>
+<td><p>Random pointers and LRU caches</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code> or <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> per operation</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="general-tips">
 <h2>General Tips<a class="headerlink" href="#general-tips" title="Link to this heading">#</a></h2>
-<p>Here are some strategies to solving general types of linked list problems:</p>
 <ol class="arabic simple">
-<li><p>Maintaining two pointers can be useful for many problems, e.g. iterating at different speeds, starting at different positions, etc.</p></li>
-<li><p>Some problems can be more easily solved using recursion</p></li>
+<li><p>Draw the nodes and arrows before writing code. Label every pointer that will move.</p></li>
+<li><p>Save <code class="docutils literal notranslate"><span class="pre">next</span></code> before changing an edge unless the old edge is no longer needed.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">is</span></code> when checking whether two variables refer to the same node.</p></li>
+<li><p>Use a dummy node whenever the head might be inserted, deleted, or replaced.</p></li>
+<li><p>Decide whether mutating the input is allowed. If not, create new nodes or restore changed links.</p></li>
+<li><p>Recursive solutions are often elegant, but they use call-stack space and can exceed Python’s recursion limit.</p></li>
 </ol>
 </section>
 <section id="neetcode-problems">
-<h2>Neetcode Problems<a class="headerlink" href="#neetcode-problems" title="Link to this heading">#</a></h2>
+<h2>NeetCode Problems<a class="headerlink" href="#neetcode-problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Reverse Linked List (E)</p></li>
 <li><p>Merge Two Sorted Lists (E)</p></li>
-<li><p>Reorder List</p></li>
-<li><p>Remove Nth Node From End of List</p></li>
-<li><p>Copy List with Random Pointer</p></li>
-<li><p>Add Two Numbers</p></li>
-<li><p>Linked List Cycle</p></li>
-<li><p>LRU Cache</p></li>
+<li><p>Linked List Cycle (E)</p></li>
+<li><p>Reorder List (M)</p></li>
+<li><p>Remove Nth Node From End of List (M)</p></li>
+<li><p>Copy List with Random Pointer (M)</p></li>
+<li><p>Add Two Numbers (M)</p></li>
+<li><p>LRU Cache (M)</p></li>
 </ol>
 </section>
 </section>
@@ -578,17 +1028,37 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-the-problem">Before the Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentinel-dummy-node">Sentinel (Dummy) Node</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-structure">Data Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-traversal">Basic Traversal</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithms">Algorithms</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floyd-s-tortoise-and-hare-algorithm">Floyd’s Tortoise and Hare Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-linked-list">Reverse Linked List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pointer-safety">Pointer Safety</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sentinel-dummy-nodes">Sentinel (Dummy) Nodes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-a-linked-list">Reverse a Linked List</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-reversal">Iterative Reversal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursive-reversal">Recursive Reversal</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-two-sorted-lists">Merge Two Sorted Lists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-and-slow-pointers">Fast and Slow Pointers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-middle">Find the Middle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detect-a-cycle">Detect a Cycle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-start-of-a-cycle">Find the Start of a Cycle</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-gap-two-pointers">Fixed-Gap Two Pointers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-the-nth-node-from-the-end">Remove the Nth Node From the End</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-intersection-of-two-lists">Find the Intersection of Two Lists</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reorder-a-list">Reorder a List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-whether-a-list-is-a-palindrome">Check Whether a List Is a Palindrome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-numbers-digit-by-digit">Add Numbers Digit by Digit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-a-list-with-random-pointers">Copy a List With Random Pointers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lru-cache-hash-map-doubly-linked-list">LRU Cache: Hash Map + Doubly Linked List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pattern-summary">Pattern Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neetcode-problems">Neetcode Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neetcode-problems">NeetCode Problems</a></li>
 </ul>
   </nav></div>
 
