@@ -428,10 +428,15 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-sum">Prefix Sum</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-product-subarray">Maximum Product Subarray</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Tips and tricks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-sum">Prefix Sum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">When to use</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Tips and tricks</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
@@ -461,50 +466,81 @@ document.write(`
 </section>
 <section id="algorithm">
 <h3>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h3>
-<p>The key idea: at each index, decide whether to extend the previous subarray or start a new one from the current element. Here we also track the start and end indices of the best subarray.</p>
-<p>Given a list of stock profits (integers), return the left index, right index, and max profit of any contiguous subarray:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">max_profit</span><span class="p">(</span><span class="n">profits</span><span class="p">):</span>
-<span class="linenos"> 2</span>    <span class="n">cur</span> <span class="o">=</span> <span class="n">best</span> <span class="o">=</span> <span class="n">profits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos"> 3</span>    <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 4</span>    <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 5</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">profits</span><span class="p">)):</span>
-<span class="linenos"> 6</span>        <span class="k">if</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cur</span> <span class="o">+</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-<span class="linenos"> 7</span>            <span class="n">cur</span> <span class="o">=</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="linenos"> 8</span>            <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
-<span class="linenos"> 9</span>        <span class="k">else</span><span class="p">:</span>
-<span class="linenos">10</span>            <span class="n">cur</span> <span class="o">+=</span> <span class="n">profits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="linenos">11</span>        <span class="k">if</span> <span class="n">cur</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
-<span class="linenos">12</span>            <span class="n">best</span> <span class="o">=</span> <span class="n">cur</span>
-<span class="linenos">13</span>            <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span> <span class="n">i</span>
-<span class="linenos">14</span>    <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">best</span>
+<p>The key idea: at each index, decide whether to extend the previous subarray or start a new one from the current element.</p>
+<p>Given a non-empty list of integers, return the maximum sum of any contiguous subarray:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">max_subarray</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">current</span> <span class="o">=</span> <span class="n">best</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+<span class="linenos">5</span>        <span class="n">current</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">current</span> <span class="o">+</span> <span class="n">num</span><span class="p">)</span>
+<span class="linenos">6</span>        <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span>    <span class="k">return</span> <span class="n">best</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cur</span></code> is the best subarray sum ending at the current index.</p></li>
-<li><p>When starting fresh at <code class="docutils literal notranslate"><span class="pre">profits[i]</span></code>, we reset <code class="docutils literal notranslate"><span class="pre">start</span></code> to the current index.</p></li>
-<li><p>Whenever <code class="docutils literal notranslate"><span class="pre">cur</span></code> beats <code class="docutils literal notranslate"><span class="pre">best</span></code>, we record the window <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">i]</span></code> as the new best.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">current</span></code> is the maximum subarray sum ending at the current element.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max(num,</span> <span class="pre">current</span> <span class="pre">+</span> <span class="pre">num)</span></code> chooses between starting a new subarray and extending the previous one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">best</span></code> is the maximum sum found anywhere so far.</p></li>
 </ul>
+<p>For <code class="docutils literal notranslate"><span class="pre">[-2,</span> <span class="pre">1,</span> <span class="pre">-3,</span> <span class="pre">4,</span> <span class="pre">-1,</span> <span class="pre">2,</span> <span class="pre">1,</span> <span class="pre">-5,</span> <span class="pre">4]</span></code>, the best subarray is <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">-1,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>, so the function returns <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p>
 </section>
 <section id="tips-and-tricks">
 <h3>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Initialize with the first element (not <code class="docutils literal notranslate"><span class="pre">0</span></code>) so all-negative arrays return the largest single element.</p></li>
-<li><p>The same pattern extends to maximum product subarray by tracking both a running max and min (since a negative can flip them).</p></li>
+<li><p>Kadane’s algorithm is dynamic programming with constant space: only the previous state is needed.</p></li>
+<li><p>To find the minimum-sum subarray, replace both <code class="docutils literal notranslate"><span class="pre">max</span></code> operations with <code class="docutils literal notranslate"><span class="pre">min</span></code>.</p></li>
 </ul>
+</section>
+</section>
+<section id="maximum-product-subarray">
+<h2>Maximum Product Subarray<a class="headerlink" href="#maximum-product-subarray" title="Link to this heading">#</a></h2>
+<p>The maximum-product problem resembles Kadane’s algorithm, but multiplication by a negative number swaps the roles of large and small values. A very negative running product can become the new maximum when multiplied by another negative number. Therefore, track both the maximum and minimum product ending at the current element.</p>
+<section id="id1">
+<h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>You’re asked for the maximum product of a contiguous subarray.</p></li>
+<li><p>The input may contain positive numbers, negative numbers, and zeros.</p></li>
+</ol>
+</section>
+<section id="id2">
+<h3>Algorithm<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">max_product_subarray</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">current_max</span> <span class="o">=</span> <span class="n">current_min</span> <span class="o">=</span> <span class="n">best</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+<span class="linenos"> 5</span>        <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 6</span>            <span class="n">current_max</span><span class="p">,</span> <span class="n">current_min</span> <span class="o">=</span> <span class="n">current_min</span><span class="p">,</span> <span class="n">current_max</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>        <span class="n">current_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">current_max</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
+<span class="linenos"> 9</span>        <span class="n">current_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">current_min</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
+<span class="linenos">10</span>        <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">current_max</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="k">return</span> <span class="n">best</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>When <code class="docutils literal notranslate"><span class="pre">num</span></code> is negative, swap <code class="docutils literal notranslate"><span class="pre">current_max</span></code> and <code class="docutils literal notranslate"><span class="pre">current_min</span></code> before updating them.</p></li>
+<li><p>Starting again at <code class="docutils literal notranslate"><span class="pre">num</span></code> handles zeros naturally: after a zero, a later nonzero value can begin a new subarray.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">current_min</span></code> must be retained because multiplying it by a negative number may produce the next <code class="docutils literal notranslate"><span class="pre">current_max</span></code>.</p></li>
+</ul>
+<p>For <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">-2,</span> <span class="pre">4]</span></code>, the function returns <code class="docutils literal notranslate"><span class="pre">6</span></code> from <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3]</span></code>. For <code class="docutils literal notranslate"><span class="pre">[-2,</span> <span class="pre">3,</span> <span class="pre">-4]</span></code>, it returns <code class="docutils literal notranslate"><span class="pre">24</span></code> because the two negative values make the product positive.</p>
+<p>This algorithm takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space.</p>
 </section>
 </section>
 <section id="prefix-sum">
 <h2>Prefix Sum<a class="headerlink" href="#prefix-sum" title="Link to this heading">#</a></h2>
 <p>A prefix sum array stores the running total of elements, letting you compute the sum of any subarray in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> after an <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> preprocessing step.</p>
-<section id="id1">
-<h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3>When to use<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>You have many range-sum queries over an array that doesn’t change.</p></li>
 <li><p>You need to count or find subarrays whose sum equals a target (often paired with a hashmap).</p></li>
 </ol>
 </section>
-<section id="id2">
-<h3>Algorithm<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Algorithm<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>The key idea: the sum of a subarray <code class="docutils literal notranslate"><span class="pre">nums[i:j]</span></code> equals <code class="docutils literal notranslate"><span class="pre">prefix[j]</span> <span class="pre">-</span> <span class="pre">prefix[i]</span></code>. So a subarray sums to <code class="docutils literal notranslate"><span class="pre">k</span></code> whenever <code class="docutils literal notranslate"><span class="pre">prefix[j]</span> <span class="pre">-</span> <span class="pre">prefix[i]</span> <span class="pre">==</span> <span class="pre">k</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">prefix[i]</span> <span class="pre">==</span> <span class="pre">prefix[j]</span> <span class="pre">-</span> <span class="pre">k</span></code>. As we build the running sum, we count how many earlier prefix sums equal <code class="docutils literal notranslate"><span class="pre">cur</span> <span class="pre">-</span> <span class="pre">k</span></code>.</p>
 <p>Given a list of integers, count the number of contiguous subarrays that sum to <code class="docutils literal notranslate"><span class="pre">k</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">subarray_sum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -524,8 +560,8 @@ document.write(`
 <li><p>For each element we add the number of earlier prefixes equal to <code class="docutils literal notranslate"><span class="pre">cur</span> <span class="pre">-</span> <span class="pre">k</span></code>, since each one marks a subarray ending here that sums to <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>Tips and tricks<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h3>Tips and tricks<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>To count subarrays summing to <code class="docutils literal notranslate"><span class="pre">k</span></code>, store prefix sums seen so far in a hashmap and look for <code class="docutils literal notranslate"><span class="pre">prefix</span> <span class="pre">-</span> <span class="pre">k</span></code> as you iterate (a one-pass solution).</p></li>
 <li><p>Prefix sums work with negative numbers, which is exactly where sliding window fails.</p></li>
@@ -615,10 +651,15 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-sum">Prefix Sum</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-product-subarray">Maximum Product Subarray</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Tips and tricks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prefix-sum">Prefix Sum</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">When to use</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Tips and tricks</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problems">Example Problems</a></li>
