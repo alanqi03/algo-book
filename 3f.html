@@ -507,23 +507,23 @@ document.write(`
 <section id="id2">
 <h3>Algorithm<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">max_product_subarray</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
-<span class="linenos"> 2</span>    <span class="n">current_max</span> <span class="o">=</span> <span class="n">current_min</span> <span class="o">=</span> <span class="n">best</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span>    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-<span class="linenos"> 5</span>        <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-<span class="linenos"> 6</span>            <span class="n">current_max</span><span class="p">,</span> <span class="n">current_min</span> <span class="o">=</span> <span class="n">current_min</span><span class="p">,</span> <span class="n">current_max</span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span>        <span class="n">current_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">current_max</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
-<span class="linenos"> 9</span>        <span class="n">current_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">current_min</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
-<span class="linenos">10</span>        <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">current_max</span><span class="p">)</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span>    <span class="k">return</span> <span class="n">best</span>
+<span class="linenos"> 2</span>    <span class="n">result</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">min_so_far</span><span class="p">,</span> <span class="n">max_so_far</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+<span class="linenos"> 6</span>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">num</span> <span class="o">*</span> <span class="n">max_so_far</span>
+<span class="linenos"> 7</span>        <span class="n">max_so_far</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num</span> <span class="o">*</span> <span class="n">max_so_far</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="n">min_so_far</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+<span class="linenos"> 8</span>        <span class="n">min_so_far</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="n">min_so_far</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+<span class="linenos"> 9</span>        <span class="n">result</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">max_so_far</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>When <code class="docutils literal notranslate"><span class="pre">num</span></code> is negative, swap <code class="docutils literal notranslate"><span class="pre">current_max</span></code> and <code class="docutils literal notranslate"><span class="pre">current_min</span></code> before updating them.</p></li>
+<li><p>At each element, consider three choices: extend the previous maximum product, extend the previous minimum product, or start a new subarray at <code class="docutils literal notranslate"><span class="pre">num</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tmp</span></code> saves the product using the previous <code class="docutils literal notranslate"><span class="pre">max_so_far</span></code> before <code class="docutils literal notranslate"><span class="pre">max_so_far</span></code> is overwritten. The minimum calculation needs both previous states.</p></li>
 <li><p>Starting again at <code class="docutils literal notranslate"><span class="pre">num</span></code> handles zeros naturally: after a zero, a later nonzero value can begin a new subarray.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">current_min</span></code> must be retained because multiplying it by a negative number may produce the next <code class="docutils literal notranslate"><span class="pre">current_max</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_so_far</span></code> must be retained because multiplying it by a negative number may produce the next <code class="docutils literal notranslate"><span class="pre">max_so_far</span></code>.</p></li>
 </ul>
 <p>For <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">-2,</span> <span class="pre">4]</span></code>, the function returns <code class="docutils literal notranslate"><span class="pre">6</span></code> from <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3]</span></code>. For <code class="docutils literal notranslate"><span class="pre">[-2,</span> <span class="pre">3,</span> <span class="pre">-4]</span></code>, it returns <code class="docutils literal notranslate"><span class="pre">24</span></code> because the two negative values make the product positive.</p>
 <p>This algorithm takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> auxiliary space.</p>
