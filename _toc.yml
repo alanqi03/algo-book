@@ -46,5 +46,5 @@ chapters:
 - file: "12" # Greedy
 - file: "13" # Bit Manipulation
 - file: "14" # Misc
-
+- file: "15" # Infrastructure Algorithms
 
