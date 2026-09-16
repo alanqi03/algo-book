@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -424,6 +424,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
@@ -475,6 +479,82 @@ document.write(`
 </pre></div>
 </div>
 <p>Initially, the source has distance <code class="docutils literal notranslate"><span class="pre">0</span></code> and every other node has distance infinity.</p>
+</section>
+<section id="breadth-first-search-bfs">
+<h2>Breadth-First Search (BFS)<a class="headerlink" href="#breadth-first-search-bfs" title="Link to this heading">#</a></h2>
+<p>When every edge has the same weight, BFS finds a shortest path without a heap. A FIFO queue visits nodes in order of increasing distance from the source. Mark a node as visited when you <strong>enqueue</strong> it so it is not added again through another edge.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">bfs_shortest_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="sd">"""graph[u] contains the neighbors of u; return a path or None."""</span>
+<span class="linenos"> 5</span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">source</span><span class="p">])</span>
+<span class="linenos"> 6</span>    <span class="n">parent</span> <span class="o">=</span> <span class="p">{</span><span class="n">source</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+<span class="linenos"> 9</span>        <span class="n">u</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="linenos">10</span>        <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">11</span>            <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">12</span>            <span class="k">while</span> <span class="n">u</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">13</span>                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="linenos">14</span>                <span class="n">u</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+<span class="linenos">15</span>            <span class="k">return</span> <span class="n">path</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">18</span>            <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">19</span>                <span class="n">parent</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>
+<span class="linenos">20</span>                <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Target is unreachable.</span>
+</pre></div>
+</div>
+<p>The first time BFS reaches <code class="docutils literal notranslate"><span class="pre">target</span></code>, it has used the fewest edges. The returned path includes both endpoints; return <code class="docutils literal notranslate"><span class="pre">None</span></code> if no path exists. The search takes <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> space. To find distances to <em>every</em> node instead, store <code class="docutils literal notranslate"><span class="pre">distance[v]</span> <span class="pre">=</span> <span class="pre">distance[u]</span> <span class="pre">+</span> <span class="pre">1</span></code> when <code class="docutils literal notranslate"><span class="pre">v</span></code> is first enqueued and let the queue run to completion.</p>
+<section id="multi-source-bfs-walls-and-gates">
+<h3>Multi-Source BFS: Walls and Gates<a class="headerlink" href="#multi-source-bfs-walls-and-gates" title="Link to this heading">#</a></h3>
+<p>If the goal is the distance to the <strong>nearest</strong> source, enqueue <em>all</em> sources at distance <code class="docutils literal notranslate"><span class="pre">0</span></code> before starting BFS. In Walls and Gates, each cell is a wall (<code class="docutils literal notranslate"><span class="pre">-1</span></code>), a gate (<code class="docutils literal notranslate"><span class="pre">0</span></code>), or an empty room (<code class="docutils literal notranslate"><span class="pre">INF</span> <span class="pre">=</span> <span class="pre">2**31</span> <span class="pre">-</span> <span class="pre">1</span></code>). Walking to an adjacent cell costs one step. Fill each empty room with its shortest distance to any gate, leaving unreachable rooms as <code class="docutils literal notranslate"><span class="pre">INF</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">walls_and_gates</span><span class="p">(</span><span class="n">rooms</span><span class="p">):</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="sd">"""Fill rooms in place with distance to the nearest gate."""</span>
+<span class="linenos"> 5</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">rooms</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">rooms</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+<span class="linenos"> 6</span>        <span class="k">return</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">INF</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos"> 9</span>    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rooms</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rooms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">10</span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+<span class="linenos">13</span>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+<span class="linenos">14</span>            <span class="k">if</span> <span class="n">rooms</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">15</span>                <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">directions</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos">18</span>    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+<span class="linenos">19</span>        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="linenos">20</span>        <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+<span class="linenos">21</span>            <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">row</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="n">dc</span>
+<span class="linenos">22</span>            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="n">cols</span> <span class="ow">and</span> <span class="n">rooms</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span> <span class="o">==</span> <span class="n">INF</span><span class="p">:</span>
+<span class="linenos">23</span>                <span class="n">rooms</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span> <span class="o">=</span> <span class="n">rooms</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">24</span>                <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">INF</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos"> 2</span><span class="n">rooms</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos"> 3</span>    <span class="p">[</span><span class="n">INF</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">INF</span><span class="p">],</span>
+<span class="linenos"> 4</span>    <span class="p">[</span><span class="n">INF</span><span class="p">,</span> <span class="n">INF</span><span class="p">,</span> <span class="n">INF</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="linenos"> 5</span>    <span class="p">[</span><span class="n">INF</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">INF</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="linenos"> 6</span>    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">INF</span><span class="p">,</span> <span class="n">INF</span><span class="p">],</span>
+<span class="linenos"> 7</span><span class="p">]</span>
+<span class="linenos"> 8</span><span class="n">walls_and_gates</span><span class="p">(</span><span class="n">rooms</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="c1"># rooms is now:</span>
+<span class="linenos">10</span><span class="c1"># [[3, -1, 0, 1],</span>
+<span class="linenos">11</span><span class="c1">#  [2, 2, 1, -1],</span>
+<span class="linenos">12</span><span class="c1">#  [1, -1, 2, -1],</span>
+<span class="linenos">13</span><span class="c1">#  [0, -1, 3, 4]]</span>
+</pre></div>
+</div>
+<p>Each empty room is assigned a distance and enqueued <strong>once</strong>, when the first (and therefore closest) gate reaches it. Using the grid itself to mark visited rooms avoids a separate set. For an <code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">×</span> <span class="pre">C</span></code> grid, time and queue space are both <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code>.</p>
+</section>
 </section>
 <section id="dijkstra-s-algorithm">
 <h2>Dijkstra’s Algorithm<a class="headerlink" href="#dijkstra-s-algorithm" title="Link to this heading">#</a></h2>
@@ -630,6 +710,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
