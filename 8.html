@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -426,6 +426,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heapq-library"><code class="docutils literal notranslate"><span class="pre">heapq</span></code> Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-o-complexity-of-a-heap">Big O Complexity of a Heap</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickselect">Quickselect</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kth-largest-element">Kth Largest Element</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complexity">Complexity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quickselect-vs-a-heap">Quickselect vs. a Heap</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
@@ -471,6 +477,95 @@ Here are the most relevant methods:</p>
 </ul>
 </li>
 </ul>
+</section>
+<section id="quickselect">
+<h2>Quickselect<a class="headerlink" href="#quickselect" title="Link to this heading">#</a></h2>
+<p>Quickselect finds the element that would appear at a particular index if an array were sorted, without sorting the entire array. It uses the same partition operation as Quicksort:</p>
+<ol class="arabic simple">
+<li><p>Choose a pivot.</p></li>
+<li><p>Move values smaller than the pivot to its left and larger or equal values to its right.</p></li>
+<li><p>The pivot is now at its final sorted index.</p></li>
+<li><p>Continue only in the side containing the target index.</p></li>
+</ol>
+<p>Quickselect is useful for finding a single kth smallest or kth largest element in an unsorted array. A randomized pivot gives <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> expected time, although the worst case remains <code class="docutils literal notranslate"><span class="pre">O(n²)</span></code>.</p>
+<section id="kth-largest-element">
+<h3>Kth Largest Element<a class="headerlink" href="#kth-largest-element" title="Link to this heading">#</a></h3>
+<p>The kth largest element has ascending sorted index <code class="docutils literal notranslate"><span class="pre">len(nums)</span> <span class="pre">-</span> <span class="pre">k</span></code>. For example, the second-largest value in a five-element array belongs at index <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">-</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">3</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">def</span><span class="w"> </span><span class="nf">partition</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">pivot_index</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">pivot</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]</span>
+<span class="linenos"> 6</span>    <span class="n">nums</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">store_index</span> <span class="o">=</span> <span class="n">left</span>
+<span class="linenos"> 9</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+<span class="linenos">10</span>        <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pivot</span><span class="p">:</span>
+<span class="linenos">11</span>            <span class="n">nums</span><span class="p">[</span><span class="n">store_index</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">store_index</span><span class="p">]</span>
+<span class="linenos">12</span>            <span class="n">store_index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="n">nums</span><span class="p">[</span><span class="n">store_index</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">store_index</span><span class="p">]</span>
+<span class="linenos">15</span>    <span class="k">return</span> <span class="n">store_index</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="k">def</span><span class="w"> </span><span class="nf">kth_largest</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="linenos">19</span>    <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+<span class="linenos">20</span>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"k must be between 1 and len(nums)"</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">target</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span>
+<span class="linenos">23</span>    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="k">while</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">:</span>
+<span class="linenos">26</span>        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+<span class="linenos">27</span>        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">pivot_index</span><span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>        <span class="k">if</span> <span class="n">pivot_index</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">30</span>            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]</span>
+<span class="linenos">31</span>        <span class="k">if</span> <span class="n">pivot_index</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">32</span>            <span class="n">left</span> <span class="o">=</span> <span class="n">pivot_index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">33</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">34</span>            <span class="n">right</span> <span class="o">=</span> <span class="n">pivot_index</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">nums</span> <span class="pre">=</span> <span class="pre">[3,</span> <span class="pre">2,</span> <span class="pre">1,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">4]</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">2</span></code>, the target index is <code class="docutils literal notranslate"><span class="pre">4</span></code>, and the function returns <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+<p>After each partition, the pivot is in its final position. Everything on one side can be discarded, so Quickselect does not recursively process both partitions like Quicksort. The input order is modified; call <code class="docutils literal notranslate"><span class="pre">kth_largest(nums[:],</span> <span class="pre">k)</span></code> if the original list must be preserved.</p>
+</section>
+<section id="complexity">
+<h3>Complexity<a class="headerlink" href="#complexity" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Expected time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code>. Random pivots usually discard a substantial portion of the remaining search range.</p></li>
+<li><p><strong>Worst-case time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n²)</span></code>. This occurs if each pivot repeatedly leaves only one element outside the next search range.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> for this iterative, in-place implementation.</p></li>
+</ul>
+</section>
+<section id="quickselect-vs-a-heap">
+<h3>Quickselect vs. a Heap<a class="headerlink" href="#quickselect-vs-a-heap" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Requirement</p></th>
+<th class="head"><p>Prefer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>One kth-element query on an array</p></td>
+<td><p>Quickselect: <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> expected time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predictable worst-case behavior</p></td>
+<td><p>Heap: <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">k)</span></code> time</p></td>
+</tr>
+<tr class="row-even"><td><p>Values arrive as a stream</p></td>
+<td><p>Heap of size <code class="docutils literal notranslate"><span class="pre">k</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Need all top <code class="docutils literal notranslate"><span class="pre">k</span></code> values</p></td>
+<td><p>Heap or sorting</p></td>
+</tr>
+<tr class="row-even"><td><p>Must preserve the input order without copying</p></td>
+<td><p>Heap</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
@@ -552,6 +647,12 @@ Here are the most relevant methods:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heapq-library"><code class="docutils literal notranslate"><span class="pre">heapq</span></code> Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#big-o-complexity-of-a-heap">Big O Complexity of a Heap</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips">General Tips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickselect">Quickselect</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kth-largest-element">Kth Largest Element</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complexity">Complexity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quickselect-vs-a-heap">Quickselect vs. a Heap</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>
