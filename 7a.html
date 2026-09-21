@@ -424,7 +424,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">BFS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs-with-backtracking">DFS with Backtracking</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
@@ -498,6 +501,55 @@ document.write(`
 <span class="linenos">14</span>            <span class="n">DFS</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
+<section id="dfs-with-backtracking">
+<h3>DFS with Backtracking<a class="headerlink" href="#dfs-with-backtracking" title="Link to this heading">#</a></h3>
+<p>Ordinary graph DFS usually marks a node as visited permanently because the goal is to process each node once. Backtracking is different: a cell is marked only while it belongs to the <strong>current candidate path</strong>, then unmarked when that path finishes. This lets another candidate path reuse the cell later.</p>
+<p>The pattern is:</p>
+<ol class="arabic simple">
+<li><p><strong>Choose:</strong> mark the current cell as part of the path.</p></li>
+<li><p><strong>Explore:</strong> recursively try every valid next cell.</p></li>
+<li><p><strong>Unchoose:</strong> restore the current cell before returning.</p></li>
+</ol>
+<p>For example, determine whether a word can be formed from horizontally or vertically adjacent cells. A cell may be used at most once within the same path:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">word_exists</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">word</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos"> 4</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">board</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+<span class="linenos"> 5</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos"> 8</span>    <span class="n">directions</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="linenos">11</span>        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">cols</span><span class="p">):</span>
+<span class="linenos">12</span>            <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">13</span>        <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">word</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span>
+<span class="linenos">14</span>            <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">15</span>        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">16</span>            <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>        <span class="n">value</span> <span class="o">=</span> <span class="n">board</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+<span class="linenos">19</span>        <span class="n">board</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Choose: mark this cell as used.</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>        <span class="n">found</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+<span class="linenos">22</span>            <span class="n">dfs</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="n">dc</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">23</span>            <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">directions</span>
+<span class="linenos">24</span>        <span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>        <span class="n">board</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># Unchoose: restore for other paths.</span>
+<span class="linenos">27</span>        <span class="k">return</span> <span class="n">found</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+<span class="linenos">30</span>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+<span class="linenos">31</span>            <span class="k">if</span> <span class="n">dfs</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+<span class="linenos">32</span>                <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>The temporary <code class="docutils literal notranslate"><span class="pre">None</span></code> acts like a path-local visited set. Restoring the original value is essential—even when one recursive branch succeeds—because callers generally expect <code class="docutils literal notranslate"><span class="pre">board</span></code> to remain unchanged.</p>
+<p>If the word length is <code class="docutils literal notranslate"><span class="pre">L</span></code>, the worst-case time is <code class="docutils literal notranslate"><span class="pre">O(RC</span> <span class="pre">·</span> <span class="pre">4^L)</span></code> for an <code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">×</span> <span class="pre">C</span></code> board, and the recursion stack uses <code class="docutils literal notranslate"><span class="pre">O(L)</span></code> space. Backtracking is appropriate when the problem asks whether a path exists, to return one valid path, or to enumerate paths under constraints.</p>
+</section>
 </section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
@@ -508,6 +560,7 @@ document.write(`
 <li><p>Surrounded Regions</p></li>
 <li><p>Rotting Oranges</p></li>
 <li><p>Walls and Gates</p></li>
+<li><p>Word Search</p></li>
 </ol>
 </section>
 </section>
@@ -577,7 +630,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">BFS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs-with-backtracking">DFS with Backtracking</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>
