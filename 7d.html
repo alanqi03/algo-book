@@ -428,7 +428,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-space-dijkstra">State-Space Dijkstra</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
 </ul>
@@ -594,6 +597,70 @@ document.write(`
 <li><p>BFS is the simpler equivalent when all edges have the same weight.</p></li>
 <li><p>To reconstruct paths, store <code class="docutils literal notranslate"><span class="pre">parent[v]</span> <span class="pre">=</span> <span class="pre">u</span></code> whenever <code class="docutils literal notranslate"><span class="pre">dist[v]</span></code> improves.</p></li>
 </ul>
+<section id="state-space-dijkstra">
+<h3>State-Space Dijkstra<a class="headerlink" href="#state-space-dijkstra" title="Link to this heading">#</a></h3>
+<p>Some shortest-path problems cannot be described by the current node alone. Future moves may also depend on a limited resource or another condition, such as:</p>
+<ul class="simple">
+<li><p>how many discounts or free edges have been used;</p></li>
+<li><p>how much fuel remains;</p></li>
+<li><p>which keys have been collected;</p></li>
+<li><p>how many obstacles have been removed.</p></li>
+</ul>
+<p>Treat each combination as a separate node in an <strong>expanded state graph</strong>. For example, <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">0)</span></code> and <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">1)</span></code> are different states when the second value counts free edges already used. The distance table and heap must contain the full state, not just <code class="docutils literal notranslate"><span class="pre">u</span></code>.</p>
+<p>The following algorithm finds the cheapest path when up to <code class="docutils literal notranslate"><span class="pre">max_free_edges</span></code> edges may be traversed for free:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">def</span><span class="w"> </span><span class="nf">shortest_path_with_free_edges</span><span class="p">(</span>
+<span class="linenos"> 5</span>    <span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">max_free_edges</span>
+<span class="linenos"> 6</span><span class="p">):</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="sd">"""graph[u] contains (v, weight) pairs with non-negative weights."""</span>
+<span class="linenos"> 8</span>    <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos"> 9</span>        <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_free_edges</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">10</span>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="p">]</span>
+<span class="linenos">12</span>    <span class="n">dist</span><span class="p">[</span><span class="n">source</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">13</span>    <span class="n">heap</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># (cost, node, free edges used)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="k">while</span> <span class="n">heap</span><span class="p">:</span>
+<span class="linenos">16</span>        <span class="n">cost</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">used</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>        <span class="k">if</span> <span class="n">cost</span> <span class="o">!=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">used</span><span class="p">]:</span>
+<span class="linenos">19</span>            <span class="k">continue</span>
+<span class="linenos">20</span>        <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+<span class="linenos">21</span>            <span class="k">return</span> <span class="n">cost</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">24</span>            <span class="c1"># Option 1: pay the edge's normal cost.</span>
+<span class="linenos">25</span>            <span class="n">paid_cost</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">+</span> <span class="n">weight</span>
+<span class="linenos">26</span>            <span class="k">if</span> <span class="n">paid_cost</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">used</span><span class="p">]:</span>
+<span class="linenos">27</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">used</span><span class="p">]</span> <span class="o">=</span> <span class="n">paid_cost</span>
+<span class="linenos">28</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">paid_cost</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">used</span><span class="p">))</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>            <span class="c1"># Option 2: consume one free traversal.</span>
+<span class="linenos">31</span>            <span class="k">if</span> <span class="n">used</span> <span class="o">&lt;</span> <span class="n">max_free_edges</span> <span class="ow">and</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">used</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+<span class="linenos">32</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">used</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost</span>
+<span class="linenos">33</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">used</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Target is unreachable in every state.</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">)],</span>
+    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)],</span>
+    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+    <span class="p">[],</span>
+<span class="p">]</span>
+
+<span class="n">shortest_path_with_free_edges</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Returns 1: traverse edge 0 -&gt; 2 for free, then pay 1 for 2 -&gt; 3.</span>
+</pre></div>
+</div>
+<p>A single <code class="docutils literal notranslate"><span class="pre">dist[u]</span></code> would be incorrect: a more expensive arrival at <code class="docutils literal notranslate"><span class="pre">u</span></code> with a free traversal remaining may lead to a cheaper final route than a less expensive arrival that has already used it.</p>
+<p>The algorithm may return as soon as a target state is popped because the heap orders <strong>all states</strong> by cost. As with ordinary Dijkstra, every state transition must have a non-negative cost.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">K</span></code> free traversals, the expanded graph has <code class="docutils literal notranslate"><span class="pre">V(K</span> <span class="pre">+</span> <span class="pre">1)</span></code> states and <code class="docutils literal notranslate"><span class="pre">O(E(K</span> <span class="pre">+</span> <span class="pre">1))</span></code> transitions. The running time is <code class="docutils literal notranslate"><span class="pre">O((V</span> <span class="pre">+</span> <span class="pre">E)K</span> <span class="pre">log(VK))</span></code>. The distance table uses <code class="docutils literal notranslate"><span class="pre">O(VK)</span></code> space, while the heap can contain up to <code class="docutils literal notranslate"><span class="pre">O(EK)</span></code> entries.</p>
+</section>
 </section>
 <section id="bellmanford-algorithm">
 <h2>Bellman–Ford Algorithm<a class="headerlink" href="#bellmanford-algorithm" title="Link to this heading">#</a></h2>
@@ -714,7 +781,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-space-dijkstra">State-Space Dijkstra</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bellmanford-algorithm">Bellman–Ford Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limiting-the-number-of-edges">Limiting the Number of Edges</a></li>
 </ul>
