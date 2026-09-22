@@ -455,25 +455,30 @@ document.write(`
 <tr class="row-odd"><th class="head"><p>Edge weights</p></th>
 <th class="head"><p>Algorithm</p></th>
 <th class="head"><p>Time</p></th>
+<th class="head"><p>Auxiliary space</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>All edges have the same weight</p></td>
 <td><p>BFS</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V)</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>All weights are non-negative</p></td>
 <td><p>Dijkstra</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">O((V</span> <span class="pre">+</span> <span class="pre">E)</span> <span class="pre">log</span> <span class="pre">V)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E</span> <span class="pre">log</span> <span class="pre">E)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Negative weights may exist</p></td>
 <td><p>Bellman–Ford</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(VE)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V)</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Both directed and undirected graphs are supported. However, a negative edge in an undirected graph immediately creates a negative cycle: traverse the edge in both directions.</p>
+<p>The space bounds below are <strong>auxiliary space</strong> and do not include the input graph.</p>
 <section id="relaxing-an-edge">
 <h2>Relaxing an Edge<a class="headerlink" href="#relaxing-an-edge" title="Link to this heading">#</a></h2>
 <p>Both Dijkstra and Bellman–Ford repeatedly <strong>relax</strong> edges. For an edge <code class="docutils literal notranslate"><span class="pre">u</span> <span class="pre">-&gt;</span> <span class="pre">v</span></code> with weight <code class="docutils literal notranslate"><span class="pre">w</span></code>, ask whether reaching <code class="docutils literal notranslate"><span class="pre">v</span></code> through <code class="docutils literal notranslate"><span class="pre">u</span></code> is cheaper:</p>
@@ -510,7 +515,11 @@ document.write(`
 <span class="linenos">22</span>    <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Target is unreachable.</span>
 </pre></div>
 </div>
-<p>The first time BFS reaches <code class="docutils literal notranslate"><span class="pre">target</span></code>, it has used the fewest edges. The returned path includes both endpoints; return <code class="docutils literal notranslate"><span class="pre">None</span></code> if no path exists. The search takes <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> time and <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> space. To find distances to <em>every</em> node instead, store <code class="docutils literal notranslate"><span class="pre">distance[v]</span> <span class="pre">=</span> <span class="pre">distance[u]</span> <span class="pre">+</span> <span class="pre">1</span></code> when <code class="docutils literal notranslate"><span class="pre">v</span></code> is first enqueued and let the queue run to completion.</p>
+<p>The first time BFS reaches <code class="docutils literal notranslate"><span class="pre">target</span></code>, it has used the fewest edges. The returned path includes both endpoints; return <code class="docutils literal notranslate"><span class="pre">None</span></code> if no path exists. To find distances to <em>every</em> node instead, store <code class="docutils literal notranslate"><span class="pre">distance[v]</span> <span class="pre">=</span> <span class="pre">distance[u]</span> <span class="pre">+</span> <span class="pre">1</span></code> when <code class="docutils literal notranslate"><span class="pre">v</span></code> is first enqueued and let the queue run to completion.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> because every vertex and edge is processed at most once.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> for the queue and parent map.</p></li>
+</ul>
 <section id="multi-source-bfs-walls-and-gates">
 <h3>Multi-Source BFS: Walls and Gates<a class="headerlink" href="#multi-source-bfs-walls-and-gates" title="Link to this heading">#</a></h3>
 <p>If the goal is the distance to the <strong>nearest</strong> source, enqueue <em>all</em> sources at distance <code class="docutils literal notranslate"><span class="pre">0</span></code> before starting BFS. In Walls and Gates, each cell is a wall (<code class="docutils literal notranslate"><span class="pre">-1</span></code>), a gate (<code class="docutils literal notranslate"><span class="pre">0</span></code>), or an empty room (<code class="docutils literal notranslate"><span class="pre">INF</span> <span class="pre">=</span> <span class="pre">2**31</span> <span class="pre">-</span> <span class="pre">1</span></code>). Walking to an adjacent cell costs one step. Fill each empty room with its shortest distance to any gate, leaving unreachable rooms as <code class="docutils literal notranslate"><span class="pre">INF</span></code>.</p>
@@ -556,7 +565,11 @@ document.write(`
 <span class="linenos">13</span><span class="c1">#  [0, -1, 3, 4]]</span>
 </pre></div>
 </div>
-<p>Each empty room is assigned a distance and enqueued <strong>once</strong>, when the first (and therefore closest) gate reaches it. Using the grid itself to mark visited rooms avoids a separate set. For an <code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">×</span> <span class="pre">C</span></code> grid, time and queue space are both <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code>.</p>
+<p>Each empty room is assigned a distance and enqueued <strong>once</strong>, when the first (and therefore closest) gate reaches it. Using the grid itself to mark visited rooms avoids a separate set.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code> because each cell is processed at most once.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code> in the worst case for the queue.</p></li>
+</ul>
 </section>
 </section>
 <section id="dijkstra-s-algorithm">
@@ -596,6 +609,11 @@ document.write(`
 <li><p>A node is unreachable when its distance remains infinity.</p></li>
 <li><p>BFS is the simpler equivalent when all edges have the same weight.</p></li>
 <li><p>To reconstruct paths, store <code class="docutils literal notranslate"><span class="pre">parent[v]</span> <span class="pre">=</span> <span class="pre">u</span></code> whenever <code class="docutils literal notranslate"><span class="pre">dist[v]</span></code> improves.</p></li>
+</ul>
+<p>With this implementation, the heap may contain stale entries. There are at most <code class="docutils literal notranslate"><span class="pre">E</span></code> successful relaxations and therefore <code class="docutils literal notranslate"><span class="pre">O(E)</span></code> heap pushes and pops, each taking <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">E)</span></code> time.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E</span> <span class="pre">log</span> <span class="pre">E)</span></code>.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> for the distance array and heap.</p></li>
 </ul>
 <section id="state-space-dijkstra">
 <h3>State-Space Dijkstra<a class="headerlink" href="#state-space-dijkstra" title="Link to this heading">#</a></h3>
@@ -659,7 +677,11 @@ document.write(`
 </div>
 <p>A single <code class="docutils literal notranslate"><span class="pre">dist[u]</span></code> would be incorrect: a more expensive arrival at <code class="docutils literal notranslate"><span class="pre">u</span></code> with a free traversal remaining may lead to a cheaper final route than a less expensive arrival that has already used it.</p>
 <p>The algorithm may return as soon as a target state is popped because the heap orders <strong>all states</strong> by cost. As with ordinary Dijkstra, every state transition must have a non-negative cost.</p>
-<p>With <code class="docutils literal notranslate"><span class="pre">K</span></code> free traversals, the expanded graph has <code class="docutils literal notranslate"><span class="pre">V(K</span> <span class="pre">+</span> <span class="pre">1)</span></code> states and <code class="docutils literal notranslate"><span class="pre">O(E(K</span> <span class="pre">+</span> <span class="pre">1))</span></code> transitions. The running time is <code class="docutils literal notranslate"><span class="pre">O((V</span> <span class="pre">+</span> <span class="pre">E)K</span> <span class="pre">log(VK))</span></code>. The distance table uses <code class="docutils literal notranslate"><span class="pre">O(VK)</span></code> space, while the heap can contain up to <code class="docutils literal notranslate"><span class="pre">O(EK)</span></code> entries.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">K</span></code> free traversals, the expanded graph has <code class="docutils literal notranslate"><span class="pre">V(K</span> <span class="pre">+</span> <span class="pre">1)</span></code> states and <code class="docutils literal notranslate"><span class="pre">O(E(K</span> <span class="pre">+</span> <span class="pre">1))</span></code> transitions.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V(K</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">+</span> <span class="pre">E(K</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">log(E(K</span> <span class="pre">+</span> <span class="pre">1)))</span></code>.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V(K</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">+</span> <span class="pre">E(K</span> <span class="pre">+</span> <span class="pre">1))</span></code> for the distance table and heap.</p></li>
+</ul>
 </section>
 </section>
 <section id="bellmanford-algorithm">
@@ -696,6 +718,10 @@ document.write(`
 </pre></div>
 </div>
 <p>A <strong>negative cycle</strong> has a total weight below zero. Repeating it makes a path cheaper forever, so no finite shortest path exists for nodes reachable through that cycle.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(VE)</span></code> in the worst case because up to <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> passes scan all <code class="docutils literal notranslate"><span class="pre">E</span></code> edges, followed by one cycle-detection pass.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> for the distance array.</p></li>
+</ul>
 <section id="limiting-the-number-of-edges">
 <h3>Limiting the Number of Edges<a class="headerlink" href="#limiting-the-number-of-edges" title="Link to this heading">#</a></h3>
 <p>Some problems ask for the cheapest path using at most <code class="docutils literal notranslate"><span class="pre">k</span></code> edges. Copy <code class="docutils literal notranslate"><span class="pre">dist</span></code> before each pass so one pass cannot use multiple new edges:</p>
@@ -708,6 +734,10 @@ document.write(`
 </pre></div>
 </div>
 <p>For example, “at most <code class="docutils literal notranslate"><span class="pre">k</span></code> stops” allows at most <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">+</span> <span class="pre">1</span></code> edges, so run <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">+</span> <span class="pre">1</span></code> passes.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(k(V</span> <span class="pre">+</span> <span class="pre">E))</span></code> for <code class="docutils literal notranslate"><span class="pre">k</span></code> passes; each pass copies the distance array and scans every edge.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> for <code class="docutils literal notranslate"><span class="pre">dist</span></code> and <code class="docutils literal notranslate"><span class="pre">next_dist</span></code>.</p></li>
+</ul>
 </section>
 </section>
 </section>
