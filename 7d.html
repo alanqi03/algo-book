@@ -429,6 +429,11 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nodes-on-shortest-paths">Nodes on Shortest Paths</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-one-shortest-path">Reconstructing One Shortest Path</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-every-node-on-at-least-one-shortest-path">Finding Every Node on at Least One Shortest Path</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-space-dijkstra">State-Space Dijkstra</a></li>
 </ul>
 </li>
@@ -586,35 +591,122 @@ document.write(`
 <span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">dijkstra</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
 <span class="linenos"> 4</span><span class="w">    </span><span class="sd">"""graph[u] contains (v, weight) pairs; nodes are 0 through n - 1."""</span>
 <span class="linenos"> 5</span>    <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 6</span>    <span class="n">dist</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos"> 7</span>    <span class="n">heap</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">source</span><span class="p">)]</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span>    <span class="k">while</span> <span class="n">heap</span><span class="p">:</span>
-<span class="linenos">10</span>        <span class="n">curr_dist</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span>        <span class="c1"># A shorter route to u was added after this entry.</span>
-<span class="linenos">13</span>        <span class="k">if</span> <span class="n">curr_dist</span> <span class="o">!=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
-<span class="linenos">14</span>            <span class="k">continue</span>
-<span class="linenos">15</span>
-<span class="linenos">16</span>        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
-<span class="linenos">17</span>            <span class="n">new_dist</span> <span class="o">=</span> <span class="n">curr_dist</span> <span class="o">+</span> <span class="n">weight</span>
-<span class="linenos">18</span>            <span class="k">if</span> <span class="n">new_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
-<span class="linenos">19</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_dist</span>
-<span class="linenos">20</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">new_dist</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-<span class="linenos">21</span>
-<span class="linenos">22</span>    <span class="k">return</span> <span class="n">dist</span>
+<span class="linenos"> 6</span>    <span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 7</span>    <span class="n">dist</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 8</span>    <span class="n">heap</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">source</span><span class="p">)]</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">while</span> <span class="n">heap</span><span class="p">:</span>
+<span class="linenos">11</span>        <span class="n">curr_dist</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>        <span class="c1"># A shorter route to u was added after this entry.</span>
+<span class="linenos">14</span>        <span class="k">if</span> <span class="n">curr_dist</span> <span class="o">!=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">15</span>            <span class="k">continue</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">18</span>            <span class="n">new_dist</span> <span class="o">=</span> <span class="n">curr_dist</span> <span class="o">+</span> <span class="n">weight</span>
+<span class="linenos">19</span>            <span class="k">if</span> <span class="n">new_dist</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="linenos">20</span>                <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_dist</span>
+<span class="linenos">21</span>                <span class="n">parent</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>
+<span class="linenos">22</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="p">(</span><span class="n">new_dist</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">parent</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="k">def</span><span class="w"> </span><span class="nf">reconstruct_path</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="linenos">28</span><span class="w">    </span><span class="sd">"""Return one shortest path, or an empty list if target is unreachable."""</span>
+<span class="linenos">29</span>    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">30</span>    <span class="n">node</span> <span class="o">=</span> <span class="n">target</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>    <span class="k">while</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">33</span>        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos">34</span>        <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="n">source</span><span class="p">:</span>
+<span class="linenos">35</span>            <span class="k">return</span> <span class="n">path</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">36</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>    <span class="k">return</span> <span class="p">[]</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>A node is unreachable when its distance remains infinity.</p></li>
 <li><p>BFS is the simpler equivalent when all edges have the same weight.</p></li>
-<li><p>To reconstruct paths, store <code class="docutils literal notranslate"><span class="pre">parent[v]</span> <span class="pre">=</span> <span class="pre">u</span></code> whenever <code class="docutils literal notranslate"><span class="pre">dist[v]</span></code> improves.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parent[v]</span></code> stores the previous node on one shortest path to <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p></li>
+<li><p>When several shortest paths exist, the strict <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> comparison keeps whichever parent produced the first improvement.</p></li>
 </ul>
 <p>With this implementation, the heap may contain stale entries. There are at most <code class="docutils literal notranslate"><span class="pre">E</span></code> successful relaxations and therefore <code class="docutils literal notranslate"><span class="pre">O(E)</span></code> heap pushes and pops, each taking <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">E)</span></code> time.</p>
 <ul class="simple">
 <li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E</span> <span class="pre">log</span> <span class="pre">E)</span></code>.</p></li>
-<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> for the distance array and heap.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> for the distance array, parent array, and heap.</p></li>
 </ul>
+<section id="nodes-on-shortest-paths">
+<h3>Nodes on Shortest Paths<a class="headerlink" href="#nodes-on-shortest-paths" title="Link to this heading">#</a></h3>
+<section id="reconstructing-one-shortest-path">
+<h4>Reconstructing One Shortest Path<a class="headerlink" href="#reconstructing-one-shortest-path" title="Link to this heading">#</a></h4>
+<p>Run Dijkstra once, then follow the <code class="docutils literal notranslate"><span class="pre">parent</span></code> pointers backward from the target:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
+    <span class="p">[],</span>
+<span class="p">]</span>
+
+<span class="n">dist</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">reconstruct_path</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>     <span class="c1"># [0, 2, 3]</span>
+</pre></div>
+</div>
+<p>This returns one shortest path. Storing one parent per node does not preserve every possible shortest path when ties exist.</p>
+</section>
+<section id="finding-every-node-on-at-least-one-shortest-path">
+<h4>Finding Every Node on at Least One Shortest Path<a class="headerlink" href="#finding-every-node-on-at-least-one-shortest-path" title="Link to this heading">#</a></h4>
+<p>A node <code class="docutils literal notranslate"><span class="pre">u</span></code> belongs to at least one shortest path from <code class="docutils literal notranslate"><span class="pre">source</span></code> to <code class="docutils literal notranslate"><span class="pre">target</span></code> exactly when:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>distance(source, u) + distance(u, target) == distance(source, target)
+</pre></div>
+</div>
+<p>Run Dijkstra from <code class="docutils literal notranslate"><span class="pre">source</span></code>, reverse every edge, and run Dijkstra from <code class="docutils literal notranslate"><span class="pre">target</span></code> in the reversed graph. The second run gives the distance from every node to <code class="docutils literal notranslate"><span class="pre">target</span></code> in the original graph.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">nodes_on_shortest_paths</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">dist_from_source</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="n">shortest_distance</span> <span class="o">=</span> <span class="n">dist_from_source</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="k">if</span> <span class="n">shortest_distance</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">):</span>
+<span class="linenos"> 6</span>        <span class="k">return</span> <span class="p">[]</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">reversed_graph</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="linenos"> 9</span>    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">10</span>        <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+<span class="linenos">11</span>            <span class="n">reversed_graph</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">dist_to_target</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">reversed_graph</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="k">return</span> <span class="p">[</span>
+<span class="linenos">16</span>        <span class="n">u</span>
+<span class="linenos">17</span>        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="linenos">18</span>        <span class="k">if</span> <span class="n">dist_from_source</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">dist_to_target</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="n">shortest_distance</span>
+<span class="linenos">19</span>    <span class="p">]</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="n">graph</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">23</span>    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+<span class="linenos">24</span>    <span class="p">[(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
+<span class="linenos">25</span>    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+<span class="linenos">26</span>    <span class="p">[(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+<span class="linenos">27</span>    <span class="p">[],</span>
+<span class="linenos">28</span>    <span class="p">[(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+<span class="linenos">29</span><span class="p">]</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="nb">print</span><span class="p">(</span><span class="n">nodes_on_shortest_paths</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="linenos">32</span><span class="c1"># [0, 1, 2, 3, 4]</span>
+</pre></div>
+</div>
+<p>There are two shortest paths of length <code class="docutils literal notranslate"><span class="pre">3</span></code>: <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">-&gt;</span> <span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">-&gt;</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">3</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code>. The result contains the union of their nodes and excludes node <code class="docutils literal notranslate"><span class="pre">5</span></code>, which only appears on a longer route.</p>
+<p>For an undirected graph, reversing the edges produces the same graph, so the second run can use <code class="docutils literal notranslate"><span class="pre">graph</span></code> directly.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E</span> <span class="pre">log</span> <span class="pre">E)</span></code> because Dijkstra runs twice and reversing the graph takes <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> time.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> for the distance arrays, heaps, and reversed graph.</p></li>
+</ul>
+</section>
+</section>
 <section id="state-space-dijkstra">
 <h3>State-Space Dijkstra<a class="headerlink" href="#state-space-dijkstra" title="Link to this heading">#</a></h3>
 <p>Some shortest-path problems cannot be described by the current node alone. Future moves may also depend on a limited resource or another condition, such as:</p>
@@ -812,6 +904,11 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nodes-on-shortest-paths">Nodes on Shortest Paths</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstructing-one-shortest-path">Reconstructing One Shortest Path</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-every-node-on-at-least-one-shortest-path">Finding Every Node on at Least One Shortest Path</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-space-dijkstra">State-Space Dijkstra</a></li>
 </ul>
 </li>
