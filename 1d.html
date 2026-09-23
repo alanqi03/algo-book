@@ -186,7 +186,6 @@
 <li class="toctree-l2"><a class="reference internal" href="1b.html">Lists, Sets, Stacks, and Queues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1c.html">Dictionaries and Heaps</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Classes and Additional Syntax Tips</a></li>
-
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -424,13 +423,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Classes and Additional Syntax Tips</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-attributes">Instance Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-tips">Syntax Tips</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-tips">Syntax Tips</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -443,33 +438,48 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="classes-and-additional-syntax-tips">
 <h1>Classes and Additional Syntax Tips<a class="headerlink" href="#classes-and-additional-syntax-tips" title="Link to this heading">#</a></h1>
-<p>Classes in Python are very similar to classes in other programming languages. Below is a code block that navigate through the syntax of defining classes in Python.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span> <span class="c1"># Constructor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># String Representation</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="si">}</span><span class="s2">)"</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">myfunc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># Define any more functions below</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"Hello my name is "</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-<span class="n">p1</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s2">"John"</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span> <span class="c1"># Create an class instance named John who is 36 years old</span>
-
-<span class="n">p1</span><span class="o">.</span><span class="n">myfunc</span><span class="p">()</span> <span class="c1"># Call myfunc for p1</span>
+<p>Classes group data and behavior. Define instance attributes in <code class="docutils literal notranslate"><span class="pre">__init__</span></code> so every instance has a predictable shape.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
+<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="linenos"> 4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="si">}</span><span class="s2">)"</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">def</span><span class="w"> </span><span class="nf">introduce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">10</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hello, my name is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s2">"John"</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+<span class="linenos">14</span><span class="n">person</span><span class="o">.</span><span class="n">introduce</span><span class="p">()</span>
+<span class="linenos">15</span><span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>  <span class="c1"># Calls person.__str__().</span>
 </pre></div>
 </div>
 <section id="instance-attributes">
 <h2>Instance Attributes<a class="headerlink" href="#instance-attributes" title="Link to this heading">#</a></h2>
-<p>Since Python is a dynamically typed language, just like JavaScript, Perl, and PHP, you can add instance attributes to an object at runtime. For example, assume there is a TreeNode class with the attributes <code class="docutils literal notranslate"><span class="pre">self.val</span></code>, <code class="docutils literal notranslate"><span class="pre">self.left</span></code>, and <code class="docutils literal notranslate"><span class="pre">self.right</span></code>. We create an instance of the class using <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">=</span> <span class="pre">TreeNode(0)</span></code>. Then, we can add an instance attribute named <code class="docutils literal notranslate"><span class="pre">par</span></code> to the instance like so: <code class="docutils literal notranslate"><span class="pre">node.par</span> <span class="pre">=</span> <span class="pre">TreeNode(0)</span></code>. We never defined a <code class="docutils literal notranslate"><span class="pre">par</span></code> attribute in the class definition, but we are still allowed to give an instance a <code class="docutils literal notranslate"><span class="pre">par</span></code> attribute.</p>
+<p>Most Python objects allow attributes to be added at runtime, but relying on that can create inconsistent instances and hide spelling mistakes. Prefer declaring expected attributes in <code class="docutils literal notranslate"><span class="pre">__init__</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">class</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">:</span>
+<span class="linenos">2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="linenos">3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+<span class="linenos">4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
+<span class="linenos">5</span>        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+<span class="linenos">6</span>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+</pre></div>
+</div>
+<p>Classes that define <code class="docutils literal notranslate"><span class="pre">__slots__</span></code> may intentionally prevent undeclared instance attributes.</p>
 </section>
+<section id="syntax-tips">
+<h2>Syntax Tips<a class="headerlink" href="#syntax-tips" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">_</span></code> as a conventional throwaway name when a value is intentionally unused:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"repeat"</span><span class="p">)</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"first"</span><span class="p">,</span> <span class="s2">"unused"</span><span class="p">,</span> <span class="s2">"last"</span><span class="p">)</span>
+<span class="n">first</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">values</span>
+</pre></div>
+</div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="syntax-tips">
-<h1>Syntax Tips<a class="headerlink" href="#syntax-tips" title="Link to this heading">#</a></h1>
-<ol class="arabic simple">
-<li><p>If you are not using a variable that is either returned or used for iteration, you can assign values to <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p></li>
-</ol>
 </section>
 
     <script type="text/x-thebe-config">
@@ -536,13 +546,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Classes and Additional Syntax Tips</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-attributes">Instance Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-tips">Syntax Tips</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-tips">Syntax Tips</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

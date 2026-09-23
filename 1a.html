@@ -186,7 +186,6 @@
 <li class="toctree-l2"><a class="reference internal" href="1b.html">Lists, Sets, Stacks, and Queues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1c.html">Dictionaries and Heaps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1d.html">Classes and Additional Syntax Tips</a></li>
-
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -468,17 +467,19 @@ document.write(`
 <section id="conditionals">
 <h3>Conditionals<a class="headerlink" href="#conditionals" title="Link to this heading">#</a></h3>
 <p>The following code block is an if-elif-else statement and a if-else one-line ternary operator:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">i</span> <span class="o">=</span> <span class="s2">"alan"</span>
-<span class="linenos">2</span><span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"alan"</span><span class="p">:</span>
-<span class="linenos">3</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's me!"</span><span class="p">)</span>
-<span class="linenos">4</span><span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"you"</span><span class="p">:</span>
-<span class="linenos">5</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's you!"</span><span class="p">)</span>
-<span class="linenos">6</span><span class="k">else</span><span class="p">:</span>
-<span class="linenos">7</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Who else is reading this?"</span><span class="p">)</span>
-<span class="linenos">8</span>
-<span class="linenos">9</span><span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's me!"</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"alan"</span> <span class="k">else</span> <span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's you, or is it?"</span><span class="p">)</span> <span class="c1"># ternary operator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">i</span> <span class="o">=</span> <span class="s2">"alan"</span>
+<span class="linenos"> 2</span><span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"alan"</span><span class="p">:</span>
+<span class="linenos"> 3</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's me!"</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"you"</span><span class="p">:</span>
+<span class="linenos"> 5</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"hey, that's you!"</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos"> 7</span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Who else is reading this?"</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">message</span> <span class="o">=</span> <span class="s2">"hey, that's me!"</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">"alan"</span> <span class="k">else</span> <span class="s2">"hey, that's you, or is it?"</span>
+<span class="linenos">10</span><span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Conditional expressions are best used to choose a value. A regular <code class="docutils literal notranslate"><span class="pre">if</span></code> statement is usually clearer when each branch performs an action.</p>
 </section>
 </section>
 <section id="functions">
@@ -488,171 +489,149 @@ document.write(`
 <span class="linenos">2</span>    <span class="nb">print</span><span class="p">(</span><span class="n">me</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Python has a wide range of useful built-in functions. Here are the most useful functions for technical interviews:</p>
+<p>Python has many useful built-in functions. These are especially common in technical interviews:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Input</p></th>
-<th class="head"><p>Output</p></th>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>What it does</p></th>
+<th class="head"><p>Important behavior</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">abs(x)</span></code></p></td>
-<td><p>Returns the absolute value (magnitude) of a number</p></td>
-<td><p>Number</p></td>
-<td><p>Number</p></td>
+<td><p>Returns the absolute value of <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Works with numeric types that define absolute value</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">all(iter)</span></code></p></td>
-<td><p>Returns True if all elements in iterable are True</p></td>
-<td><p>Iterable, e.g. a list</p></td>
-<td><p>boolean: True/False</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">all(iterable)</span></code></p></td>
+<td><p>Returns whether every item is truthy</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> for an empty iterable</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">any(iter)</span></code></p></td>
-<td><p>Returns True if any elements in iterable are True</p></td>
-<td><p>Iterable, e.g. a list</p></td>
-<td><p>boolean: True/False</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">any(iterable)</span></code></p></td>
+<td><p>Returns whether at least one item is truthy</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">False</span></code> for an empty iterable</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bin(x)</span></code></p></td>
-<td><p>Returns the binary representation of x</p></td>
-<td><p>Number</p></td>
-<td><p>String starting with “0b”</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bin(integer)</span></code></p></td>
+<td><p>Returns the binary representation</p></td>
+<td><p>The result is a string beginning with <code class="docutils literal notranslate"><span class="pre">0b</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bool(x)</span></code></p></td>
-<td><p>Returns if x is True or False</p></td>
-<td><p>Value</p></td>
-<td><p>Boolean: True/False</p></td>
+<td><p>Converts <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>Empty containers, zero, and <code class="docutils literal notranslate"><span class="pre">None</span></code> are falsey</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dict()</span></code></p></td>
-<td><p>Returns a dictionary object</p></td>
-<td><p>None or Iterable</p></td>
-<td><p>Dictionary</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dict(...)</span></code></p></td>
+<td><p>Creates a dictionary</p></td>
+<td><p>Do not name a variable <code class="docutils literal notranslate"><span class="pre">dict</span></code>; that shadows this built-in</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">divmod(a,</span> <span class="pre">b)</span></code></p></td>
-<td><p>Returns a pair of numbers consisting of quotient and remainder after a / b</p></td>
-<td><p>Numbers</p></td>
-<td><p>Quotient, Remainder</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">(a</span> <span class="pre">//</span> <span class="pre">b,</span> <span class="pre">a</span> <span class="pre">%</span> <span class="pre">b)</span></code></p></td>
+<td><p>Raises <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> when <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">==</span> <span class="pre">0</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">enumerate(iter,</span> <span class="pre">start=0)</span></code></p></td>
-<td><p>Returns an enumerate object (transform into list with list())</p></td>
-<td><p>Iterable</p></td>
-<td><p>Enumerate Object</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">enumerate(iterable,</span> <span class="pre">start=0)</span></code></p></td>
+<td><p>Yields <code class="docutils literal notranslate"><span class="pre">(index,</span> <span class="pre">value)</span></code> pairs</p></td>
+<td><p>Prefer this to manually updating an index</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eval(&quot;&quot;)</span></code></p></td>
-<td><p>Returns the result of an expression</p></td>
-<td><p>String</p></td>
-<td><p>Number</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filter(function,</span> <span class="pre">iterable)</span></code></p></td>
+<td><p>Lazily yields items for which <code class="docutils literal notranslate"><span class="pre">function</span></code> is truthy</p></td>
+<td><p>A comprehension is often clearer</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">filter(func,</span> <span class="pre">iter)</span></code></p></td>
-<td><p>Construct an iterator from those elements of iterable for which function is true</p></td>
-<td><p>Function, Iterable</p></td>
-<td><p>Iterator</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">float(x)</span></code></p></td>
+<td><p>Converts a number or numeric string to a float</p></td>
+<td><p>May lose precision for large integers</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">float(x)</span></code></p></td>
-<td><p>Returns floating point number from x</p></td>
-<td><p>Number or String</p></td>
-<td><p>Number</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hex(integer)</span></code></p></td>
+<td><p>Returns a hexadecimal string</p></td>
+<td><p>The result begins with <code class="docutils literal notranslate"><span class="pre">0x</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hex</span> <span class="pre">(x)</span></code></p></td>
-<td><p>Returns hexadecimal representation of x</p></td>
-<td><p>Number</p></td>
-<td><p>String starting with “0x”</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">int(x)</span></code></p></td>
+<td><p>Converts to an integer</p></td>
+<td><p>A float is truncated toward zero, not floored</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int(x)</span></code></p></td>
-<td><p>Returns integer (floor) of x</p></td>
-<td><p>Number</p></td>
-<td><p>Integer</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">len(container)</span></code></p></td>
+<td><p>Returns the number of items</p></td>
+<td><p>The object must provide a length</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">len(iter)</span></code></p></td>
-<td><p>Returns length of iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>Number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">list(iterable)</span></code></p></td>
+<td><p>Creates a list from an iterable</p></td>
+<td><p>Also useful for consuming an iterator</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">list(iter)</span></code></p></td>
-<td><p>Returns list of iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>List</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">map(function,</span> <span class="pre">iterable)</span></code></p></td>
+<td><p>Lazily applies a function to every item</p></td>
+<td><p>A comprehension is often clearer</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">map(func,</span> <span class="pre">iter)</span></code></p></td>
-<td><p>Returns iterator that applies function on every item of iterable</p></td>
-<td><p>Function, Iterable</p></td>
-<td><p>Iterator</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max(iterable)</span></code>, <code class="docutils literal notranslate"><span class="pre">min(iterable)</span></code></p></td>
+<td><p>Returns the largest or smallest item</p></td>
+<td><p>Support <code class="docutils literal notranslate"><span class="pre">key=</span></code>; empty iterables need <code class="docutils literal notranslate"><span class="pre">default=</span></code> or raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max(iter)</span></code>, <code class="docutils literal notranslate"><span class="pre">min(iter)</span></code></p></td>
-<td><p>Returns max/min of iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>Number</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">next(iterator,</span> <span class="pre">default)</span></code></p></td>
+<td><p>Returns the next item</p></td>
+<td><p>Supplying <code class="docutils literal notranslate"><span class="pre">default</span></code> avoids <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> at exhaustion</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">next(iterator)</span></code></p></td>
-<td><p>Returns next value in iterator</p></td>
-<td><p>Iterator</p></td>
-<td><p>Value</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ord(character)</span></code></p></td>
+<td><p>Returns one character’s Unicode code point</p></td>
+<td><p>The string must contain exactly one character</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ord(&quot;&quot;)</span></code></p></td>
-<td><p>Return an integer representing the Unicode code point of that character</p></td>
-<td><p>String</p></td>
-<td><p>Number</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pow(base,</span> <span class="pre">exp,</span> <span class="pre">mod=None)</span></code></p></td>
+<td><p>Computes a power</p></td>
+<td><p>With <code class="docutils literal notranslate"><span class="pre">mod</span></code>, efficiently computes modular exponentiation</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pow(base,</span> <span class="pre">exp)</span></code></p></td>
-<td><p>Returns the value of base to the exp power</p></td>
-<td><p>Numbers</p></td>
-<td><p>Number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">print(*values)</span></code></p></td>
+<td><p>Writes values to standard output</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">print(x)</span></code></p></td>
-<td><p>Prints the value x</p></td>
-<td><p>Value</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">range(stop)</span></code> or <code class="docutils literal notranslate"><span class="pre">range(start,</span> <span class="pre">stop,</span> <span class="pre">step)</span></code></p></td>
+<td><p>Produces an integer range</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code> is excluded; <code class="docutils literal notranslate"><span class="pre">step</span></code> cannot be zero</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">range(start,</span> <span class="pre">stop,</span> <span class="pre">step=1)</span></code></p></td>
-<td><p>Returns a range iterable from start to stop with step size</p></td>
-<td><p>Numbers</p></td>
-<td><p>Range</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set(iterable)</span></code></p></td>
+<td><p>Creates a set</p></td>
+<td><p>Items must be hashable</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set(iter)</span></code></p></td>
-<td><p>Returns a set object of iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>Set</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sorted(iterable,</span> <span class="pre">key=None,</span> <span class="pre">reverse=False)</span></code></p></td>
+<td><p>Returns a new sorted list</p></td>
+<td><p>Unlike <code class="docutils literal notranslate"><span class="pre">list.sort()</span></code>, it accepts any iterable</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sorted(iter,</span> <span class="pre">key=None,</span> <span class="pre">revers=False)</span></code></p></td>
-<td><p>Returns a new sorted list from iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>List</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str(x)</span></code></p></td>
+<td><p>Returns a string representation</p></td>
+<td><p>Calling <code class="docutils literal notranslate"><span class="pre">str()</span></code> with no argument returns <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str(x)</span></code></p></td>
-<td><p>Returns a string of x</p></td>
-<td><p>Value</p></td>
-<td><p>String</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sum(iterable,</span> <span class="pre">start=0)</span></code></p></td>
+<td><p>Adds items from left to right</p></td>
+<td><p>For joining strings, use <code class="docutils literal notranslate"><span class="pre">str.join()</span></code> instead</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sum(iterable)</span></code></p></td>
-<td><p>Returns the sum of all items in iterable</p></td>
-<td><p>Iterable</p></td>
-<td><p>Number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">type(obj)</span></code></p></td>
+<td><p>Returns an object’s type</p></td>
+<td><p>For normal type checks, <code class="docutils literal notranslate"><span class="pre">isinstance()</span></code> usually handles inheritance better</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">type(object)</span></code></p></td>
-<td><p>Returns the type of the object</p></td>
-<td><p>Object</p></td>
-<td><p>Type</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">zip(iter1,</span> <span class="pre">iter2,</span> <span class="pre">...)</span></code></p></td>
-<td><p>Iterate over several iterables in parallel, producing tuples with an item from each one</p></td>
-<td><p>Iterables</p></td>
-<td><p>Iterable</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">zip(*iterables,</span> <span class="pre">strict=False)</span></code></p></td>
+<td><p>Lazily groups items from parallel iterables</p></td>
+<td><p>Stops at the shortest input unless <code class="docutils literal notranslate"><span class="pre">strict=True</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Avoid <code class="docutils literal notranslate"><span class="pre">eval()</span></code> for parsing input. It executes arbitrary Python code; use explicit conversions such as <code class="docutils literal notranslate"><span class="pre">int()</span></code>, <code class="docutils literal notranslate"><span class="pre">float()</span></code>, or structured parsers instead.</p>
 <section id="scoping-in-nested-functions">
 <h3>Scoping in Nested Functions<a class="headerlink" href="#scoping-in-nested-functions" title="Link to this heading">#</a></h3>
-<p>With nested functions, you can change a local variable of an outer function in the inner function by either using</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">&lt;variable&gt;</span></code> in the inner function for integer and object variables</p></li>
-<li><p>an iterable variable, like a list or dictionary, that is declared first in the outer function</p></li>
-</ul>
+<p>Use <code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">&lt;variable&gt;</span></code> inside a nested function when rebinding a variable from the nearest enclosing function scope. Mutating an existing list, set, or dictionary does not require <code class="docutils literal notranslate"><span class="pre">nonlocal</span></code>, but assigning a new object to that variable does.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">outer</span><span class="p">():</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">increment</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">count</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="numbers">
 <h2>Numbers<a class="headerlink" href="#numbers" title="Link to this heading">#</a></h2>
-<p>For positive and negative infinity, we have <code class="docutils literal notranslate"><span class="pre">float('inf')</span></code> and <code class="docutils literal notranslate"><span class="pre">float('-inf')</span></code>.</p>
+<p>For positive and negative infinity, use <code class="docutils literal notranslate"><span class="pre">float(&quot;inf&quot;)</span></code> and <code class="docutils literal notranslate"><span class="pre">float(&quot;-inf&quot;)</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/</span></code> performs true division and returns a float.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">//</span></code> performs floor division, rounding down toward negative infinity.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%</span></code> returns the remainder associated with floor division.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int(x)</span></code> truncates a float toward zero. Use <code class="docutils literal notranslate"><span class="pre">math.floor(x)</span></code> when the value must always round down.</p></li>
+</ul>
 </section>
 <section id="strings">
 <h2>Strings<a class="headerlink" href="#strings" title="Link to this heading">#</a></h2>
@@ -661,64 +640,70 @@ document.write(`
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
 <th class="head"><p>Description</p></th>
-<th class="head"><p>Input</p></th>
-<th class="head"><p>Output</p></th>
+<th class="head"><p>Important behavior</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str.lower()/upper()</span></code></p></td>
-<td><p>Returns the upper/lower case of str</p></td>
-<td><p>String</p></td>
-<td><p>String</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.lower()</span></code>, <code class="docutils literal notranslate"><span class="pre">s.upper()</span></code></p></td>
+<td><p>Returns a lowercase or uppercase copy</p></td>
+<td><p>Strings are immutable; <code class="docutils literal notranslate"><span class="pre">s</span></code> is unchanged</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str.count(value)</span></code></p></td>
-<td><p>Returns the number of occurences of value in str</p></td>
-<td><p>String, Number</p></td>
-<td><p>Number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.count(sub[,</span> <span class="pre">start[,</span> <span class="pre">end]])</span></code></p></td>
+<td><p>Counts non-overlapping occurrences of <code class="docutils literal notranslate"><span class="pre">sub</span></code></p></td>
+<td><p>Optional bounds constrain the search</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str.find(value,</span> <span class="pre">[index])</span></code></p></td>
-<td><p>Returns the index of first occurence of value after OPTIONAL i</p></td>
-<td><p>String, Number</p></td>
-<td><p>Number</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.find(sub[,</span> <span class="pre">start[,</span> <span class="pre">end]])</span></code></p></td>
+<td><p>Finds the first occurrence of <code class="docutils literal notranslate"><span class="pre">sub</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">-1</span></code> when absent; use <code class="docutils literal notranslate"><span class="pre">sub</span> <span class="pre">in</span> <span class="pre">s</span></code> for membership only</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str.split(separator)</span></code></p></td>
-<td><p>Splits str into a list using separator</p></td>
-<td><p>String</p></td>
-<td><p>List</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.index(sub[,</span> <span class="pre">start[,</span> <span class="pre">end]])</span></code></p></td>
+<td><p>Finds the first occurrence of <code class="docutils literal notranslate"><span class="pre">sub</span></code></p></td>
+<td><p>Raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when absent</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;separator&quot;.join(iterable)</span></code></p></td>
-<td><p>Creates a string by joining all elements with separator</p></td>
-<td><p>String, Iterable</p></td>
-<td><p>String</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.split(sep=None,</span> <span class="pre">maxsplit=-1)</span></code></p></td>
+<td><p>Splits a string into a list</p></td>
+<td><p>With <code class="docutils literal notranslate"><span class="pre">sep=None</span></code>, runs of whitespace are combined</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str.strip()</span></code></p></td>
-<td><p>Removes all leading and trailing spaces</p></td>
-<td><p>String</p></td>
-<td><p>String</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">separator.join(strings)</span></code></p></td>
+<td><p>Joins strings with <code class="docutils literal notranslate"><span class="pre">separator</span></code> between them</p></td>
+<td><p>Every item must be a string</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str.replace(a,</span> <span class="pre">b)</span></code></p></td>
-<td><p>Replaces a with b in str</p></td>
-<td><p>String, String</p></td>
-<td><p>String</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.strip([chars])</span></code></p></td>
+<td><p>Removes leading and trailing whitespace or specified characters</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">chars</span></code> is treated as a set of characters, not a substring</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">str.isalnum()</span></code></p></td>
-<td><p>Returns True if str is all alphanumeric</p></td>
-<td><p>String</p></td>
-<td><p>Boolean</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.replace(old,</span> <span class="pre">new[,</span> <span class="pre">count])</span></code></p></td>
+<td><p>Returns a copy with replacements</p></td>
+<td><p>Optional <code class="docutils literal notranslate"><span class="pre">count</span></code> limits replacements</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.isalnum()</span></code></p></td>
+<td><p>Checks whether every character is alphanumeric</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">False</span></code> for an empty string</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.startswith(prefix)</span></code>, <code class="docutils literal notranslate"><span class="pre">s.endswith(suffix)</span></code></p></td>
+<td><p>Checks a prefix or suffix</p></td>
+<td><p>Also accept a tuple of candidates</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Computing the frequency of characters in a string is used very often in LC questions. We use <code class="docutils literal notranslate"><span class="pre">ord(&lt;character&gt;)</span></code> in Python to make this easy for us.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_str</span> <span class="o">=</span> <span class="s2">"abbcccddddd"</span> <span class="c1"># only lowercase</span>
-<span class="n">freq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span> <span class="c1"># for only lowercase characters or uppercase characters</span>
-<span class="n">freq</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">128</span> <span class="c1"># for all possible characters</span>
-
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">test_str</span><span class="p">:</span>
-    <span class="n">freq</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">'a'</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># Each character has an associated UNICODE from 0 to 127, which ord() returns. </span>
-<span class="c1"># Relative to UC characters and LC characters A -&gt; 0, z -&gt; 57</span>
+<p>For arbitrary characters, <code class="docutils literal notranslate"><span class="pre">Counter</span></code> is the clearest way to calculate frequencies:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"abbcccddddd"</span>
+<span class="linenos">4</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="linenos">5</span><span class="nb">print</span><span class="p">(</span><span class="n">frequency</span><span class="p">[</span><span class="s2">"d"</span><span class="p">])</span>  <span class="c1"># 5</span>
 </pre></div>
 </div>
+<p>If the problem guarantees lowercase English letters, a fixed array is also useful:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">text</span> <span class="o">=</span> <span class="s2">"abbcccddddd"</span>
+<span class="linenos">2</span><span class="n">frequency</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">26</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="k">for</span> <span class="n">character</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+<span class="linenos">5</span>    <span class="n">frequency</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">character</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s2">"a"</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Unicode code points are not limited to <code class="docutils literal notranslate"><span class="pre">0</span></code> through <code class="docutils literal notranslate"><span class="pre">127</span></code>. Only use a fixed array of size <code class="docutils literal notranslate"><span class="pre">128</span></code> when the problem explicitly guarantees ASCII input.</p>
 </section>
 </section>
 

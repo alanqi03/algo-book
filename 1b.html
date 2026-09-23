@@ -186,7 +186,6 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Lists, Sets, Stacks, and Queues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1c.html">Dictionaries and Heaps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1d.html">Classes and Additional Syntax Tips</a></li>
-
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -441,155 +440,163 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="lists-sets-stacks-and-queues">
 <h1>Lists, Sets, Stacks, and Queues<a class="headerlink" href="#lists-sets-stacks-and-queues" title="Link to this heading">#</a></h1>
-<p>All data structures in this section can be iterated through using <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">val</span> <span class="pre">in</span> <span class="pre">data_structure:</span></code> syntax.</p>
+<p>All data structures in this section can be iterated through using <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">value</span> <span class="pre">in</span> <span class="pre">data_structure:</span></code> syntax.</p>
 <section id="lists">
 <h2>Lists<a class="headerlink" href="#lists" title="Link to this heading">#</a></h2>
-<p>Python lists are the equivalent to arrays.</p>
-<p>Python has a wide range of useful built-in functions for lists.</p>
+<p>Python lists are dynamic arrays. Indexing and appending at the end are efficient, while inserting or removing near the beginning requires shifting elements.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Method</p></th>
 <th class="head"><p>Description</p></th>
-<th class="head"><p>Input</p></th>
-<th class="head"><p>Output</p></th>
+<th class="head"><p>Return value and important behavior</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.append(x)</span></code></p></td>
-<td><p>Adds x to the list.</p></td>
-<td><p>List, Value</p></td>
-<td><p>None</p></td>
+<td><p>Adds <code class="docutils literal notranslate"><span class="pre">x</span></code> to the end</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; amortized <code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.clear()</span></code></p></td>
-<td><p>Clears the list</p></td>
-<td><p>List</p></td>
-<td><p>None</p></td>
+<td><p>Removes every item</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.copy()/lst[:]</span></code></p></td>
-<td><p>Returns a copy of the list</p></td>
-<td><p>List</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.copy()</span></code> or <code class="docutils literal notranslate"><span class="pre">lst[:]</span></code></p></td>
+<td><p>Creates a shallow copy</p></td>
+<td><p>Returns a new list</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.count(x)</span></code></p></td>
-<td><p>Returns number of elements with specified value in list</p></td>
-<td><p>List, Value</p></td>
-<td><p>Number</p></td>
+<td><p>Counts items equal to <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Returns an integer; <code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.extend(iterable)</span></code></p></td>
-<td><p>Adds all items in iterable to list</p></td>
-<td><p>List, Iterable</p></td>
-<td><p>List</p></td>
+<td><p>Appends every item from <code class="docutils literal notranslate"><span class="pre">iterable</span></code></p></td>
+<td><p>Mutates <code class="docutils literal notranslate"><span class="pre">lst</span></code> and returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.index(value)</span></code></p></td>
-<td><p>Returns first index of specified value in list</p></td>
-<td><p>List, Value</p></td>
-<td><p>Number</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.index(x[,</span> <span class="pre">start[,</span> <span class="pre">stop]])</span></code></p></td>
+<td><p>Finds the first index of <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when absent</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.insert(index,</span> <span class="pre">val)</span></code></p></td>
-<td><p>Inserts value at index in list</p></td>
-<td><p>List, Number, Value</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.insert(index,</span> <span class="pre">x)</span></code></p></td>
+<td><p>Inserts <code class="docutils literal notranslate"><span class="pre">x</span></code> before <code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> in the worst case</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.pop(index)</span></code></p></td>
-<td><p>Removes and returns element at index (or last element by default) in list</p></td>
-<td><p>List, Number</p></td>
-<td><p>Value</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.pop([index])</span></code></p></td>
+<td><p>Removes and returns an item</p></td>
+<td><p>Defaults to the last item; raises <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> when invalid</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.remove(value)</span></code></p></td>
-<td><p>Removes first item with specified value</p></td>
-<td><p>List, Value</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.remove(x)</span></code></p></td>
+<td><p>Removes the first item equal to <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when absent</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lst.reverse()</span></code></p></td>
-<td><p>Reverses order of list</p></td>
-<td><p>List</p></td>
-<td><p>None</p></td>
+<td><p>Reverses the list in place</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.sort()</span></code></p></td>
-<td><p>Sorts the list</p></td>
-<td><p>List</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lst.sort(key=None,</span> <span class="pre">reverse=False)</span></code></p></td>
+<td><p>Sorts the list in place</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; use <code class="docutils literal notranslate"><span class="pre">sorted()</span></code> when a new list is needed</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>You can also manipulate lists with slices:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lst</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="c1"># value at index x in the list</span>
-<span class="n">lst</span><span class="p">[:]</span> <span class="c1"># copy of the list</span>
-<span class="n">lst</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span> <span class="c1"># From the start inclusive to stop exclusive with step</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="linenos">2</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">3</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="mi">2</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="n">lst</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="c1"># value at index x in the list</span>
+<span class="linenos">6</span><span class="n">lst</span><span class="p">[:]</span> <span class="c1"># copy of the list</span>
+<span class="linenos">7</span><span class="n">lst</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span> <span class="c1"># From the start inclusive to stop exclusive with step</span>
 </pre></div>
 </div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">pop()</span></code> when removing by position and <code class="docutils literal notranslate"><span class="pre">remove()</span></code> when removing by value. If a value may be absent, check <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">value</span> <span class="pre">in</span> <span class="pre">lst</span></code> before calling <code class="docutils literal notranslate"><span class="pre">remove()</span></code>, or use a different data structure when frequent membership checks are required.</p>
 </section>
 <section id="sets">
 <h2>Sets<a class="headerlink" href="#sets" title="Link to this heading">#</a></h2>
-<p>Sets contain no duplicates and are not ordered.</p>
-<p>Python has a wide range of useful built-in functions for sets.</p>
+<p>Sets store unique, hashable values. Membership, addition, and removal are <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> on average. Set iteration order should not be relied upon.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Method</p></th>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
 <th class="head"><p>Description</p></th>
-<th class="head"><p>Input</p></th>
-<th class="head"><p>Output</p></th>
+<th class="head"><p>Return value and important behavior</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set(iterable)</span></code></p></td>
-<td><p>Converts iterable to a set</p></td>
-<td><p>Iterable</p></td>
-<td><p>Set</p></td>
+<td><p>Creates a set from an iterable</p></td>
+<td><p>Returns a new set with duplicates removed</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set.add(x)</span></code></p></td>
-<td><p>Adds x to the set</p></td>
-<td><p>Value</p></td>
-<td><p>None</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.add(x)</span></code></p></td>
+<td><p>Adds <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set.pop()</span></code></p></td>
-<td><p>Removes random element in the set</p></td>
-<td><p>Set</p></td>
-<td><p>None</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.discard(x)</span></code></p></td>
+<td><p>Removes <code class="docutils literal notranslate"><span class="pre">x</span></code> if present</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; does not raise when absent</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set.remove(x)</span></code></p></td>
-<td><p>Removes x from the set</p></td>
-<td><p>Set, Value</p></td>
-<td><p>None</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.remove(x)</span></code></p></td>
+<td><p>Removes <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code>; raises <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> when absent</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">&amp;</span> <span class="pre">set2</span></code></p></td>
-<td><p>Intersection of set1 and set2</p></td>
-<td><p>Sets</p></td>
-<td><p>Set</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.pop()</span></code></p></td>
+<td><p>Removes and returns an arbitrary element</p></td>
+<td><p>Raises <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> when the set is empty</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">|</span> <span class="pre">set2</span></code></p></td>
-<td><p>Union of set1 and set2</p></td>
-<td><p>Sets</p></td>
-<td><p>Set</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.clear()</span></code></p></td>
+<td><p>Removes every element</p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">-</span> <span class="pre">set2</span></code></p></td>
-<td><p>Difference of set1 and set2</p></td>
-<td><p>Sets</p></td>
-<td><p>Set</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">in</span> <span class="pre">s</span></code></p></td>
+<td><p>Tests membership</p></td>
+<td><p>Returns a boolean</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">&amp;</span> <span class="pre">set2</span></code></p></td>
+<td><p>Computes the intersection</p></td>
+<td><p>Returns a new set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">|</span> <span class="pre">set2</span></code></p></td>
+<td><p>Computes the union</p></td>
+<td><p>Returns a new set</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">-</span> <span class="pre">set2</span></code></p></td>
+<td><p>Computes the difference</p></td>
+<td><p>Returns a new set</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set1</span> <span class="pre">^</span> <span class="pre">set2</span></code></p></td>
+<td><p>Computes the symmetric difference</p></td>
+<td><p>Returns a new set</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Prefer <code class="docutils literal notranslate"><span class="pre">discard(x)</span></code> when it is acceptable for <code class="docutils literal notranslate"><span class="pre">x</span></code> to be missing. Use <code class="docutils literal notranslate"><span class="pre">remove(x)</span></code> when absence indicates a bug and should raise an error.</p>
 </section>
 <section id="queues">
 <h2>Queues<a class="headerlink" href="#queues" title="Link to this heading">#</a></h2>
-<p>Queues are lists that follow First In, First Out (FIFO) order.</p>
-<p>Think about queues as waiting lines for a service.</p>
-<p>You can implement a queue easily in two ways:</p>
-<ol class="arabic simple">
-<li><p>List ([]) - <code class="docutils literal notranslate"><span class="pre">append()</span></code> and <code class="docutils literal notranslate"><span class="pre">pop(0)</span></code> in O(N) time</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">collections</span> <span class="pre">import</span> <span class="pre">deque</span></code>, initialize a deque with <code class="docutils literal notranslate"><span class="pre">deque(&lt;iterable&gt;)</span></code>, <code class="docutils literal notranslate"><span class="pre">append()</span></code> and <code class="docutils literal notranslate"><span class="pre">popleft()</span></code> in O(1) time.</p></li>
-</ol>
+<p>Queues follow First In, First Out (FIFO) order. Use <code class="docutils literal notranslate"><span class="pre">collections.deque</span></code>, which supports adding and removing at opposite ends in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="linenos">4</span><span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"first"</span><span class="p">)</span>
+<span class="linenos">5</span><span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"second"</span><span class="p">)</span>
+<span class="linenos">6</span>
+<span class="linenos">7</span><span class="n">next_item</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>  <span class="c1"># "first"</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">popleft()</span></code> raises <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> when the deque is empty. Avoid using <code class="docutils literal notranslate"><span class="pre">list.pop(0)</span></code> for a queue because removing the first list item shifts all remaining items and takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time.</p>
 </section>
 <section id="stacks">
 <h2>Stacks<a class="headerlink" href="#stacks" title="Link to this heading">#</a></h2>
-<p>Stacks are lists that follow the First In, Last Out (FILO) order.</p>
-<p>You can implement a stack easily in two ways:</p>
-<ol class="arabic simple">
-<li><p>List ([]) - <code class="docutils literal notranslate"><span class="pre">append()</span></code> and <code class="docutils literal notranslate"><span class="pre">pop()</span></code> in O(N) time</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">collections</span> <span class="pre">import</span> <span class="pre">deque</span></code>, initialize a deque with <code class="docutils literal notranslate"><span class="pre">deque(&lt;iterable&gt;)</span></code>, <code class="docutils literal notranslate"><span class="pre">append()</span></code> and <code class="docutils literal notranslate"><span class="pre">pop()</span></code> in O(1) time.</p></li>
-</ol>
+<p>Stacks follow Last In, First Out (LIFO) order. A list is the simplest recommended implementation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">2</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"first"</span><span class="p">)</span>
+<span class="linenos">3</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"second"</span><span class="p">)</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="n">top</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>       <span class="c1"># Peek: "second"</span>
+<span class="linenos">6</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>  <span class="c1"># Remove: "second"</span>
+</pre></div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">list.append()</span></code> and <code class="docutils literal notranslate"><span class="pre">list.pop()</span></code> at the end are amortized <code class="docutils literal notranslate"><span class="pre">O(1)</span></code>. Indexing or popping an empty stack raises <code class="docutils literal notranslate"><span class="pre">IndexError</span></code>. A <code class="docutils literal notranslate"><span class="pre">deque</span></code> also supports <code class="docutils literal notranslate"><span class="pre">append()</span></code> and <code class="docutils literal notranslate"><span class="pre">pop()</span></code> in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code>, but it is usually unnecessary for a stack.</p>
 </section>
 </section>
 

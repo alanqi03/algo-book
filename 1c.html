@@ -186,7 +186,6 @@
 <li class="toctree-l2"><a class="reference internal" href="1b.html">Lists, Sets, Stacks, and Queues</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Dictionaries and Heaps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1d.html">Classes and Additional Syntax Tips</a></li>
-
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="3.html">Strings, Arrays, and Hashing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -448,85 +447,93 @@ document.write(`
 <h1>Dictionaries and Heaps<a class="headerlink" href="#dictionaries-and-heaps" title="Link to this heading">#</a></h1>
 <section id="dictionaries">
 <h2>Dictionaries<a class="headerlink" href="#dictionaries" title="Link to this heading">#</a></h2>
-<p>A dictionary, also known as a hash table in Java, is a data structure that stores (key, value) pairs.</p>
-<p>The following code block will walk you through the syntax of dictionaries in Python.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># Create an empty dictionary</span>
-
-<span class="nb">dict</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Tea"</span> <span class="c1"># Create a (key, value) pair called ("Boba", "Tea")</span>
-
-<span class="k">del</span> <span class="nb">dict</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">]</span> <span class="c1"># Delete the (key, value) pair in dict</span>
-
-<span class="n">tea</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Boba"</span><span class="p">)</span> <span class="c1"># Accesses the corresponding value of the specified key</span>
-
-<span class="k">if</span> <span class="s2">"Boba"</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span> <span class="c1"># Determines if a key exists in a dictionary</span>
-    <span class="k">return</span> <span class="kc">True</span>
-
-<span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span> <span class="c1"># Returns a list of all keys</span>
-<span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="c1"># Returns a list of all values</span>
-
-<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="nb">dict</span><span class="o">&gt;.</span><span class="n">items</span><span class="p">():</span> <span class="c1"># Iterates through all (key, value) pairs</span>
+<p>A dictionary is a hash table that stores key-value pairs. Keys must be hashable. Dictionaries preserve insertion order, but lookup logic should normally depend on keys rather than their position.</p>
+<p>The following example shows the recommended ways to access and remove keys:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">data</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Tea"</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">tea</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">]</span>              <span class="c1"># Strict lookup: raises KeyError if absent.</span>
+<span class="linenos"> 6</span><span class="n">coffee</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Coffee"</span><span class="p">)</span>     <span class="c1"># Safe lookup: returns None if absent.</span>
+<span class="linenos"> 7</span><span class="n">coffee</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Coffee"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Or return a chosen default.</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">if</span> <span class="s2">"Boba"</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="linenos">10</span>    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"Boba"</span><span class="p">])</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="linenos">13</span>    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>            <span class="c1"># Same keys as list(data.keys()).</span>
+<span class="linenos">16</span><span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="n">removed</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"Boba"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># Remove safely and return the value.</span>
 </pre></div>
 </div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">mapping[key]</span></code> when a missing key should be an error. Use <code class="docutils literal notranslate"><span class="pre">mapping.get(key,</span> <span class="pre">default)</span></code> when absence is expected. Do not combine them with <code class="docutils literal notranslate"><span class="pre">mapping[key]</span> <span class="pre">or</span> <span class="pre">mapping.get(key)</span></code>: the strict lookup can raise first, and valid falsey values such as <code class="docutils literal notranslate"><span class="pre">0</span></code> would be handled incorrectly.</p>
+<p><code class="docutils literal notranslate"><span class="pre">del</span> <span class="pre">mapping[key]</span></code> and <code class="docutils literal notranslate"><span class="pre">mapping.pop(key)</span></code> both raise <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> when the key is absent. Supplying a default to <code class="docutils literal notranslate"><span class="pre">pop</span></code>, as in <code class="docutils literal notranslate"><span class="pre">mapping.pop(key,</span> <span class="pre">None)</span></code>, avoids that exception.</p>
+<p>Avoid naming a variable <code class="docutils literal notranslate"><span class="pre">dict</span></code>, because that shadows Python’s built-in <code class="docutils literal notranslate"><span class="pre">dict()</span></code> constructor.</p>
 <section id="how-is-a-dictionary-typically-implemented">
 <h3>How is a Dictionary Typically Implemented?<a class="headerlink" href="#how-is-a-dictionary-typically-implemented" title="Link to this heading">#</a></h3>
-<p>Here are the steps of how a dictionary is typically implemented:</p>
-<ol class="arabic simple">
-<li><p>Apply a hash function on the key; if the key is an integer, <code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">&lt;large</span> <span class="pre">prime</span> <span class="pre">number&gt;</span></code> is typically used</p></li>
-<li><p>The hash key generated will map to a <code class="docutils literal notranslate"><span class="pre">Bucket</span></code>, which is typically an <code class="docutils literal notranslate"><span class="pre">array</span></code> or a <code class="docutils literal notranslate"><span class="pre">linkedlist</span></code></p></li>
-<li><p>From there, you store the <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">v)</span></code> pair into the Bucket</p></li>
-<li><p>All operations involving dictionaries involve iterating through the bucket, adding/updating/removing <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">v)</span></code> pairs.</p></li>
-</ol>
+<p>Python dictionaries use a hash table. Python computes <code class="docutils literal notranslate"><span class="pre">hash(key)</span></code>, maps it into an internal table, and resolves collisions when different keys map to the same location. The exact layout is an implementation detail; CPython uses an open-addressed table rather than a linked list for every bucket.</p>
+<p>Lookup, insertion, and deletion are <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> on average and <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> in the worst case. Resizing the table occasionally costs <code class="docutils literal notranslate"><span class="pre">O(n)</span></code>, but insertion remains amortized <code class="docutils literal notranslate"><span class="pre">O(1)</span></code>.</p>
 </section>
 <section id="types-of-dictionaries">
 <h3>Types of Dictionaries<a class="headerlink" href="#types-of-dictionaries" title="Link to this heading">#</a></h3>
-<p>If you are allowed to import from the collections module, there are some very useful types of dictionaries.</p>
-<p>Sometimes, it is useful to use dictionaries that have default values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="c1"># Creates an empty dictionary with 0 as the default value for keys</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># Creates an empty dictionary with empty list ([]) as the default value</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">collections</span></code> module provides useful dictionary-like types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># Missing values begin at 0.</span>
+<span class="linenos">4</span><span class="n">groups</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># Missing values begin as a new list.</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">counts</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">7</span><span class="n">groups</span><span class="p">[</span><span class="s2">"fruit"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It may also be useful to have dictionaries that automatically count all elements in an iterable.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">])</span> <span class="c1"># a = {"a": 2, "b": 2, "c": 2}</span>
+<p>Accessing a missing key with <code class="docutils literal notranslate"><span class="pre">mapping[key]</span></code> on a <code class="docutils literal notranslate"><span class="pre">defaultdict</span></code> creates and stores its default value. Use a normal dictionary with <code class="docutils literal notranslate"><span class="pre">.get()</span></code> when a lookup should not mutate the mapping.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">])</span>
+<span class="linenos">4</span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">"missing"</span><span class="p">])</span>       <span class="c1"># 0</span>
+<span class="linenos">5</span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># [('a', 2), ('b', 2)]</span>
+<span class="linenos">6</span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">total</span><span class="p">())</span>         <span class="c1"># 6</span>
 </pre></div>
 </div>
-<p>The main advantages of Counter() over a dictionary is</p>
-<ol class="arabic simple">
-<li><p>They return a zero count for missing items instead of raising a KeyError.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Counter(&lt;iterable&gt;)</span></code> will automatically group elements and count them.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;counter&gt;.most_common(n)</span></code> will return a list of n most common elements.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;counter&gt;.total()</span></code> returns the total count.</p></li>
-</ol>
+<p><code class="docutils literal notranslate"><span class="pre">Counter(iterable)</span></code> counts items automatically, returns zero for missing items, and provides helpers such as <code class="docutils literal notranslate"><span class="pre">most_common(n)</span></code> and <code class="docutils literal notranslate"><span class="pre">total()</span></code>.</p>
 </section>
 </section>
 <section id="heaps-priority-queues">
 <h2>Heaps (Priority Queues)<a class="headerlink" href="#heaps-priority-queues" title="Link to this heading">#</a></h2>
-<p>Heaps, also known as priority queues, are useful data structures for accessing minimum or maximum elements of a list.
-They can also be used to extract elements in a sorted fashion.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">heapq</span></code> class implements a min heap in Python. In order to implement a max heap, multiply values that you add into the heap by -1 and do the same when extracting values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">elements</span><span class="o">...</span><span class="p">]</span> <span class="c1"># Can be any iterable</span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># Makes the variable a into a min heap</span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">)</span> <span class="c1"># Adds &lt;value&gt; into the min heap</span>
-
-<span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Access min value </span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># Removes the min value</span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">heappushpop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">)</span> <span class="c1"># Removes the min value and adds the &lt;value&gt; to the heap</span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># Removes the n largest elements in heap depending on key if specified</span>
-
-<span class="n">heapq</span><span class="o">.</span><span class="n">nsmallest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># Removes the n smallest elements in heap depending on key if specified</span>
+<p>Heaps are useful for repeatedly accessing and removing the smallest item. Python’s <code class="docutils literal notranslate"><span class="pre">heapq</span></code> module implements a min-heap using a regular list.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">heap</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="linenos"> 4</span><span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>  <span class="c1"># Mutates the list into a heap in O(n).</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">smallest</span> <span class="o">=</span> <span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>          <span class="c1"># Peek without removing: 1</span>
+<span class="linenos"> 8</span><span class="n">smallest</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span>  <span class="c1"># Remove and return: 1</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1"># Push first, then pop and return the smallest item.</span>
+<span class="linenos">11</span><span class="n">removed</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappushpop</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1"># Return new lists without modifying heap.</span>
+<span class="linenos">14</span><span class="n">largest_two</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">heap</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">smallest_two</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nsmallest</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">heap</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For a max-heap of numeric priorities, negate values when pushing and negate them again when popping:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+
+<span class="n">max_heap</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">max_heap</span><span class="p">,</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
+<span class="n">largest</span> <span class="o">=</span> <span class="o">-</span><span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">max_heap</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For items with a priority, push tuples such as <code class="docutils literal notranslate"><span class="pre">(priority,</span> <span class="pre">value)</span></code>. Python compares tuple fields from left to right. If equal priorities may pair with values that cannot be compared, add a unique counter as the second tuple field.</p>
+<p><code class="docutils literal notranslate"><span class="pre">heappushpop(heap,</span> <span class="pre">item)</span></code> pushes and then pops efficiently. <code class="docutils literal notranslate"><span class="pre">heapreplace(heap,</span> <span class="pre">item)</span></code> pops first and then pushes, so it requires a non-empty heap and may return an item larger than the new one.</p>
 <section id="runtime-of-a-heap">
 <h3>Runtime of a Heap<a class="headerlink" href="#runtime-of-a-heap" title="Link to this heading">#</a></h3>
-<p>The runtime of operations for a heap are not self explanatory, so here is a table about them.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Operation</p></th>
@@ -534,14 +541,26 @@ They can also be used to extract elements in a sorted fashion.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Adding (Pushing)</p></td>
-<td><p>O(logN)</p></td>
+<tr class="row-even"><td><p>Peek at <code class="docutils literal notranslate"><span class="pre">heap[0]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(1)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Popping (Removing)</p></td>
-<td><p>O(logN)</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heapify()</span></code> a list of <code class="docutils literal notranslate"><span class="pre">n</span></code> items</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Add N elements</p></td>
-<td><p>O(NlogN)</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heappush()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heappop()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heappushpop()</span></code> or <code class="docutils literal notranslate"><span class="pre">heapreplace()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Push <code class="docutils literal notranslate"><span class="pre">n</span></code> items one at a time</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nlargest(k,</span> <span class="pre">iterable)</span></code> or <code class="docutils literal notranslate"><span class="pre">nsmallest(k,</span> <span class="pre">iterable)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">k)</span></code></p></td>
 </tr>
 </tbody>
 </table>
