@@ -10,23 +10,23 @@ The following table is a rough guide for interview problems. Actual limits depen
 
 | Maximum input size | Complexity that may be feasible | Common approaches |
 |---|---|---|
-| `n <= 10` | `O(n!)` | Generate permutations, exhaustive search |
-| `n <= 20` | `O(2^n)` | Subsets, backtracking, bitmask DP |
-| `n <= 100` | `O(n^3)` | Floyd–Warshall, interval DP |
-| `n <= 2,000` | `O(n^2)` | Compare pairs, 2D DP |
-| `n <= 200,000` | `O(n log n)` | Sorting, heaps, balanced trees |
-| `n <= 1,000,000` | `O(n)` | Hashing, counting, one-pass scans |
+| `n <= 10^1` | `O(n!)` | Generate permutations, exhaustive search |
+| `n <= 2 * 10^1` | `O(2^n)` | Subsets, backtracking, bitmask DP |
+| `n <= 10^2` | `O(n^3)` | Floyd–Warshall, interval DP |
+| `n <= 2 * 10^3` | `O(n^2)` | Compare pairs, 2D DP |
+| `n <= 2 * 10^5` | `O(n log n)` | Sorting, heaps, balanced trees |
+| `n <= 10^6` | `O(n)` | Hashing, counting, one-pass scans |
 | `n` near `10^9` or larger | `O(log n)` or `O(1)` | Binary search, math, formulas |
 
-These are not guarantees. For example, a simple `O(n^2)` loop may work for a few thousand elements, while an `O(n^2)` algorithm that creates large objects at every step may not.
+These are not guarantees. For example, a simple `O(n^2)` loop may work when `n` is around `10^3`, while an `O(n^2)` algorithm that creates large objects at every step may not.
 
 ### Estimate the Work
 
 Substitute the maximum constraint into the complexity:
 
-- If `n = 200,000`, then `n^2` is about `4 * 10^10` operations and is far too slow.
+- If `n = 2 * 10^5`, then `n^2` is about `4 * 10^10` operations and is far too slow.
 - For the same input, `n log2(n)` is about `3.5 * 10^6`, which is much more realistic.
-- If `n = 20`, then `2^n` is about one million, so subset enumeration may be intended.
+- If `n = 2 * 10^1`, then `2^n` is about `10^6`, so subset enumeration may be intended.
 
 The constraints do not prove which algorithm to use, but they establish a target complexity.
 
@@ -34,7 +34,7 @@ The constraints do not prove which algorithm to use, but they establish a target
 
 Suppose the problem asks whether an array contains two values that add to a target.
 
-If `n <= 1,000`, checking every pair requires about one million comparisons and may be acceptable:
+If `n <= 10^3`, checking every pair requires about `10^6` comparisons and may be acceptable:
 
 ```python
 for i in range(len(nums)):
@@ -43,7 +43,7 @@ for i in range(len(nums)):
             return True
 ```
 
-If `n <= 200,000`, the same `O(n^2)` approach is not viable. The constraint suggests an `O(n)` hash set or an `O(n log n)` sort followed by two pointers:
+If `n <= 2 * 10^5`, the same `O(n^2)` approach is not viable. The constraint suggests an `O(n)` hash set or an `O(n log n)` sort followed by two pointers:
 
 ```{code-block} python
 ---
@@ -71,7 +71,7 @@ When a problem has multiple inputs, analyze their combined effect rather than lo
 - An `R x C` matrix contains `RC` cells, so visiting every cell is `O(RC)`.
 - An algorithm that performs `k` work for every element is `O(nk)`. A small bound on `k` may make this practical.
 
-Also read constraints across test cases. If there are `t` test cases, `n <= 100,000` for each case sounds large. However, a statement such as “the sum of `n` over all test cases does not exceed `200,000`” means an `O(n log n)` solution per case is usually intended.
+Also read constraints across test cases. If there are `t` test cases, `n <= 10^5` for each case sounds large. However, a statement such as “the sum of `n` over all test cases does not exceed `2 * 10^5`” means an `O(n log n)` solution per case is usually intended.
 
 ## Value Constraints Suggest Data Structures
 
@@ -79,7 +79,7 @@ The range of the values can matter as much as the number of values.
 
 ### Small Value Range
 
-If every value is between `0` and `100`, a fixed frequency array may be simpler and faster than a hash map:
+If every value is between `0` and `10^2`, a fixed frequency array may be simpler and faster than a hash map:
 
 ```python
 frequency = [0] * 101
@@ -97,8 +97,8 @@ If coordinates can be as large as `10^9` but there are only `10^5` intervals or 
 
 A small secondary parameter often belongs in the state:
 
-- `k <= 20` may allow subset enumeration or bitmask DP.
-- `k <= 100` may allow `O(nk)` dynamic programming.
+- `k <= 2 * 10^1` may allow subset enumeration or bitmask DP.
+- `k <= 10^2` may allow `O(nk)` dynamic programming.
 - A small number of coupons, stops, or removed obstacles may become an extra graph state.
 
 ## Structural Constraints Suggest Algorithms
@@ -122,7 +122,7 @@ Constraints can also reveal edge cases. Allowing negative numbers may break a sl
 
 An algorithm can be fast enough and still use too much memory.
 
-For `V = 100,000`, an adjacency matrix contains `10^10` entries and is infeasible. An adjacency list uses `O(V + E)` space and stores only edges that exist.
+For `V = 10^5`, an adjacency matrix contains `10^10` entries and is infeasible. An adjacency list uses `O(V + E)` space and stores only edges that exist.
 
 Similarly:
 
@@ -131,7 +131,7 @@ Similarly:
 - recursion depth may be unsafe for a long linked list, tree, or graph in Python;
 - generating every answer requires at least enough time and space to represent the output.
 
-Always distinguish between the input size and the value range. An array of `100,000` numbers whose values reach `10^9` needs `O(n)` storage, not an array of size `10^9`.
+Always distinguish between the input size and the value range. An array of `10^5` numbers whose values reach `10^9` needs `O(n)` storage, not an array of size `10^9`.
 
 ## A Constraint-Driven Workflow
 

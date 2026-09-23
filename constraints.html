@@ -465,27 +465,27 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10^1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(n!)</span></code></p></td>
 <td><p>Generate permutations, exhaustive search</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">20</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(2^n)</span></code></p></td>
 <td><p>Subsets, backtracking, bitmask DP</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">100</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10^2</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(n^3)</span></code></p></td>
 <td><p>Floyd–Warshall, interval DP</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">2,000</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^3</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code></p></td>
 <td><p>Compare pairs, 2D DP</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">200,000</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^5</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code></p></td>
 <td><p>Sorting, heaps, balanced trees</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">1,000,000</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10^6</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code></p></td>
 <td><p>Hashing, counting, one-pass scans</p></td>
 </tr>
@@ -496,14 +496,14 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>These are not guarantees. For example, a simple <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> loop may work for a few thousand elements, while an <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> algorithm that creates large objects at every step may not.</p>
+<p>These are not guarantees. For example, a simple <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> loop may work when <code class="docutils literal notranslate"><span class="pre">n</span></code> is around <code class="docutils literal notranslate"><span class="pre">10^3</span></code>, while an <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> algorithm that creates large objects at every step may not.</p>
 <section id="estimate-the-work">
 <h3>Estimate the Work<a class="headerlink" href="#estimate-the-work" title="Link to this heading">#</a></h3>
 <p>Substitute the maximum constraint into the complexity:</p>
 <ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">200,000</span></code>, then <code class="docutils literal notranslate"><span class="pre">n^2</span></code> is about <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">*</span> <span class="pre">10^10</span></code> operations and is far too slow.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^5</span></code>, then <code class="docutils literal notranslate"><span class="pre">n^2</span></code> is about <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">*</span> <span class="pre">10^10</span></code> operations and is far too slow.</p></li>
 <li><p>For the same input, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">log2(n)</span></code> is about <code class="docutils literal notranslate"><span class="pre">3.5</span> <span class="pre">*</span> <span class="pre">10^6</span></code>, which is much more realistic.</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">20</span></code>, then <code class="docutils literal notranslate"><span class="pre">2^n</span></code> is about one million, so subset enumeration may be intended.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^1</span></code>, then <code class="docutils literal notranslate"><span class="pre">2^n</span></code> is about <code class="docutils literal notranslate"><span class="pre">10^6</span></code>, so subset enumeration may be intended.</p></li>
 </ul>
 <p>The constraints do not prove which algorithm to use, but they establish a target complexity.</p>
 </section>
@@ -511,14 +511,14 @@ document.write(`
 <section id="example-two-sum">
 <h2>Example: Two Sum<a class="headerlink" href="#example-two-sum" title="Link to this heading">#</a></h2>
 <p>Suppose the problem asks whether an array contains two values that add to a target.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">1,000</span></code>, checking every pair requires about one million comparisons and may be acceptable:</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10^3</span></code>, checking every pair requires about <code class="docutils literal notranslate"><span class="pre">10^6</span></code> comparisons and may be acceptable:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 </div>
-<p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">200,000</span></code>, the same <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> approach is not viable. The constraint suggests an <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> hash set or an <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> sort followed by two pointers:</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^5</span></code>, the same <code class="docutils literal notranslate"><span class="pre">O(n^2)</span></code> approach is not viable. The constraint suggests an <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> hash set or an <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> sort followed by two pointers:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span><span class="w"> </span><span class="nf">has_pair_with_sum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
 <span class="linenos">2</span>    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="linenos">3</span>
@@ -541,14 +541,14 @@ document.write(`
 <li><p>An <code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">x</span> <span class="pre">C</span></code> matrix contains <code class="docutils literal notranslate"><span class="pre">RC</span></code> cells, so visiting every cell is <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code>.</p></li>
 <li><p>An algorithm that performs <code class="docutils literal notranslate"><span class="pre">k</span></code> work for every element is <code class="docutils literal notranslate"><span class="pre">O(nk)</span></code>. A small bound on <code class="docutils literal notranslate"><span class="pre">k</span></code> may make this practical.</p></li>
 </ul>
-<p>Also read constraints across test cases. If there are <code class="docutils literal notranslate"><span class="pre">t</span></code> test cases, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">100,000</span></code> for each case sounds large. However, a statement such as “the sum of <code class="docutils literal notranslate"><span class="pre">n</span></code> over all test cases does not exceed <code class="docutils literal notranslate"><span class="pre">200,000</span></code>” means an <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> solution per case is usually intended.</p>
+<p>Also read constraints across test cases. If there are <code class="docutils literal notranslate"><span class="pre">t</span></code> test cases, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&lt;=</span> <span class="pre">10^5</span></code> for each case sounds large. However, a statement such as “the sum of <code class="docutils literal notranslate"><span class="pre">n</span></code> over all test cases does not exceed <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^5</span></code>” means an <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> solution per case is usually intended.</p>
 </section>
 <section id="value-constraints-suggest-data-structures">
 <h2>Value Constraints Suggest Data Structures<a class="headerlink" href="#value-constraints-suggest-data-structures" title="Link to this heading">#</a></h2>
 <p>The range of the values can matter as much as the number of values.</p>
 <section id="small-value-range">
 <h3>Small Value Range<a class="headerlink" href="#small-value-range" title="Link to this heading">#</a></h3>
-<p>If every value is between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">100</span></code>, a fixed frequency array may be simpler and faster than a hash map:</p>
+<p>If every value is between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">10^2</span></code>, a fixed frequency array may be simpler and faster than a hash map:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">frequency</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">101</span>
 <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
     <span class="n">frequency</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -564,8 +564,8 @@ document.write(`
 <h3>Small Parameters<a class="headerlink" href="#small-parameters" title="Link to this heading">#</a></h3>
 <p>A small secondary parameter often belongs in the state:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&lt;=</span> <span class="pre">20</span></code> may allow subset enumeration or bitmask DP.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&lt;=</span> <span class="pre">100</span></code> may allow <code class="docutils literal notranslate"><span class="pre">O(nk)</span></code> dynamic programming.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">10^1</span></code> may allow subset enumeration or bitmask DP.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&lt;=</span> <span class="pre">10^2</span></code> may allow <code class="docutils literal notranslate"><span class="pre">O(nk)</span></code> dynamic programming.</p></li>
 <li><p>A small number of coupons, stops, or removed obstacles may become an extra graph state.</p></li>
 </ul>
 </section>
@@ -612,7 +612,7 @@ document.write(`
 <section id="space-constraints-matter-too">
 <h2>Space Constraints Matter Too<a class="headerlink" href="#space-constraints-matter-too" title="Link to this heading">#</a></h2>
 <p>An algorithm can be fast enough and still use too much memory.</p>
-<p>For <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">=</span> <span class="pre">100,000</span></code>, an adjacency matrix contains <code class="docutils literal notranslate"><span class="pre">10^10</span></code> entries and is infeasible. An adjacency list uses <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> space and stores only edges that exist.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">=</span> <span class="pre">10^5</span></code>, an adjacency matrix contains <code class="docutils literal notranslate"><span class="pre">10^10</span></code> entries and is infeasible. An adjacency list uses <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code> space and stores only edges that exist.</p>
 <p>Similarly:</p>
 <ul class="simple">
 <li><p>a 2D DP table uses <code class="docutils literal notranslate"><span class="pre">O(nm)</span></code> space even when its runtime is acceptable;</p></li>
@@ -620,7 +620,7 @@ document.write(`
 <li><p>recursion depth may be unsafe for a long linked list, tree, or graph in Python;</p></li>
 <li><p>generating every answer requires at least enough time and space to represent the output.</p></li>
 </ul>
-<p>Always distinguish between the input size and the value range. An array of <code class="docutils literal notranslate"><span class="pre">100,000</span></code> numbers whose values reach <code class="docutils literal notranslate"><span class="pre">10^9</span></code> needs <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> storage, not an array of size <code class="docutils literal notranslate"><span class="pre">10^9</span></code>.</p>
+<p>Always distinguish between the input size and the value range. An array of <code class="docutils literal notranslate"><span class="pre">10^5</span></code> numbers whose values reach <code class="docutils literal notranslate"><span class="pre">10^9</span></code> needs <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> storage, not an array of size <code class="docutils literal notranslate"><span class="pre">10^9</span></code>.</p>
 </section>
 <section id="a-constraint-driven-workflow">
 <h2>A Constraint-Driven Workflow<a class="headerlink" href="#a-constraint-driven-workflow" title="Link to this heading">#</a></h2>
