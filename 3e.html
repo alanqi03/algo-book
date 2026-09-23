@@ -423,8 +423,28 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-are-some-tips">Here are some tips:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-by-start-time">1. Sort by Start Time</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-it">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-merge-intervals">Example: Merge Intervals</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-by-end-time">2. Sort by End Time</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-maximum-number-of-non-overlapping-intervals">Example: Maximum Number of Non-Overlapping Intervals</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-line-algorithm">3. Sweep-Line Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-minimum-number-of-meeting-rooms">Example: Minimum Number of Meeting Rooms</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-an-approach">Choosing an Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Sort by Start Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Sort by End Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-line">Sweep Line</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -438,24 +458,200 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="intervals">
 <h1>Intervals<a class="headerlink" href="#intervals" title="Link to this heading">#</a></h1>
-<p>This section will go over interval problems, e.g. <code class="docutils literal notranslate"><span class="pre">[[x1,</span> <span class="pre">y1],</span> <span class="pre">[x2,</span> <span class="pre">y2],</span> <span class="pre">..]</span></code></p>
-<section id="here-are-some-tips">
-<h2>Here are some tips:<a class="headerlink" href="#here-are-some-tips" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Sorting the list of intervals will order the intervals by starting elements, a[0], which can simplify many interval questions.</p></li>
-<li><p>When you are merging intervals together and dealing with an output array/space, you can easily just modify the last interval in the output array by changing the end # to the max(output[-1][1], interval[1]) if the interval is overlapping.</p></li>
-<li><p>For any overlapping intervals, either compare to previous interval stored in some array, or indexed, or compare to next interval.</p></li>
-<li><p>For intersections, the interval with the smallest endpoint should be discarded (moved to the next one). For maximal non-overlapping, keep the interval with the smallest endpoint.</p></li>
-</ol>
+<p>Interval problems usually represent a range as <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">end]</span></code>. Three of the most useful approaches are:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>When to use it</p></th>
+<th class="head"><p>Common examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sort by start time</p></td>
+<td><p>Process intervals from left to right and combine or compare overlapping ranges</p></td>
+<td><p>Merge Intervals, Insert Interval, Meeting Rooms</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sort by end time</p></td>
+<td><p>Greedily keep the interval that finishes earliest</p></td>
+<td><p>Non-overlapping Intervals, Activity Selection, Minimum Number of Arrows</p></td>
+</tr>
+<tr class="row-even"><td><p>Sweep line with <code class="docutils literal notranslate"><span class="pre">(event,</span> <span class="pre">delta)</span></code></p></td>
+<td><p>Track how many intervals are active as boundaries are crossed</p></td>
+<td><p>Meeting Rooms II, Maximum Overlap, Car Pooling</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Always decide what happens when one interval ends exactly when another begins. For scheduling problems, intervals are commonly treated as half-open ranges <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">end)</span></code>, so <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3)</span></code> and <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">5)</span></code> do not overlap. Other problems may treat both endpoints as included.</p>
+<section id="sort-by-start-time">
+<h2>1. Sort by Start Time<a class="headerlink" href="#sort-by-start-time" title="Link to this heading">#</a></h2>
+<section id="when-to-use-it">
+<h3>When to Use It<a class="headerlink" href="#when-to-use-it" title="Link to this heading">#</a></h3>
+<p>Sort by start time when intervals should be processed from left to right. This is especially useful when:</p>
+<ul class="simple">
+<li><p>overlapping intervals must be merged;</p></li>
+<li><p>each interval only needs to be compared with the previous interval;</p></li>
+<li><p>a new interval must be inserted into an existing set of intervals;</p></li>
+<li><p>you only need to determine whether any overlap exists.</p></li>
+</ul>
+<p>After sorting, an interval can only overlap the last interval already added to the result. This gives a useful invariant: the output contains all merged intervals seen so far, and its last interval is the only one that might overlap the current interval.</p>
+</section>
+<section id="example-merge-intervals">
+<h3>Example: Merge Intervals<a class="headerlink" href="#example-merge-intervals" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">merge_intervals</span><span class="p">(</span><span class="n">intervals</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">intervals</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="p">[]</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">intervals</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
+<span class="linenos"> 6</span>    <span class="n">merged</span> <span class="o">=</span> <span class="p">[</span><span class="n">intervals</span><span class="p">[</span><span class="mi">0</span><span class="p">][:]]</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+<span class="linenos"> 9</span>        <span class="n">previous_end</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">previous_end</span><span class="p">:</span>
+<span class="linenos">12</span>            <span class="n">merged</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">previous_end</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="linenos">13</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">14</span>            <span class="n">merged</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="k">return</span> <span class="n">merged</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="n">intervals</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">]]</span>
+<span class="linenos">20</span><span class="nb">print</span><span class="p">(</span><span class="n">merge_intervals</span><span class="p">(</span><span class="n">intervals</span><span class="p">))</span>
+<span class="linenos">21</span><span class="c1"># [[1, 6], [8, 12]]</span>
+</pre></div>
+</div>
+<p>The condition <code class="docutils literal notranslate"><span class="pre">start</span> <span class="pre">&lt;=</span> <span class="pre">previous_end</span></code> treats touching endpoints as overlapping. Change it to <code class="docutils literal notranslate"><span class="pre">start</span> <span class="pre">&lt;</span> <span class="pre">previous_end</span></code> when working with half-open intervals that should remain separate when one ends exactly as another begins.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> for sorting, followed by an <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> scan.</p></li>
+<li><p><strong>Space:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> for the sorted copy and output.</p></li>
+</ul>
+</section>
+</section>
+<section id="sort-by-end-time">
+<h2>2. Sort by End Time<a class="headerlink" href="#sort-by-end-time" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>When to Use It<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Sort by end time when the goal is to select as many non-overlapping intervals as possible. The greedy choice is to keep the interval that ends earliest because it leaves the most room for future intervals.</p>
+<p>This approach is useful for:</p>
+<ul class="simple">
+<li><p>finding the maximum number of compatible intervals;</p></li>
+<li><p>finding the minimum number of intervals to remove;</p></li>
+<li><p>scheduling the most meetings or activities;</p></li>
+<li><p>choosing the minimum number of arrows needed to cover balloon intervals.</p></li>
+</ul>
+</section>
+<section id="example-maximum-number-of-non-overlapping-intervals">
+<h3>Example: Maximum Number of Non-Overlapping Intervals<a class="headerlink" href="#example-maximum-number-of-non-overlapping-intervals" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">max_non_overlapping</span><span class="p">(</span><span class="n">intervals</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">intervals</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">interval</span><span class="p">:</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="linenos"> 3</span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 4</span>    <span class="n">previous_end</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"-inf"</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">:</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">previous_end</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos"> 9</span>            <span class="n">previous_end</span> <span class="o">=</span> <span class="n">end</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="k">return</span> <span class="n">count</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">intervals</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="linenos">15</span><span class="nb">print</span><span class="p">(</span><span class="n">max_non_overlapping</span><span class="p">(</span><span class="n">intervals</span><span class="p">))</span>  <span class="c1"># 3</span>
+</pre></div>
+</div>
+<p>For half-open intervals, <code class="docutils literal notranslate"><span class="pre">start</span> <span class="pre">&gt;=</span> <span class="pre">previous_end</span></code> allows one interval to start when the previous one ends. If touching endpoints count as overlapping, use <code class="docutils literal notranslate"><span class="pre">start</span> <span class="pre">&gt;</span> <span class="pre">previous_end</span></code> instead.</p>
+<p>The minimum number of intervals to remove is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span> <span class="o">-</span> <span class="n">max_non_overlapping</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> for sorting, followed by an <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> scan.</p></li>
+<li><p><strong>Space:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> for the sorted copy.</p></li>
+</ul>
+</section>
+</section>
+<section id="sweep-line-algorithm">
+<h2>3. Sweep-Line Algorithm<a class="headerlink" href="#sweep-line-algorithm" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>When to Use It<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Use a sweep line when the answer depends on how many intervals are active at each point. Convert every interval into two events:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(start,</span> <span class="pre">+1)</span></code> because an interval becomes active;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(end,</span> <span class="pre">-1)</span></code> because an interval stops being active.</p></li>
+</ul>
+<p>Sort the events and process them from left to right while maintaining a running total. This is useful for:</p>
+<ul class="simple">
+<li><p>finding the maximum number of overlapping intervals;</p></li>
+<li><p>calculating the minimum number of meeting rooms;</p></li>
+<li><p>checking whether capacity is exceeded;</p></li>
+<li><p>applying additions or removals over ranges.</p></li>
+</ul>
+</section>
+<section id="example-minimum-number-of-meeting-rooms">
+<h3>Example: Minimum Number of Meeting Rooms<a class="headerlink" href="#example-minimum-number-of-meeting-rooms" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">min_meeting_rooms</span><span class="p">(</span><span class="n">intervals</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">:</span>
+<span class="linenos"> 5</span>        <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos"> 6</span>        <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">end</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">active</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 9</span>    <span class="n">most_active</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">delta</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
+<span class="linenos">12</span>        <span class="n">active</span> <span class="o">+=</span> <span class="n">delta</span>
+<span class="linenos">13</span>        <span class="n">most_active</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">most_active</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="k">return</span> <span class="n">most_active</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="n">meetings</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span>
+<span class="linenos">19</span><span class="nb">print</span><span class="p">(</span><span class="n">min_meeting_rooms</span><span class="p">(</span><span class="n">meetings</span><span class="p">))</span>  <span class="c1"># 2</span>
+</pre></div>
+</div>
+<p>Tuple sorting handles ties correctly for half-open intervals: <code class="docutils literal notranslate"><span class="pre">(time,</span> <span class="pre">-1)</span></code> is processed before <code class="docutils literal notranslate"><span class="pre">(time,</span> <span class="pre">+1)</span></code>, so a room is released before another meeting starts at the same time. If both endpoints are included and touching intervals overlap, start events must be processed before end events instead.</p>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> to sort the <code class="docutils literal notranslate"><span class="pre">2n</span></code> events.</p></li>
+<li><p><strong>Space:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> for the event list.</p></li>
+</ul>
+</section>
+</section>
+<section id="choosing-an-approach">
+<h2>Choosing an Approach<a class="headerlink" href="#choosing-an-approach" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>If the problem asks you to <strong>merge or inspect intervals from left to right</strong>, sort by start time.</p></li>
+<li><p>If the problem asks you to <strong>maximize the number of compatible intervals</strong> or minimize removals, sort by end time.</p></li>
+<li><p>If the problem asks <strong>how many intervals are active</strong> at a time, use a sweep line.</p></li>
+</ul>
 </section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Sort by Start Time<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>Meeting Rooms</p></li>
 <li><p>Merge Intervals</p></li>
 <li><p>Insert Interval</p></li>
-<li><p>Non Overlapping Intervals</p></li>
 </ol>
+</section>
+<section id="id4">
+<h3>Sort by End Time<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Non-overlapping Intervals</p></li>
+<li><p>Minimum Number of Arrows to Burst Balloons</p></li>
+<li><p>Maximum Length of Pair Chain</p></li>
+</ol>
+</section>
+<section id="sweep-line">
+<h3>Sweep Line<a class="headerlink" href="#sweep-line" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Meeting Rooms II</p></li>
+<li><p>Car Pooling</p></li>
+<li><p>My Calendar III</p></li>
+</ol>
+</section>
 </section>
 </section>
 
@@ -523,8 +719,28 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-are-some-tips">Here are some tips:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-by-start-time">1. Sort by Start Time</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-it">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-merge-intervals">Example: Merge Intervals</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-by-end-time">2. Sort by End Time</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-maximum-number-of-non-overlapping-intervals">Example: Maximum Number of Non-Overlapping Intervals</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-line-algorithm">3. Sweep-Line Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">When to Use It</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-minimum-number-of-meeting-rooms">Example: Minimum Number of Meeting Rooms</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-an-approach">Choosing an Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Sort by Start Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Sort by End Time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sweep-line">Sweep Line</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
