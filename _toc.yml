@@ -4,6 +4,7 @@
 format: jb-book
 root: "0"
 chapters:
+- file: "constraints" # Using constraints to infer an approach
 - file: "1"
   sections:
   - file: 1a # built-in functions, numbers, and strings
@@ -47,4 +48,3 @@ chapters:
 - file: "13" # Bit Manipulation
 - file: "14" # Misc
 - file: "15" # Infrastructure Algorithms
-
