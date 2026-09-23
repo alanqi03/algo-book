@@ -531,19 +531,30 @@ document.write(`
 </section>
 <section id="bisect-library">
 <h2>Bisect Library<a class="headerlink" href="#bisect-library" title="Link to this heading">#</a></h2>
-<p>A very powerful library in python, called <code class="docutils literal notranslate"><span class="pre">bisect</span></code>, that has multiple operations utilizing binary search.</p>
+<p>Python’s <code class="docutils literal notranslate"><span class="pre">bisect</span></code> library provides several operations that use binary search:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bisect.bisect_left(a,</span> <span class="pre">x)</span></code> locates the insertion point (index) for x in some list a before any occurrences of x.</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">bisect.bisect(a,</span> <span class="pre">x)</span></code> locates insertion point (index) for x in some list a after all occurrences of x.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bisect.bisect_left(a,</span> <span class="pre">x)</span></code> locates the insertion point for <code class="docutils literal notranslate"><span class="pre">x</span></code> before any existing occurrences of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bisect.bisect_right(a,</span> <span class="pre">x)</span></code> locates the insertion point for <code class="docutils literal notranslate"><span class="pre">x</span></code> after any existing occurrences of <code class="docutils literal notranslate"><span class="pre">x</span></code>. <code class="docutils literal notranslate"><span class="pre">bisect.bisect</span></code> is an alias for this function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bisect.insort_left(a,</span> <span class="pre">x)</span></code> inserts <code class="docutils literal notranslate"><span class="pre">x</span></code> before any existing occurrences of <code class="docutils literal notranslate"><span class="pre">x</span></code> while keeping the list sorted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bisect.insort_right(a,</span> <span class="pre">x)</span></code> inserts <code class="docutils literal notranslate"><span class="pre">x</span></code> after any existing occurrences of <code class="docutils literal notranslate"><span class="pre">x</span></code>. <code class="docutils literal notranslate"><span class="pre">bisect.insort</span></code> is an alias for this function.</p></li>
 </ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bisect.insort_left(a,</span> <span class="pre">x)</span></code> inserts x into a in sorted fashion (before all occurrences of x)</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">bisect.insort(a,</span> <span class="pre">x)</span></code> inserts x into a in sorted fashion (after all occurrences of x)</p></li>
-</ul>
-</li>
-</ul>
+<p>Each function also accepts optional <code class="docutils literal notranslate"><span class="pre">lo</span></code> and <code class="docutils literal notranslate"><span class="pre">hi</span></code> arguments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bisect_left</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">bisect_right</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">insort_left</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">insort_right</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The search is restricted to the half-open range <code class="docutils literal notranslate"><span class="pre">[lo,</span> <span class="pre">hi)</span></code>: <code class="docutils literal notranslate"><span class="pre">lo</span></code> is included and <code class="docutils literal notranslate"><span class="pre">hi</span></code> is excluded. The insertion point is still an index into the original list, not an index relative to the constrained range.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>   <span class="c1"># 2</span>
+<span class="linenos">6</span><span class="n">bisect_right</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># 3</span>
+</pre></div>
+</div>
+<p>When using <code class="docutils literal notranslate"><span class="pre">insort_left</span></code> or <code class="docutils literal notranslate"><span class="pre">insort_right</span></code>, make sure the chosen bounds contain the correct insertion position for <code class="docutils literal notranslate"><span class="pre">x</span></code>. Otherwise, constraining the insertion can break the sorted order of the full list.</p>
 </section>
 <section id="general-tips">
 <h2>General Tips<a class="headerlink" href="#general-tips" title="Link to this heading">#</a></h2>
