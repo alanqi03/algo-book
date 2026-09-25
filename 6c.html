@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Math and Geometry &#8212; Cracking the Technical Interview</title>
+    <title>Advanced: Tree DP &#8212; Cracking the Technical Interview</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -57,13 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '11';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '6c';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Miscellaneous" href="14.html" />
-    <link rel="prev" title="Backtracking" href="10.html" />
+    <link rel="next" title="Graphs" href="7.html" />
+    <link rel="prev" title="Tries" href="6b.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -206,10 +204,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="5.html">Linked Lists</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="6.html">Trees</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="6.html">Trees</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="6a.html">Tree Traversal Strategies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="6c.html">Advanced: Tree DP</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Advanced: Tree DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -229,7 +227,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="10.html">Backtracking</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Math and Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.html">Math and Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="14.html">Miscellaneous</a></li>
 <li class="toctree-l1"><a class="reference internal" href="15.html">Infrastructure Algorithms</a></li>
 </ul>
@@ -303,7 +301,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F11.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F6c.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -333,7 +331,7 @@
       
       
       
-      <li><a href="_sources/11.md" target="_blank"
+      <li><a href="_sources/6c.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -417,7 +415,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Math and Geometry</h1>
+    <h1>Advanced: Tree DP</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -427,16 +425,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-to-know">Math to Know</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting">Counting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combinations">Combinations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elementary-operations">Elementary Operations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-digits">Working with Digits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modular-arithmetic">Modular Arithmetic</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primes-gcd-and-lcm">Primes, GCD, and LCM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry">Geometry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips-and-tricks">General Tips and Tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up-tree-dp-template">Bottom-Up Tree DP Template</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rerooting-dp">Rerooting DP</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
@@ -449,92 +440,123 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="math-and-geometry">
-<h1>Math and Geometry<a class="headerlink" href="#math-and-geometry" title="Link to this heading">#</a></h1>
-<p>This section will go over common math and geometry problems.</p>
-<section id="math-to-know">
-<h2>Math to Know<a class="headerlink" href="#math-to-know" title="Link to this heading">#</a></h2>
-<section id="counting">
-<h3>Counting<a class="headerlink" href="#counting" title="Link to this heading">#</a></h3>
-<p>These counting facts show up constantly, especially when reasoning about brute-force sizes and time complexity:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-tree-dp">
+<h1>Advanced: Tree DP<a class="headerlink" href="#advanced-tree-dp" title="Link to this heading">#</a></h1>
+<p>Tree dynamic programming (tree DP) stores information for each node so that results from smaller subtrees can be combined into results for larger subtrees. Most tree DP solutions use DFS because the recursive call stack naturally represents the parent-child relationship.</p>
+<p>A common state is <code class="docutils literal notranslate"><span class="pre">dp[node]</span> <span class="pre">=</span> <span class="pre">the</span> <span class="pre">answer</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">subtree</span> <span class="pre">rooted</span> <span class="pre">at</span> <span class="pre">node</span></code>. The tree can be rooted at any node (often node <code class="docutils literal notranslate"><span class="pre">0</span></code>), even when the input is an undirected tree.</p>
+<section id="general-tips-and-tricks">
+<h2>General Tips and Tricks<a class="headerlink" href="#general-tips-and-tricks" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>There are <span class="math notranslate nohighlight">\(2^n\)</span> <strong>subsets</strong> (or subsequences) of a set of <span class="math notranslate nohighlight">\(n\)</span> elements — each element is either in or out. This is why generating all subsets is <span class="math notranslate nohighlight">\(O(2^n)\)</span>.</p></li>
-<li><p>There are <span class="math notranslate nohighlight">\(n!\)</span> <strong>permutations</strong> (orderings) of <span class="math notranslate nohighlight">\(n\)</span> distinct elements. Generating all permutations is <span class="math notranslate nohighlight">\(O(n!)\)</span>.</p></li>
-<li><p>There are <span class="math notranslate nohighlight">\(n(n-1)/2\)</span> <strong>pairs</strong> of elements in a set of <span class="math notranslate nohighlight">\(n\)</span>, so a nested loop over all pairs is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p></li>
-<li><p>There are <span class="math notranslate nohighlight">\(n - k + 1\)</span> contiguous <strong>subarrays (windows)</strong> of length <span class="math notranslate nohighlight">\(k\)</span> in an array of length <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p><strong>Define the state precisely.</strong> State whether <code class="docutils literal notranslate"><span class="pre">dp[node]</span></code> describes only the node’s subtree or the entire tree when rooted at that node.</p></li>
+<li><p><strong>Use postorder for bottom-up information.</strong> Visit every child before computing the current node. Examples include subtree size, height, and tree diameter.</p></li>
+<li><p><strong>Use preorder for top-down information.</strong> Compute a child’s state from its parent’s completed state. This is useful when information from outside the child’s subtree matters.</p></li>
+<li><p><strong>Pass the parent.</strong> Skip <code class="docutils literal notranslate"><span class="pre">neighbor</span> <span class="pre">==</span> <span class="pre">parent</span></code> so an undirected edge is not followed backward.</p></li>
+<li><p><strong>Return everything the parent needs.</strong> One DFS can return multiple values, such as <code class="docutils literal notranslate"><span class="pre">(subtree_size,</span> <span class="pre">best_path)</span></code>.</p></li>
+<li><p><strong>Choose clear base cases.</strong> Leaves often contribute a count of <code class="docutils literal notranslate"><span class="pre">1</span></code>, a height of <code class="docutils literal notranslate"><span class="pre">0</span></code>, or another identity value for the transition.</p></li>
+<li><p><strong>Check what is being counted.</strong> A path with <code class="docutils literal notranslate"><span class="pre">k</span></code> nodes has <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">-</span> <span class="pre">1</span></code> edges; many off-by-one errors come from mixing the two definitions.</p></li>
+<li><p><strong>Look for a second pass.</strong> If the answer is needed for every possible root, first solve for one root and then use rerooting DP to move that result to its neighbors.</p></li>
+<li><p><strong>Watch Python’s recursion depth.</strong> A tree can be a long chain, so use an iterative traversal or raise the recursion limit when the constraints are large.</p></li>
 </ul>
 </section>
-<section id="combinations">
-<h3>Combinations<a class="headerlink" href="#combinations" title="Link to this heading">#</a></h3>
-<p>Number of combinations of different elements for different categories:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x * y * z * ...\)</span> where x, y, z, … are the number of different elements corresponding to unique categories.</p></li>
-</ul>
-<p>Permutations: <span class="math notranslate nohighlight">\(\frac{n!}{(n - k)!}\)</span> - strings of length k from alphabet of size n, where characters can not be repeated and order matters.</p>
-<p>Combinations: (n choose k) = <span class="math notranslate nohighlight">\(\frac{n!}{((n - k)! * k!)}\)</span> - form teams of size k from n people, where characters cannot be repeated and order doesn’t matter.</p>
+<section id="bottom-up-tree-dp-template">
+<h2>Bottom-Up Tree DP Template<a class="headerlink" href="#bottom-up-tree-dp-template" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">tree_dp</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">tree</span><span class="p">:</span>
+<span class="linenos"> 3</span>        <span class="k">return</span> <span class="p">[]</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<span class="linenos"> 8</span>        <span class="c1"># Identity value for a subtree containing only this node.</span>
+<span class="linenos"> 9</span>        <span class="n">dp</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">12</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">13</span>                <span class="k">continue</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>            <span class="n">dfs</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+<span class="linenos">16</span>            <span class="n">dp</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>  <span class="c1"># Combine the child's result.</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">19</span>    <span class="k">return</span> <span class="n">dp</span>
+</pre></div>
+</div>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">dp[node]</span></code> is the size of the subtree rooted at <code class="docutils literal notranslate"><span class="pre">node</span></code>. Replace the state and combine operation to fit the problem.</p>
 </section>
-<section id="elementary-operations">
-<h3>Elementary Operations<a class="headerlink" href="#elementary-operations" title="Link to this heading">#</a></h3>
-<p>Both multiplication and addition utilize a <code class="docutils literal notranslate"><span class="pre">carry</span></code>, where if the addition of two numbers is greater than 9, <span class="math notranslate nohighlight">\(a + b &gt; 9\)</span>, then the carry == 1; else, the carry == 0.</p>
+<section id="rerooting-dp">
+<h2>Rerooting DP<a class="headerlink" href="#rerooting-dp" title="Link to this heading">#</a></h2>
+<p>Rerooting DP finds an answer for every node as though each node were the root. A typical solution uses two traversals:</p>
+<ol class="arabic simple">
+<li><p>A postorder DFS calculates subtree information and the answer for one chosen root.</p></li>
+<li><p>A preorder DFS moves, or <em>reroots</em>, that answer from each parent to its children.</p></li>
+</ol>
+<p>For example, suppose <code class="docutils literal notranslate"><span class="pre">answer[node]</span></code> should contain the sum of the distances from <code class="docutils literal notranslate"><span class="pre">node</span></code> to all other nodes. Root the tree at node <code class="docutils literal notranslate"><span class="pre">0</span></code> and first compute:</p>
 <ul class="simple">
-<li><p>If the carry is 1, then you need to add it to the <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> digit (place), given that <code class="docutils literal notranslate"><span class="pre">i</span></code> is the current digit (place) that you are summing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subtree_size[node]</span></code>: the number of nodes in <code class="docutils literal notranslate"><span class="pre">node</span></code>’s subtree.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">answer[0]</span></code>: the sum of every node’s depth from node <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
 </ul>
-<p>Addition over an array can be optimized using the Gauss’ Summation:
-$<span class="math notranslate nohighlight">\(1 + 2 + ... + n = \frac{n(n+1)}{2}\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\(x + (x + 1) + ... + n = \frac{(x - n + 1)(x + n)}{2}\)</span>$</p>
-<p>The power function is inherently recursive:</p>
+<p>When the root moves across an edge from <code class="docutils literal notranslate"><span class="pre">node</span></code> to its child <code class="docutils literal notranslate"><span class="pre">neighbor</span></code>:</p>
 <ul class="simple">
-<li><p>If the power is even, then <span class="math notranslate nohighlight">\(2^x = 2 ^ {(x / 2)} * 2 ^ {(x / 2)}\)</span></p></li>
-<li><p>If the power is odd, then <span class="math notranslate nohighlight">\(2^{(x + 1)} = 2 ^ {(x / 2)} * 2 ^ {(x / 2)} * 2\)</span></p></li>
-<li><p>The base cases are the 0th power and the 1st power.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">subtree_size[neighbor]</span></code> nodes in the child’s subtree become one edge closer.</p></li>
+<li><p>The other <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">subtree_size[neighbor]</span></code> nodes become one edge farther away.</p></li>
 </ul>
-</section>
-<section id="working-with-digits">
-<h3>Working with Digits<a class="headerlink" href="#working-with-digits" title="Link to this heading">#</a></h3>
-<p>To break an integer into its digits without converting to a string:</p>
+<p>Therefore:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>answer[neighbor]
+= answer[node] - subtree_size[neighbor] + (n - subtree_size[neighbor])
+= answer[node] + n - 2 * subtree_size[neighbor]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">sum_of_distances</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""Return the sum of distances from each node to every other node."""</span>
+<span class="linenos"> 3</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 4</span>        <span class="k">return</span> <span class="p">[]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">tree</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="linenos"> 7</span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+<span class="linenos"> 8</span>        <span class="n">tree</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="linenos"> 9</span>        <span class="n">tree</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="n">subtree_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos">12</span>    <span class="n">answer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="c1"># First pass: compute subtree sizes and the distance sum for root 0.</span>
+<span class="linenos">15</span>    <span class="k">def</span><span class="w"> </span><span class="nf">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="linenos">16</span>        <span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">depth</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">19</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">20</span>                <span class="k">continue</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>            <span class="n">postorder</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">23</span>            <span class="n">subtree_size</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">subtree_size</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="c1"># Second pass: derive each child's answer from its parent's answer.</span>
+<span class="linenos">26</span>    <span class="k">def</span><span class="w"> </span><span class="nf">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<span class="linenos">27</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">28</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">29</span>                <span class="k">continue</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>            <span class="n">answer</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+<span class="linenos">32</span>                <span class="n">answer</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">subtree_size</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>
+<span class="linenos">33</span>            <span class="p">)</span>
+<span class="linenos">34</span>            <span class="n">preorder</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>    <span class="n">postorder</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">37</span>    <span class="n">preorder</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">38</span>    <span class="k">return</span> <span class="n">answer</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">6</span></code> and <code class="docutils literal notranslate"><span class="pre">edges</span> <span class="pre">=</span> <span class="pre">[[0,</span> <span class="pre">1],</span> <span class="pre">[0,</span> <span class="pre">2],</span> <span class="pre">[2,</span> <span class="pre">3],</span> <span class="pre">[2,</span> <span class="pre">4],</span> <span class="pre">[2,</span> <span class="pre">5]]</span></code>, the result is <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">12,</span> <span class="pre">6,</span> <span class="pre">10,</span> <span class="pre">10,</span> <span class="pre">10]</span></code>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">%</span> <span class="pre">10</span></code> gives the last (rightmost) digit.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">//</span> <span class="pre">10</span></code> removes the last digit.</p></li>
-<li><p>Repeat until <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">==</span> <span class="pre">0</span></code> to process every digit from right to left.</p></li>
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> because each traversal visits every node and edge once.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> for the adjacency list, arrays, and recursion stack.</p></li>
+<li><p><strong>Key requirement:</strong> The input must be a tree. The parent check alone is not sufficient for a general graph with cycles.</p></li>
 </ul>
-<p>Related facts:</p>
-<ul class="simple">
-<li><p>A number <code class="docutils literal notranslate"><span class="pre">n</span></code> has <span class="math notranslate nohighlight">\(\lfloor \log_{10}(n) \rfloor + 1\)</span> digits (in base 10).</p></li>
-<li><p>Multiplying by 10 shifts digits left (appends a 0); dividing by 10 shifts right.</p></li>
-</ul>
-</section>
-<section id="modular-arithmetic">
-<h3>Modular Arithmetic<a class="headerlink" href="#modular-arithmetic" title="Link to this heading">#</a></h3>
-<p>The modulo operator (<code class="docutils literal notranslate"><span class="pre">%</span></code>) gives the remainder and is useful for wrapping and cycling:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">%</span> <span class="pre">n</span></code> keeps an index in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">n)</span></code>, which is handy for circular arrays.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">%</span> <span class="pre">2</span></code> tests even (<code class="docutils literal notranslate"><span class="pre">0</span></code>) vs. odd (<code class="docutils literal notranslate"><span class="pre">1</span></code>).</p></li>
-<li><p>Modulo distributes over addition and multiplication, so large results can be kept small:
-$<span class="math notranslate nohighlight">\((a + b) \bmod m = ((a \bmod m) + (b \bmod m)) \bmod m\)</span><span class="math notranslate nohighlight">\(
-\)</span><span class="math notranslate nohighlight">\((a * b) \bmod m = ((a \bmod m) * (b \bmod m)) \bmod m\)</span>$</p></li>
-<li><p>Problems that ask for a huge count “modulo <span class="math notranslate nohighlight">\(10^9 + 7\)</span>” want you to apply the mod at each step to avoid overflow.</p></li>
-</ul>
-</section>
-<section id="primes-gcd-and-lcm">
-<h3>Primes, GCD, and LCM<a class="headerlink" href="#primes-gcd-and-lcm" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>A number is <strong>prime</strong> if it has no divisors other than 1 and itself. You only need to check divisors up to <span class="math notranslate nohighlight">\(\sqrt{n}\)</span>, since any factor larger than <span class="math notranslate nohighlight">\(\sqrt{n}\)</span> pairs with one smaller than it.</p></li>
-<li><p>The <strong>greatest common divisor (GCD)</strong> is the largest number dividing two values; Python provides <code class="docutils literal notranslate"><span class="pre">math.gcd(a,</span> <span class="pre">b)</span></code>.</p></li>
-<li><p>The <strong>least common multiple (LCM)</strong> relates to the GCD by <span class="math notranslate nohighlight">\(\text{lcm}(a, b) = \frac{a * b}{\gcd(a, b)}\)</span>.</p></li>
-</ul>
-</section>
-</section>
-<section id="geometry">
-<h2>Geometry<a class="headerlink" href="#geometry" title="Link to this heading">#</a></h2>
 </section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Happy Number</p></li>
-<li><p>Plus One</p></li>
-<li><p>Pow(x, n)</p></li>
-<li><p>Multiply Strings</p></li>
-<li><p>Detect Squares</p></li>
+<li><p>Sum of Distances in Tree</p></li>
 </ol>
 </section>
 </section>
@@ -570,20 +592,20 @@ $<span class="math notranslate nohighlight">\((a + b) \bmod m = ((a \bmod m) + (
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="10.html"
+       href="6b.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Backtracking</p>
+        <p class="prev-next-title">Tries</p>
       </div>
     </a>
     <a class="right-next"
-       href="14.html"
+       href="7.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Miscellaneous</p>
+        <p class="prev-next-title">Graphs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -603,16 +625,9 @@ $<span class="math notranslate nohighlight">\((a + b) \bmod m = ((a \bmod m) + (
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-to-know">Math to Know</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting">Counting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combinations">Combinations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elementary-operations">Elementary Operations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-digits">Working with Digits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modular-arithmetic">Modular Arithmetic</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primes-gcd-and-lcm">Primes, GCD, and LCM</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry">Geometry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-tips-and-tricks">General Tips and Tricks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottom-up-tree-dp-template">Bottom-Up Tree DP Template</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rerooting-dp">Rerooting DP</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>

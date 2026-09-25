@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -207,6 +207,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="6.html">Trees</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Tree Traversal Strategies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="6b.html">Tries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6c.html">Advanced: Tree DP</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="7.html">Graphs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -429,10 +430,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preorder-traversal">Preorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inorder-traversal">Inorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postorder-traversal">Postorder Traversal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-tree-dp">Advanced: Tree DP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rerooting-dp">Rerooting DP</a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
             </nav>
@@ -596,116 +593,6 @@ document.write(`
 <li><p>Useful whenever a parent’s value is aggregated from its children.</p></li>
 </ul>
 </section>
-<section id="advanced-tree-dp">
-<span id="id1"></span><h2>Advanced: Tree DP<a class="headerlink" href="#advanced-tree-dp" title="Link to this heading">#</a></h2>
-<p>Tree dynamic programming (tree DP) stores information for each node so that results from smaller subtrees can be combined into results for larger subtrees. Most tree DP solutions use DFS because the recursive call stack naturally represents the parent-child relationship.</p>
-<p>A common state is <code class="docutils literal notranslate"><span class="pre">dp[node]</span> <span class="pre">=</span> <span class="pre">the</span> <span class="pre">answer</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">subtree</span> <span class="pre">rooted</span> <span class="pre">at</span> <span class="pre">node</span></code>. The tree can be rooted at any node (often node <code class="docutils literal notranslate"><span class="pre">0</span></code>), even when the input is an undirected tree.</p>
-<p>General tips and tricks:</p>
-<ul class="simple">
-<li><p><strong>Define the state precisely.</strong> State whether <code class="docutils literal notranslate"><span class="pre">dp[node]</span></code> describes only the node’s subtree or the entire tree when rooted at that node.</p></li>
-<li><p><strong>Use postorder for bottom-up information.</strong> Visit every child before computing the current node. Examples include subtree size, height, and tree diameter.</p></li>
-<li><p><strong>Use preorder for top-down information.</strong> Compute a child’s state from its parent’s completed state. This is useful when information from outside the child’s subtree matters.</p></li>
-<li><p><strong>Pass the parent.</strong> Skip <code class="docutils literal notranslate"><span class="pre">neighbor</span> <span class="pre">==</span> <span class="pre">parent</span></code> so an undirected edge is not followed backward.</p></li>
-<li><p><strong>Return everything the parent needs.</strong> One DFS can return multiple values, such as <code class="docutils literal notranslate"><span class="pre">(subtree_size,</span> <span class="pre">best_path)</span></code>.</p></li>
-<li><p><strong>Choose clear base cases.</strong> Leaves often contribute a count of <code class="docutils literal notranslate"><span class="pre">1</span></code>, a height of <code class="docutils literal notranslate"><span class="pre">0</span></code>, or another identity value for the transition.</p></li>
-<li><p><strong>Check what is being counted.</strong> A path with <code class="docutils literal notranslate"><span class="pre">k</span></code> nodes has <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">-</span> <span class="pre">1</span></code> edges; many off-by-one errors come from mixing the two definitions.</p></li>
-<li><p><strong>Look for a second pass.</strong> If the answer is needed for every possible root, first solve for one root and then use rerooting DP to move that result to its neighbors.</p></li>
-<li><p><strong>Watch Python’s recursion depth.</strong> A tree can be a long chain, so use an iterative traversal or raise the recursion limit when the constraints are large.</p></li>
-</ul>
-<p>A basic bottom-up template is:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">tree_dp</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="linenos"> 2</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">tree</span><span class="p">:</span>
-<span class="linenos"> 3</span>        <span class="k">return</span> <span class="p">[]</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-<span class="linenos"> 8</span>        <span class="c1"># Identity value for a subtree containing only this node.</span>
-<span class="linenos"> 9</span>        <span class="n">dp</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
-<span class="linenos">12</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
-<span class="linenos">13</span>                <span class="k">continue</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span>            <span class="n">dfs</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-<span class="linenos">16</span>            <span class="n">dp</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>  <span class="c1"># Combine the child's result.</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>    <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="linenos">19</span>    <span class="k">return</span> <span class="n">dp</span>
-</pre></div>
-</div>
-<p>In this example, <code class="docutils literal notranslate"><span class="pre">dp[node]</span></code> is the size of the subtree rooted at <code class="docutils literal notranslate"><span class="pre">node</span></code>. Replace the state and combine operation to fit the problem.</p>
-<section id="rerooting-dp">
-<span id="id2"></span><h3>Rerooting DP<a class="headerlink" href="#rerooting-dp" title="Link to this heading">#</a></h3>
-<p>Rerooting DP finds an answer for every node as though each node were the root. A typical solution uses two traversals:</p>
-<ol class="arabic simple">
-<li><p>A postorder DFS calculates subtree information and the answer for one chosen root.</p></li>
-<li><p>A preorder DFS moves, or <em>reroots</em>, that answer from each parent to its children.</p></li>
-</ol>
-<p>For example, suppose <code class="docutils literal notranslate"><span class="pre">answer[node]</span></code> should contain the sum of the distances from <code class="docutils literal notranslate"><span class="pre">node</span></code> to all other nodes. Root the tree at node <code class="docutils literal notranslate"><span class="pre">0</span></code> and first compute:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">subtree_size[node]</span></code>: the number of nodes in <code class="docutils literal notranslate"><span class="pre">node</span></code>’s subtree.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">answer[0]</span></code>: the sum of every node’s depth from node <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-</ul>
-<p>When the root moves across an edge from <code class="docutils literal notranslate"><span class="pre">node</span></code> to its child <code class="docutils literal notranslate"><span class="pre">neighbor</span></code>:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">subtree_size[neighbor]</span></code> nodes in the child’s subtree become one edge closer.</p></li>
-<li><p>The other <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">subtree_size[neighbor]</span></code> nodes become one edge farther away.</p></li>
-</ul>
-<p>Therefore:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>answer[neighbor]
-= answer[node] - subtree_size[neighbor] + (n - subtree_size[neighbor])
-= answer[node] + n - 2 * subtree_size[neighbor]
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">sum_of_distances</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""Return the sum of distances from each node to every other node."""</span>
-<span class="linenos"> 3</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="linenos"> 4</span>        <span class="k">return</span> <span class="p">[]</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span>    <span class="n">tree</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-<span class="linenos"> 7</span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-<span class="linenos"> 8</span>        <span class="n">tree</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="linenos"> 9</span>        <span class="n">tree</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span>    <span class="n">subtree_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos">12</span>    <span class="n">answer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos">13</span>
-<span class="linenos">14</span>    <span class="c1"># First pass: compute subtree sizes and the distance sum for root 0.</span>
-<span class="linenos">15</span>    <span class="k">def</span><span class="w"> </span><span class="nf">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
-<span class="linenos">16</span>        <span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">depth</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
-<span class="linenos">19</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
-<span class="linenos">20</span>                <span class="k">continue</span>
-<span class="linenos">21</span>
-<span class="linenos">22</span>            <span class="n">postorder</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">23</span>            <span class="n">subtree_size</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+=</span> <span class="n">subtree_size</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>
-<span class="linenos">24</span>
-<span class="linenos">25</span>    <span class="c1"># Second pass: derive each child's answer from its parent's answer.</span>
-<span class="linenos">26</span>    <span class="k">def</span><span class="w"> </span><span class="nf">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-<span class="linenos">27</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
-<span class="linenos">28</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
-<span class="linenos">29</span>                <span class="k">continue</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span>            <span class="n">answer</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-<span class="linenos">32</span>                <span class="n">answer</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">subtree_size</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span>
-<span class="linenos">33</span>            <span class="p">)</span>
-<span class="linenos">34</span>            <span class="n">preorder</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span>    <span class="n">postorder</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="linenos">37</span>    <span class="n">preorder</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="linenos">38</span>    <span class="k">return</span> <span class="n">answer</span>
-</pre></div>
-</div>
-<p>For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">6</span></code> and <code class="docutils literal notranslate"><span class="pre">edges</span> <span class="pre">=</span> <span class="pre">[[0,</span> <span class="pre">1],</span> <span class="pre">[0,</span> <span class="pre">2],</span> <span class="pre">[2,</span> <span class="pre">3],</span> <span class="pre">[2,</span> <span class="pre">4],</span> <span class="pre">[2,</span> <span class="pre">5]]</span></code>, the result is <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">12,</span> <span class="pre">6,</span> <span class="pre">10,</span> <span class="pre">10,</span> <span class="pre">10]</span></code>.</p>
-<ul class="simple">
-<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> because each traversal visits every node and edge once.</p></li>
-<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> for the adjacency list, arrays, and recursion stack.</p></li>
-<li><p><strong>Key requirement:</strong> The input must be a tree. The parent check alone is not sufficient for a general graph with cycles.</p></li>
-</ul>
-</section>
-</section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
@@ -722,7 +609,6 @@ document.write(`
 <li><p>Validate Binary Search Tree</p></li>
 <li><p>Kth Smallest Element In a Bst</p></li>
 <li><p>Construct Binary Tree From Preorder And Inorder Traversal</p></li>
-<li><p>Sum of Distances in Tree</p></li>
 </ol>
 </section>
 </section>
@@ -796,10 +682,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preorder-traversal">Preorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inorder-traversal">Inorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postorder-traversal">Postorder Traversal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-tree-dp">Advanced: Tree DP</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rerooting-dp">Rerooting DP</a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
 </ul>
   </nav></div>
