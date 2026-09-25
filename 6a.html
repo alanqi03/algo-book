@@ -443,36 +443,58 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tree-traversal-strategies">
 <h1>Tree Traversal Strategies<a class="headerlink" href="#tree-traversal-strategies" title="Link to this heading">#</a></h1>
-<p>This section will go over the different tree traversal strategies to solve tree problems.</p>
+<p>This section covers different tree traversal strategies for solving tree problems.</p>
 <section id="breadth-first-search">
 <h2>Breadth First Search<a class="headerlink" href="#breadth-first-search" title="Link to this heading">#</a></h2>
-<p>This tree traversal goes level by level from top to bottom of the tree.</p>
-<ul class="simple">
-<li><p>Uses a queue</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">BFS</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
-    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
-    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
-        <span class="o">//</span><span class="n">do</span> <span class="n">pre</span><span class="o">-</span><span class="n">processing</span> <span class="n">of</span> <span class="n">queue</span>
-        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
-        <span class="o">//</span><span class="n">do</span> <span class="n">post</span><span class="o">-</span><span class="n">processing</span> <span class="n">of</span> <span class="n">node</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-            <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<p>Breadth-first search visits a tree level by level using a queue. In an undirected adjacency list, each edge appears in both directions. Store the parent with each queued node so the traversal does not immediately follow the same edge backward.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">def</span><span class="w"> </span><span class="nf">bfs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 6</span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">root</span><span class="p">,</span> <span class="n">parent</span><span class="p">)])</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+<span class="linenos"> 9</span>        <span class="n">node</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="linenos">10</span>        <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">13</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">14</span>                <span class="k">continue</span>
+<span class="linenos">15</span>            <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="k">return</span> <span class="n">order</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> because a tree has <code class="docutils literal notranslate"><span class="pre">V</span> <span class="pre">-</span> <span class="pre">1</span></code> edges.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> in the worst case for the queue, excluding the returned traversal.</p></li>
+</ul>
 </section>
 <section id="depth-first-search">
 <h2>Depth First Search<a class="headerlink" href="#depth-first-search" title="Link to this heading">#</a></h2>
-<p>This tree traversal goes to the deepest node first, and then explores others.</p>
-<ul class="simple">
-<li><p>Implemented iteratively using a stack instead of a queue (same code as BFS)</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">DFS</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
-    <span class="o">//</span><span class="n">processing</span> <span class="k">with</span> <span class="n">root</span>
-    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">child</span><span class="p">:</span>
-        <span class="n">DFS</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<p>Depth-first search follows one branch as deeply as possible before exploring the next branch. Pass the current node as the parent of each recursive call, and skip that parent when examining neighbors.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="k">def</span><span class="w"> </span><span class="nf">visit</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<span class="linenos"> 5</span>        <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos"> 8</span>            <span class="k">if</span> <span class="n">neighbor</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos"> 9</span>                <span class="k">continue</span>
+<span class="linenos">10</span>            <span class="n">visit</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">visit</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="k">return</span> <span class="n">order</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> because every node and edge is processed a constant number of times.</p></li>
+<li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(H)</span></code> for the recursion stack, where <code class="docutils literal notranslate"><span class="pre">H</span></code> is the tree height, excluding the returned traversal.</p></li>
+</ul>
+<p>The parent check is sufficient because a valid tree has no cycles other than seeing each undirected edge from both endpoints. In a general graph, a longer cycle can return through a node other than the parent, so use a <code class="docutils literal notranslate"><span class="pre">visited</span></code> set instead.</p>
+<p>Binary trees represented only with <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> child pointers do not point back to their parents, so the preorder, inorder, and postorder examples below do not need a parent check.</p>
 </section>
 <section id="preorder-traversal">
 <h2>Preorder Traversal<a class="headerlink" href="#preorder-traversal" title="Link to this heading">#</a></h2>
