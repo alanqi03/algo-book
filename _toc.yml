@@ -29,6 +29,7 @@ chapters:
   sections:
   - file: "6a" # Tree Traversal Strategies: DFS, BFS, preorder, inorder, etc.
   - file: "6b" # Tries
+  - file: "6c" # Advanced: Tree DP and rerooting DP
 - file: "7" # intro to graphs
   sections:
   - file: "7a" # Using BFS and DFS to solve matrix problems

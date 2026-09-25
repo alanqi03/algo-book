@@ -40,8 +40,8 @@ Use this chapter as a quick pattern-matching guide. First identify the data stru
 |---|---|
 | [Depth-First Search](6a.md) | Explore a root-to-leaf path, compute information from subtrees, search deeply, or use preorder, inorder, or postorder relationships. |
 | [Breadth-First Search](6a.md) | Process a tree level by level, find minimum depth, obtain a level-order traversal, or solve a shortest-edge-distance problem. |
-| [Tree DP](6a.md#advanced-tree-dp) | Combine child-subtree results into a result for each parent, such as subtree size, height, diameter, or other bottom-up states. |
-| [Rerooting DP](6a.md#rerooting-dp) | Compute a whole-tree answer for every possible root by solving one root first and transferring its result across each edge. |
+| [Tree DP](6c.md) | Combine child-subtree results into a result for each parent, such as subtree size, height, diameter, or other bottom-up states. |
+| [Rerooting DP](6c.md) | Compute a whole-tree answer for every possible root by solving one root first and transferring its result across each edge. |
 | [Trie](6b.md) | Store and query strings by prefix, perform autocomplete, search a dictionary, or share work across many words with common prefixes. |
 
 ## Graphs
