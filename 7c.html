@@ -427,7 +427,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heap-implementation">Heap Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation">Linear-Scan Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation-for-points">Linear-Scan Implementation for Points</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
@@ -469,7 +469,7 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>Prim’s with a linear scan</p></td>
 <td><p>Grow one tree using its cheapest outgoing edge</p></td>
-<td><p>Dense adjacency matrix</p></td>
+<td><p>Dense or implicit graph</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V²)</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Kruskal’s</p></td>
@@ -524,69 +524,56 @@ document.write(`
 </div>
 <p>Returning <code class="docutils literal notranslate"><span class="pre">-1</span></code> means the graph is disconnected, so one spanning tree cannot reach every vertex.</p>
 </section>
-<section id="linear-scan-implementation">
-<h3>Linear-Scan Implementation<a class="headerlink" href="#linear-scan-implementation" title="Link to this heading">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code> version keeps two pieces of information for each vertex:</p>
+<section id="linear-scan-implementation-for-points">
+<h3>Linear-Scan Implementation for Points<a class="headerlink" href="#linear-scan-implementation-for-points" title="Link to this heading">#</a></h3>
+<p>When the graph is dense or can be generated from the input, we do not need to store every edge. For a set of points, every pair is connected and the edge weight is their Manhattan distance. Keep:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">in_mst[v]</span></code>: whether vertex <code class="docutils literal notranslate"><span class="pre">v</span></code> has already been added</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cheapest_connection[v]</span></code>: the cheapest known edge from the current MST to <code class="docutils literal notranslate"><span class="pre">v</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">in_mst[v]</span></code>: whether point <code class="docutils literal notranslate"><span class="pre">v</span></code> has already been added</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_dist[v]</span></code>: the cheapest known edge from the current MST to point <code class="docutils literal notranslate"><span class="pre">v</span></code></p></li>
 </ul>
-<p>Each outer-loop iteration adds exactly one vertex:</p>
-<ol class="arabic simple">
-<li><p>Scan all vertices to find the unvisited vertex with the cheapest connection.</p></li>
-<li><p>Add that vertex and its connection cost to the MST.</p></li>
-<li><p>Scan its edges to see whether it offers a cheaper connection to any unvisited vertex.</p></li>
-</ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">prim_dense</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
-<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""matrix[u][v] is the edge weight, or infinity if no edge exists."""</span>
-<span class="linenos"> 3</span>    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
-<span class="linenos"> 4</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="linenos"> 5</span>        <span class="k">return</span> <span class="mi">0</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="n">in_mst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 8</span>    <span class="n">cheapest_connection</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
-<span class="linenos"> 9</span>    <span class="n">cheapest_connection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Start at vertex 0 for free.</span>
-<span class="linenos">10</span>    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+<p>Each outer-loop iteration scans for the unvisited point with the smallest <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>, adds it, then computes its distance to every other unvisited point to update their best connections.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">min_cost_connect_points</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="linenos"> 3</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 4</span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">in_mst</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 7</span>    <span class="n">min_dist</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos"> 8</span>    <span class="n">min_dist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 9</span>    <span class="n">edges_used</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">10</span>    <span class="n">min_cost</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="linenos">13</span>        <span class="c1"># 1. Find the cheapest vertex that is not in the MST.</span>
-<span class="linenos">14</span>        <span class="n">next_vertex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">15</span>        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="linenos">16</span>            <span class="k">if</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">candidate</span><span class="p">]:</span>
-<span class="linenos">17</span>                <span class="k">continue</span>
-<span class="linenos">18</span>            <span class="k">if</span> <span class="p">(</span>
-<span class="linenos">19</span>                <span class="n">next_vertex</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">20</span>                <span class="ow">or</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">candidate</span><span class="p">]</span>
-<span class="linenos">21</span>                <span class="o">&lt;</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span>
-<span class="linenos">22</span>            <span class="p">):</span>
-<span class="linenos">23</span>                <span class="n">next_vertex</span> <span class="o">=</span> <span class="n">candidate</span>
-<span class="linenos">24</span>
-<span class="linenos">25</span>        <span class="c1"># No edge can connect the remaining vertices.</span>
-<span class="linenos">26</span>        <span class="k">if</span> <span class="p">(</span>
-<span class="linenos">27</span>            <span class="n">next_vertex</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">28</span>            <span class="ow">or</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
-<span class="linenos">29</span>        <span class="p">):</span>
-<span class="linenos">30</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="linenos">31</span>
-<span class="linenos">32</span>        <span class="c1"># 2. Add that vertex using its cheapest connection.</span>
-<span class="linenos">33</span>        <span class="n">in_mst</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="linenos">34</span>        <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">]</span>
-<span class="linenos">35</span>
-<span class="linenos">36</span>        <span class="c1"># 3. Update the cheapest connection to each remaining vertex.</span>
-<span class="linenos">37</span>        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="linenos">38</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]:</span>
-<span class="linenos">39</span>                <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
-<span class="linenos">40</span>                    <span class="n">cheapest_connection</span><span class="p">[</span><span class="n">neighbor</span><span class="p">],</span>
-<span class="linenos">41</span>                    <span class="n">matrix</span><span class="p">[</span><span class="n">next_vertex</span><span class="p">][</span><span class="n">neighbor</span><span class="p">],</span>
-<span class="linenos">42</span>                <span class="p">)</span>
-<span class="linenos">43</span>
-<span class="linenos">44</span>    <span class="k">return</span> <span class="n">total_cost</span>
+<span class="linenos">12</span>    <span class="k">while</span> <span class="n">edges_used</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+<span class="linenos">13</span>        <span class="n">curr_dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+<span class="linenos">14</span>        <span class="n">curr_node</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>        <span class="c1"># Find the closest point that is not in the MST yet.</span>
+<span class="linenos">17</span>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">18</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="ow">and</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">curr_dist</span><span class="p">:</span>
+<span class="linenos">19</span>                <span class="n">curr_dist</span> <span class="o">=</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+<span class="linenos">20</span>                <span class="n">curr_node</span> <span class="o">=</span> <span class="n">node</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>        <span class="n">in_mst</span><span class="p">[</span><span class="n">curr_node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">23</span>        <span class="n">min_cost</span> <span class="o">+=</span> <span class="n">curr_dist</span>
+<span class="linenos">24</span>        <span class="n">edges_used</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>        <span class="c1"># Update the cheapest known connection for every remaining point.</span>
+<span class="linenos">27</span>        <span class="k">for</span> <span class="n">next_node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">28</span>            <span class="k">if</span> <span class="n">in_mst</span><span class="p">[</span><span class="n">next_node</span><span class="p">]:</span>
+<span class="linenos">29</span>                <span class="k">continue</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>            <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span>
+<span class="linenos">32</span>                <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">curr_node</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">next_node</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">33</span>                <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">curr_node</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">next_node</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="linenos">34</span>            <span class="p">)</span>
+<span class="linenos">35</span>            <span class="k">if</span> <span class="n">weight</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]:</span>
+<span class="linenos">36</span>                <span class="n">min_dist</span><span class="p">[</span><span class="n">next_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>    <span class="k">return</span> <span class="n">min_cost</span>
 </pre></div>
 </div>
-<p>The first scan answers, “Which vertex is cheapest to add next?” The second scan answers, “Now that this vertex is in the tree, does it give us a cheaper way to add any others?”</p>
-<p>The outer loop runs <code class="docutils literal notranslate"><span class="pre">V</span></code> times, and both inner scans examine at most <code class="docutils literal notranslate"><span class="pre">V</span></code> vertices. Therefore, the total time is <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code>.</p>
-<p>For example, if adding vertex <code class="docutils literal notranslate"><span class="pre">2</span></code> reveals an edge of weight <code class="docutils literal notranslate"><span class="pre">4</span></code> to vertex <code class="docutils literal notranslate"><span class="pre">3</span></code>, but the best known connection to vertex <code class="docutils literal notranslate"><span class="pre">3</span></code> was <code class="docutils literal notranslate"><span class="pre">7</span></code>, update it to <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
-<p>This version also works well for an <strong>implicit</strong> graph. For example, when every pair of points is connected, calculate the distance between <code class="docutils literal notranslate"><span class="pre">next_vertex</span></code> and <code class="docutils literal notranslate"><span class="pre">neighbor</span></code> inside the final loop instead of building an <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code> matrix.</p>
+<p>The implementation is correct because the point graph is complete: every unvisited point always has a finite connection from the MST. At each iteration, Prim’s cut property says the cheapest edge crossing from the current MST to an unvisited point can safely be added. The first point contributes <code class="docutils literal notranslate"><span class="pre">0</span></code>, representing the starting vertex rather than an edge.</p>
+<p>The outer loop runs <code class="docutils literal notranslate"><span class="pre">V</span></code> times, and both scans examine at most <code class="docutils literal notranslate"><span class="pre">V</span></code> points, so the time is <code class="docutils literal notranslate"><span class="pre">O(V²)</span></code>. The arrays use <code class="docutils literal notranslate"><span class="pre">O(V)</span></code> auxiliary space. For a general graph that may be disconnected, detect when no finite <code class="docutils literal notranslate"><span class="pre">curr_node</span></code> is found and report that no spanning tree exists.</p>
 </section>
 </section>
 <section id="kruskal-s-algorithm">
@@ -712,7 +699,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-s-algorithm">Prim’s Algorithm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heap-implementation">Heap Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation">Linear-Scan Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-scan-implementation-for-points">Linear-Scan Implementation for Points</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a></li>
