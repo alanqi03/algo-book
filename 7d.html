@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -52,7 +52,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -428,6 +428,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">0–1 BFS</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
@@ -457,6 +458,13 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="shortest-path-algorithms">
 <h1>Shortest Path Algorithms<a class="headerlink" href="#shortest-path-algorithms" title="Link to this heading">#</a></h1>
 <p>Shortest-path algorithms find the minimum total edge weight from a source node to other nodes. The best algorithm depends mainly on the edge weights.</p>
+<ul class="simple">
+<li><p>Find the shortest distance to a target or to every reachable node from a source.</p></li>
+<li><p>Reconstruct one shortest path or identify every node that lies on at least one shortest path to a target.</p></li>
+<li><p>Check whether a target can be reached with total weight at most <code class="docutils literal notranslate"><span class="pre">k</span></code> by comparing its shortest distance with <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p></li>
+<li><p>Find the cheapest route subject to a limit, such as using at most <code class="docutils literal notranslate"><span class="pre">k</span></code> edges or spending at most <code class="docutils literal notranslate"><span class="pre">k</span></code> coupons.</p></li>
+<li><p>Find the distance from each node to its nearest source, such as the nearest gate in a grid.</p></li>
+</ul>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Edge weights</p></th>
@@ -471,12 +479,17 @@ document.write(`
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>All weights are non-negative</p></td>
+<tr class="row-odd"><td><p>Every edge weighs <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>0–1 BFS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O(V)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>All weights are non-negative</p></td>
 <td><p>Dijkstra</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E</span> <span class="pre">log</span> <span class="pre">E)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Negative weights may exist</p></td>
+<tr class="row-odd"><td><p>Negative weights may exist</p></td>
 <td><p>Bellman–Ford</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(VE)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O(V)</span></code></p></td>
@@ -488,7 +501,7 @@ document.write(`
 <p>The space bounds below are <strong>auxiliary space</strong> and do not include the input graph.</p>
 <section id="relaxing-an-edge">
 <h2>Relaxing an Edge<a class="headerlink" href="#relaxing-an-edge" title="Link to this heading">#</a></h2>
-<p>Both Dijkstra and Bellman–Ford repeatedly <strong>relax</strong> edges. For an edge <code class="docutils literal notranslate"><span class="pre">u</span> <span class="pre">-&gt;</span> <span class="pre">v</span></code> with weight <code class="docutils literal notranslate"><span class="pre">w</span></code>, ask whether reaching <code class="docutils literal notranslate"><span class="pre">v</span></code> through <code class="docutils literal notranslate"><span class="pre">u</span></code> is cheaper:</p>
+<p>0–1 BFS, Dijkstra, and Bellman–Ford repeatedly <strong>relax</strong> edges. For an edge <code class="docutils literal notranslate"><span class="pre">u</span> <span class="pre">-&gt;</span> <span class="pre">v</span></code> with weight <code class="docutils literal notranslate"><span class="pre">w</span></code>, ask whether reaching <code class="docutils literal notranslate"><span class="pre">v</span></code> through <code class="docutils literal notranslate"><span class="pre">u</span></code> is cheaper:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
     <span class="n">dist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span>
 </pre></div>
@@ -576,6 +589,46 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Time:</strong> <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code> because each cell is processed at most once.</p></li>
 <li><p><strong>Auxiliary space:</strong> <code class="docutils literal notranslate"><span class="pre">O(RC)</span></code> in the worst case for the queue.</p></li>
+</ul>
+</section>
+<section id="bfs">
+<h3>0–1 BFS<a class="headerlink" href="#bfs" title="Link to this heading">#</a></h3>
+<p>Use 0–1 BFS when every edge has weight <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>. Store candidates in a deque. When an edge improves a distance, push the new entry to the front for a weight of <code class="docutils literal notranslate"><span class="pre">0</span></code> and to the back for a weight of <code class="docutils literal notranslate"><span class="pre">1</span></code>. A zero-cost step stays at the current distance, while a unit-cost step goes to the next distance. This keeps queued distances in nondecreasing order, so the closest candidate comes first.</p>
+<p>A cell can be enqueued again if a cheaper route is found. Store the distance with each entry and skip entries whose distance has since improved.</p>
+<p>In <strong>Find a Safe Walk Through a Grid</strong>, each cell costs <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> health to enter. The starting cell also costs health, so initialize its distance to <code class="docutils literal notranslate"><span class="pre">grid[0][0]</span></code>. A walk is safe only if health stays positive, so the minimum total cost must be strictly less than <code class="docutils literal notranslate"><span class="pre">health</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+<span class="linenos"> 6</span>    <span class="k">def</span><span class="w"> </span><span class="nf">findSafeWalk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">health</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="linenos"> 7</span>        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos"> 8</span>        <span class="n">dist</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+<span class="linenos"> 9</span>        <span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">10</span>        <span class="n">dq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([(</span><span class="n">dist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>        <span class="k">while</span> <span class="n">dq</span><span class="p">:</span>
+<span class="linenos">13</span>            <span class="n">d</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">dq</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="linenos">14</span>            <span class="k">if</span> <span class="n">d</span> <span class="o">!=</span> <span class="n">dist</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]:</span>
+<span class="linenos">15</span>                <span class="k">continue</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>            <span class="k">for</span> <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="ow">in</span> <span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
+<span class="linenos">18</span>                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+<span class="linenos">19</span>                    <span class="n">weight</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span>
+<span class="linenos">20</span>                    <span class="n">nd</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="n">weight</span>
+<span class="linenos">21</span>                    <span class="k">if</span> <span class="n">nd</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]:</span>
+<span class="linenos">22</span>                        <span class="n">dist</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span> <span class="o">=</span> <span class="n">nd</span>
+<span class="linenos">23</span>                        <span class="k">if</span> <span class="n">weight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">24</span>                            <span class="n">dq</span><span class="o">.</span><span class="n">appendleft</span><span class="p">((</span><span class="n">nd</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">))</span>
+<span class="linenos">25</span>                        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">26</span>                            <span class="n">dq</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nd</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">))</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>        <span class="k">return</span> <span class="n">dist</span><span class="p">[</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">health</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Time</strong> is <code class="docutils literal notranslate"><span class="pre">O(V</span> <span class="pre">+</span> <span class="pre">E)</span></code>, or <code class="docutils literal notranslate"><span class="pre">O(mn)</span></code> for the grid. Each vertex is processed at its final distance once, and stale entries are skipped.</p></li>
+<li><p><strong>Auxiliary space</strong> is <code class="docutils literal notranslate"><span class="pre">O(V)</span></code>, or <code class="docutils literal notranslate"><span class="pre">O(mn)</span></code> for the grid. A vertex can be queued at the next distance and then improve to the current distance, so each vertex has at most two entries.</p></li>
 </ul>
 </section>
 </section>
@@ -903,6 +956,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxing-an-edge">Relaxing an Edge</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-source-bfs-walls-and-gates">Multi-Source BFS: Walls and Gates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">0–1 BFS</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dijkstra-s-algorithm">Dijkstra’s Algorithm</a><ul class="nav section-nav flex-column">
