@@ -55,6 +55,7 @@ Use this chapter as a quick pattern-matching guide. First identify the data stru
 | [Topological Sort + DP](7b.md) | Compute longest paths or other dependency-based DP values in a DAG after all incoming states have been processed. |
 | [Union Find](7b.md) | Repeatedly merge components and test connectivity, detect redundant undirected edges, or support Kruskal's algorithm. |
 | [BFS Shortest Path](7d.md) | Find shortest paths when every edge has the same weight. |
+| [0–1 BFS](7d.md) | Find shortest paths when every edge weighs `0` or `1` by using a deque. |
 | [Dijkstra's Algorithm](7d.md) | Find shortest paths in a weighted graph when every edge weight is non-negative. |
 | [State-Space Dijkstra](7d.md) | The future also depends on state such as coupons used, fuel remaining, keys collected, or obstacles removed. |
 | [Bellman–Ford](7d.md) | Negative edge weights may exist, a reachable negative cycle must be detected, or the number of allowed edges is limited. |
