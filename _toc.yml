@@ -50,3 +50,4 @@ chapters:
 - file: "13" # Bit Manipulation
 - file: "14" # Misc
 - file: "15" # Infrastructure Algorithms
+- file: "16" # Advanced Algorithms

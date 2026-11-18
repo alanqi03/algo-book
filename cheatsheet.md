@@ -42,6 +42,7 @@ Use this chapter as a quick pattern-matching guide. First identify the data stru
 | [Breadth-First Search](6a.md) | Process a tree level by level, find minimum depth, obtain a level-order traversal, or solve a shortest-edge-distance problem. |
 | [Tree DP](6c.md) | Combine child-subtree results into a result for each parent, such as subtree size, height, diameter, or other bottom-up states. |
 | [Rerooting DP](6c.md) | Compute a whole-tree answer for every possible root by solving one root first and transferring its result across each edge. |
+| [Binary Lifting](16.md) | Answer repeated lowest common ancestor or distance queries on a rooted tree in `O(log N)` time after preprocessing. |
 | [Trie](6b.md) | Store and query strings by prefix, perform autocomplete, search a dictionary, or share work across many words with common prefixes. |
 
 ## Graphs
@@ -53,7 +54,7 @@ Use this chapter as a quick pattern-matching guide. First identify the data stru
 | [Depth-First Search](7.md) | Explore connected components, detect or traverse graph structure, search paths, or perform recursive enter/exit processing. |
 | [Topological Sorting](7b.md) | Order tasks with directed dependencies, detect a cycle in a directed graph, or process a DAG so every prerequisite comes first. |
 | [Topological Sort + DP](7b.md) | Compute longest paths or other dependency-based DP values in a DAG after all incoming states have been processed. |
-| [Union Find](7b.md) | Repeatedly merge components and test connectivity, detect redundant undirected edges, or support Kruskal's algorithm. |
+| [Union Find](7b.md) | Merge components, test connectivity, track component sizes, detect redundant undirected edges, or support Kruskal's algorithm. |
 | [BFS Shortest Path](7d.md) | Find shortest paths when every edge has the same weight. |
 | [0–1 BFS](7d.md) | Find shortest paths when every edge weighs `0` or `1` by using a deque. |
 | [Dijkstra's Algorithm](7d.md) | Find shortest paths in a weighted graph when every edge weight is non-negative. |
