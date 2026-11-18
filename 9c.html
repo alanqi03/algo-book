@@ -434,6 +434,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-dp">String DP</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#longest-palindromic-subsequence">Longest Palindromic Subsequence</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
@@ -451,7 +452,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="d-dp">
 <h1>2D DP<a class="headerlink" href="#d-dp" title="Link to this heading">#</a></h1>
-<p>2D DP problems use two variables to describe each subproblem, stored in a 2D table <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code>. The two most common flavors are <strong>grid</strong> problems (moving through a matrix) and <strong>string</strong> problems (comparing two strings or two ranges of one string).</p>
+<p>2D DP problems use two variables to describe each subproblem. You can store the results in a table <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> or memoize the function <code class="docutils literal notranslate"><span class="pre">dp(i,</span> <span class="pre">j)</span></code>. Common examples include moving through a grid, comparing two strings, and working with the endpoints of a range in one string.</p>
 <section id="grid-dp">
 <h2>Grid DP<a class="headerlink" href="#grid-dp" title="Link to this heading">#</a></h2>
 <p>Here <code class="docutils literal notranslate"><span class="pre">dp[i][j]</span></code> is the answer for the cell at row <code class="docutils literal notranslate"><span class="pre">i</span></code>, column <code class="docutils literal notranslate"><span class="pre">j</span></code>, usually built from the cells above and to the left.</p>
@@ -487,7 +488,7 @@ document.write(`
 <h3>When to use<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
 <li><p>You’re comparing two strings (edit distance, common subsequence) or two ends of one string (palindromes).</p></li>
-<li><p>The answer for a pair of prefixes depends on smaller prefixes.</p></li>
+<li><p>The answer for a pair of prefixes or a range depends on smaller prefixes or ranges.</p></li>
 </ol>
 </section>
 <section id="id2">
@@ -511,13 +512,37 @@ document.write(`
 <li><p>Otherwise take the better of dropping a character from either string.</p></li>
 </ul>
 </section>
+<section id="longest-palindromic-subsequence">
+<h3>Longest Palindromic Subsequence<a class="headerlink" href="#longest-palindromic-subsequence" title="Link to this heading">#</a></h3>
+<p>Find the length of the longest palindrome you can form by keeping characters in their original order. A subsequence can skip characters. For example, in <code class="docutils literal notranslate"><span class="pre">&quot;bbbab&quot;</span></code> you can skip the <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> to get <code class="docutils literal notranslate"><span class="pre">&quot;bbbb&quot;</span></code>, so the answer is <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">dp(i,</span> <span class="pre">j)</span></code> be the longest palindromic subsequence length in the inclusive range from index <code class="docutils literal notranslate"><span class="pre">i</span></code> to index <code class="docutils literal notranslate"><span class="pre">j</span></code>. An empty range has length <code class="docutils literal notranslate"><span class="pre">0</span></code>, and a single character has length <code class="docutils literal notranslate"><span class="pre">1</span></code>. If the endpoints match, take both and add <code class="docutils literal notranslate"><span class="pre">2</span></code> to the best length inside them. If they differ, at least one endpoint must be skipped, so take the better of the two smaller ranges.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">def</span><span class="w"> </span><span class="nf">longest_palindromic_subsequence</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="nd">@lru_cache</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 6</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="k">return</span> <span class="mi">0</span>
+<span class="linenos"> 9</span>        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="k">return</span> <span class="mi">1</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+<span class="linenos">13</span>            <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">14</span>        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For a string of length <code class="docutils literal notranslate"><span class="pre">n</span></code>, the memoized solution takes <code class="docutils literal notranslate"><span class="pre">O(n²)</span></code> time and space in the worst case. There are at most <code class="docutils literal notranslate"><span class="pre">O(n²)</span></code> index pairs, and the recursion stack uses <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> space.</p>
+</section>
 </section>
 <section id="tips-and-tricks">
 <h2>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Adding an extra row and column of base cases (index <code class="docutils literal notranslate"><span class="pre">0</span></code> meaning “empty”) avoids special-casing the boundaries.</p></li>
 <li><p>Since each cell usually depends only on the previous row, you can often reduce space to two rows (or one) — <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">O(m*n)</span></code>.</p></li>
-<li><p>For string problems, be careful with off-by-one: <code class="docutils literal notranslate"><span class="pre">dp[i]</span></code> refers to the first <code class="docutils literal notranslate"><span class="pre">i</span></code> characters, so the character itself is at index <code class="docutils literal notranslate"><span class="pre">i-1</span></code>.</p></li>
+<li><p>In prefix DP, a prefix of length <code class="docutils literal notranslate"><span class="pre">i</span></code> ends at index <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">-</span> <span class="pre">1</span></code>. In range DP, decide whether <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code> are inclusive before writing the base cases.</p></li>
 </ul>
 </section>
 <section id="problems">
@@ -529,6 +554,7 @@ document.write(`
 <li><p>Edit Distance</p></li>
 <li><p>Longest Palindromic Substring</p></li>
 <li><p>Interleaving String</p></li>
+<li><p>Longest Palindromic Subsequence</p></li>
 </ol>
 </section>
 </section>
@@ -605,6 +631,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-dp">String DP</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">When to use</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#longest-palindromic-subsequence">Longest Palindromic Subsequence</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
