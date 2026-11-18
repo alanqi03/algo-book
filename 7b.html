@@ -230,6 +230,7 @@
 <li class="toctree-l1"><a class="reference internal" href="11.html">Math and Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="14.html">Miscellaneous</a></li>
 <li class="toctree-l1"><a class="reference internal" href="15.html">Infrastructure Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.html">Advanced Algorithms</a></li>
 </ul>
 
     </div>
@@ -618,52 +619,44 @@ document.write(`
 It has two primary operations: <strong>find</strong> and <strong>union</strong>:</p>
 <ul class="simple">
 <li><p><strong>find(x)</strong> returns the root (representative) of the set containing <code class="docutils literal notranslate"><span class="pre">x</span></code> and compresses the path from <code class="docutils literal notranslate"><span class="pre">x</span></code> to that root.</p></li>
-<li><p><strong>union(x, y)</strong> merges the two sets by attaching the lower-rank root below the higher-rank root.</p></li>
+<li><p><strong>union(x, y)</strong> merges the two sets by attaching the root of the smaller component to the root of the larger component.</p></li>
 </ul>
-<p>Using <strong>path compression</strong> and <strong>union by rank</strong> together gives <code class="docutils literal notranslate"><span class="pre">O(α(N))</span></code> amortized time per operation, where <code class="docutils literal notranslate"><span class="pre">α</span></code> is the inverse Ackermann function and grows so slowly that the operations are effectively constant time.</p>
+<p>Using <strong>path compression</strong> and <strong>union by size</strong> together gives <code class="docutils literal notranslate"><span class="pre">O(α(N))</span></code> amortized time per operation, where <code class="docutils literal notranslate"><span class="pre">α</span></code> is the inverse Ackermann function and grows so slowly that the operations are effectively constant time.</p>
 <p>Here is the code for the Union Find (DSU) data structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
-<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
-<span class="linenos"> 4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span>
+<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="linenos"> 3</span>        <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="linenos"> 4</span>        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
 <span class="linenos"> 5</span>
 <span class="linenos"> 6</span>    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="linenos"> 7</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
-<span class="linenos"> 8</span>            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
-<span class="linenos"> 9</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+<span class="linenos"> 7</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
+<span class="linenos"> 8</span>            <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+<span class="linenos"> 9</span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span>    <span class="k">def</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="linenos">12</span>        <span class="n">root_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="linenos">13</span>        <span class="n">root_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span>        <span class="k">if</span> <span class="n">root_x</span> <span class="o">==</span> <span class="n">root_y</span><span class="p">:</span>
-<span class="linenos">16</span>            <span class="k">return</span> <span class="kc">False</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">[</span><span class="n">root_x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">[</span><span class="n">root_y</span><span class="p">]:</span>
-<span class="linenos">19</span>            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">root_x</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_y</span>
-<span class="linenos">20</span>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">[</span><span class="n">root_x</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">[</span><span class="n">root_y</span><span class="p">]:</span>
-<span class="linenos">21</span>            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">root_y</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_x</span>
-<span class="linenos">22</span>        <span class="k">else</span><span class="p">:</span>
-<span class="linenos">23</span>            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">[</span><span class="n">root_y</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_x</span>
-<span class="linenos">24</span>            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">[</span><span class="n">root_x</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="linenos">25</span>
-<span class="linenos">26</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">12</span>        <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="linenos">13</span>        <span class="k">if</span> <span class="n">rx</span> <span class="o">==</span> <span class="n">ry</span><span class="p">:</span>
+<span class="linenos">14</span>            <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">15</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">ry</span><span class="p">]:</span>
+<span class="linenos">16</span>            <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rx</span>
+<span class="linenos">17</span>        <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">[</span><span class="n">ry</span><span class="p">]</span> <span class="o">=</span> <span class="n">rx</span>  <span class="c1"># Attach the root of the smaller component.</span>
+<span class="linenos">18</span>        <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">rx</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="n">ry</span><span class="p">]</span>
+<span class="linenos">19</span>        <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 </div>
-<p>Walking through each method:</p>
+<p>The two arrays track parents and component sizes.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">parent[x]</span></code> points to the next node toward the root. Initially every node is its own root.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rank[root]</span></code> is an upper bound on the tree’s height. It is meaningful only for roots.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">par[x]</span></code> points to the next node toward the root. Initially every node is its own root.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size[root]</span></code> counts the nodes in the component. Only current roots hold up-to-date sizes.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">find(x)</span></code> performs path compression by making every node on the search path point directly to the root.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">union(x,</span> <span class="pre">y)</span></code> attaches the lower-rank root to the higher-rank root, keeping the tree shallow.</p></li>
-<li><p>When both roots have the same rank, either may become the parent; its rank increases by <code class="docutils literal notranslate"><span class="pre">1</span></code> because the merged tree is one level taller.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">union(x,</span> <span class="pre">y)</span></code> attaches the smaller component’s root to the larger component’s root and adds their sizes. If the sizes are equal, either root can become the parent.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">union</span></code> returns <code class="docutils literal notranslate"><span class="pre">False</span></code> when <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are already connected. This is useful for detecting a redundant edge or cycle.</p></li>
 </ul>
-<p>Rank should <strong>not</strong> increase on every union. It increases only when two roots with equal rank are combined. Path compression may later shorten the tree, but the stored rank does not need to be reduced.</p>
 <p>Union Find is useful in many different applications:</p>
 <ul class="simple">
 <li><p>Finding which edge(s) create cycles</p></li>
 <li><p>Connected Components</p></li>
+<li><p>Counting nodes in each component. Read <code class="docutils literal notranslate"><span class="pre">dsu.size[dsu.find(x)]</span></code> for the size of the component containing <code class="docutils literal notranslate"><span class="pre">x</span></code>, or read <code class="docutils literal notranslate"><span class="pre">dsu.size[root]</span></code> for each current root to get one count per component.</p></li>
 <li><p>Kruskal’s Minimum Spanning Tree algorithm</p></li>
 <li><p>Tree Validation</p></li>
 </ul>
