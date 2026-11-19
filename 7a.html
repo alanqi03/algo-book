@@ -429,6 +429,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">BFS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs-with-backtracking">DFS with Backtracking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cycle-detection-and-bridges-with-discovery-rank">Cycle Detection and Bridges with Discovery Rank</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
@@ -553,6 +554,73 @@ document.write(`
 <p>The temporary <code class="docutils literal notranslate"><span class="pre">None</span></code> acts like a path-local visited set. Restoring the original value is essential—even when one recursive branch succeeds—because callers generally expect <code class="docutils literal notranslate"><span class="pre">board</span></code> to remain unchanged.</p>
 <p>If the word length is <code class="docutils literal notranslate"><span class="pre">L</span></code>, the worst-case time is <code class="docutils literal notranslate"><span class="pre">O(RC</span> <span class="pre">·</span> <span class="pre">4^L)</span></code> for an <code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">×</span> <span class="pre">C</span></code> board, and the recursion stack uses <code class="docutils literal notranslate"><span class="pre">O(L)</span></code> space. Backtracking is appropriate when the problem asks whether a path exists, to return one valid path, or to enumerate paths under constraints.</p>
 </section>
+<section id="cycle-detection-and-bridges-with-discovery-rank">
+<h3>Cycle Detection and Bridges with Discovery Rank<a class="headerlink" href="#cycle-detection-and-bridges-with-discovery-rank" title="Link to this heading">#</a></h3>
+<p>In an undirected graph, a <strong>bridge</strong> is an edge whose removal increases the number of connected components. An edge on a cycle always has an alternate route between its endpoints. To find bridges, use DFS to mark every edge on a cycle and remove those edges from the list of bridge candidates.</p>
+<p>When to use it</p>
+<ul class="simple">
+<li><p>Detect cycles in an undirected graph by looking for a back edge from a node to an ancestor in the DFS tree.</p></li>
+<li><p>Find single points of failure in a network, such as the critical connections that would disconnect parts of the network if removed.</p></li>
+<li><p>To make the graph acyclic while preserving connectivity within each component, keep the DFS tree edges and remove the back edges. Removing every edge on a cycle can disconnect the graph.</p></li>
+</ul>
+<p>Give each node a <strong>discovery rank</strong> when DFS first visits it. A call to <code class="docutils literal notranslate"><span class="pre">dfs(node,</span> <span class="pre">parent_edge)</span></code> returns the smallest rank reachable from the node’s DFS subtree by following tree edges downward and using at most one back edge. This is called its <strong>low-link value</strong>.</p>
+<ul class="simple">
+<li><p>A back edge goes to an ancestor and closes a cycle. Mark the edge and use the ancestor’s discovery rank to update the low-link value.</p></li>
+<li><p>A tree edge from <code class="docutils literal notranslate"><span class="pre">node</span></code> to <code class="docutils literal notranslate"><span class="pre">child</span></code> is on a cycle if <code class="docutils literal notranslate"><span class="pre">child_low</span> <span class="pre">&lt;=</span> <span class="pre">rank[node]</span></code>. The child’s subtree can reach <code class="docutils literal notranslate"><span class="pre">node</span></code> or an ancestor without using that tree edge. If <code class="docutils literal notranslate"><span class="pre">child_low</span> <span class="pre">&gt;</span> <span class="pre">rank[node]</span></code>, the tree edge is a bridge.</p></li>
+</ul>
+<p>In <strong>Critical Connections in a Network</strong>, return the edges that remain after filtering out the cycle edges. Give each edge an ID so DFS skips exactly the edge it arrived on, which also handles parallel edges.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+<span class="linenos"> 2</span>    <span class="k">def</span><span class="w"> </span><span class="nf">criticalConnections</span><span class="p">(</span>
+<span class="linenos"> 3</span>        <span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">connections</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+<span class="linenos"> 4</span>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="linenos"> 5</span>        <span class="n">adj</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="linenos"> 6</span>        <span class="k">for</span> <span class="n">edge_id</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">connections</span><span class="p">):</span>
+<span class="linenos"> 7</span>            <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">edge_id</span><span class="p">))</span>
+<span class="linenos"> 8</span>            <span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">edge_id</span><span class="p">))</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+<span class="linenos">11</span>        <span class="n">on_cycle</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span>
+<span class="linenos">12</span>        <span class="n">next_rank</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>        <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent_edge</span><span class="p">):</span>
+<span class="linenos">15</span>            <span class="k">nonlocal</span> <span class="n">next_rank</span>
+<span class="linenos">16</span>            <span class="n">rank</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_rank</span>
+<span class="linenos">17</span>            <span class="n">next_rank</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">18</span>            <span class="n">low</span> <span class="o">=</span> <span class="n">rank</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>            <span class="k">for</span> <span class="n">neighbor</span><span class="p">,</span> <span class="n">edge_id</span> <span class="ow">in</span> <span class="n">adj</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">21</span>                <span class="k">if</span> <span class="n">edge_id</span> <span class="o">==</span> <span class="n">parent_edge</span><span class="p">:</span>
+<span class="linenos">22</span>                    <span class="k">continue</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>                <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<span class="linenos">25</span>                    <span class="n">child_low</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">edge_id</span><span class="p">)</span>
+<span class="linenos">26</span>                    <span class="k">if</span> <span class="n">child_low</span> <span class="o">&lt;=</span> <span class="n">rank</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">27</span>                        <span class="n">on_cycle</span><span class="p">[</span><span class="n">edge_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">28</span>                    <span class="n">low</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">child_low</span><span class="p">)</span>
+<span class="linenos">29</span>                <span class="k">elif</span> <span class="n">rank</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">rank</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">30</span>                    <span class="c1"># A back edge to an ancestor, or a self-loop.</span>
+<span class="linenos">31</span>                    <span class="n">on_cycle</span><span class="p">[</span><span class="n">edge_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">32</span>                    <span class="n">low</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">neighbor</span><span class="p">])</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="k">return</span> <span class="n">low</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="linenos">37</span>            <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<span class="linenos">38</span>                <span class="n">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>        <span class="k">return</span> <span class="p">[</span>
+<span class="linenos">41</span>            <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
+<span class="linenos">42</span>            <span class="k">for</span> <span class="n">edge_id</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span>
+<span class="linenos">43</span>            <span class="k">if</span> <span class="ow">not</span> <span class="n">on_cycle</span><span class="p">[</span><span class="n">edge_id</span><span class="p">]</span>
+<span class="linenos">44</span>        <span class="p">]</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">connections</span> <span class="pre">=</span> <span class="pre">[[0,</span> <span class="pre">1],</span> <span class="pre">[1,</span> <span class="pre">2],</span> <span class="pre">[2,</span> <span class="pre">0],</span> <span class="pre">[1,</span> <span class="pre">3]]</span></code>, the triangle edges are on a cycle and the result is <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">3]]</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Time</strong> is `O(V + E)) because DFS examines each undirected edge from both endpoints.</p></li>
+<li><p><strong>Auxiliary space</strong> is `O(V + E)) for the adjacency list, arrays, and recursion stack. For graphs with very deep DFS trees, use an explicit stack to avoid Python’s recursion limit.</p></li>
+</ul>
+</section>
 </section>
 <section id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
@@ -564,6 +632,7 @@ document.write(`
 <li><p>Rotting Oranges</p></li>
 <li><p>Walls and Gates</p></li>
 <li><p>Word Search</p></li>
+<li><p>Critical Connections in a Network</p></li>
 </ol>
 </section>
 </section>
@@ -635,6 +704,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bfs">BFS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs">DFS</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dfs-with-backtracking">DFS with Backtracking</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cycle-detection-and-bridges-with-discovery-rank">Cycle Detection and Bridges with Discovery Rank</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
