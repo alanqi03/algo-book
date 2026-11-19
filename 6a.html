@@ -427,7 +427,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search">Breadth First Search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-first-search">Depth First Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-first-search">Depth First Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-value-for-every-node">Computing a Value for Every Node</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preorder-traversal">Preorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inorder-traversal">Inorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postorder-traversal">Postorder Traversal</a></li>
@@ -497,6 +500,44 @@ document.write(`
 </ul>
 <p>The parent check is sufficient because a valid tree has no cycles other than seeing each undirected edge from both endpoints. In a general graph, a longer cycle can return through a node other than the parent, so use a <code class="docutils literal notranslate"><span class="pre">visited</span></code> set instead.</p>
 <p>Binary trees represented only with <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> child pointers do not point back to their parents, so the preorder, inorder, and postorder examples below do not need a parent check.</p>
+<section id="computing-a-value-for-every-node">
+<h3>Computing a Value for Every Node<a class="headerlink" href="#computing-a-value-for-every-node" title="Link to this heading">#</a></h3>
+<p>Start by asking where the information for each node comes from.</p>
+<ul class="simple">
+<li><p><strong>From the root-to-node path.</strong> Pass information down before visiting the children. Use this for depth, root-to-node sums, or the largest value seen so far in <em>Count Good Nodes</em>.</p></li>
+<li><p><strong>From the node’s subtree.</strong> Combine information after visiting the children. Use this for subtree sizes, subtree sums, or the distance to the deepest descendant.</p></li>
+<li><p><strong>From the whole tree.</strong> If the answer also depends on nodes outside the subtree, consider a second pass. For an example that computes the sum of distances from every node, see <a class="reference internal" href="6c.html"><span class="std std-doc">Advanced: Tree DP</span></a>.</p></li>
+</ul>
+<p>The same DFS can do both kinds of work in one pass. The root-to-node sum is available <strong>on entry</strong>, and the subtree size is available <strong>on return</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">tree_stats</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="sd">"""Return root-to-node sums and subtree sizes for a rooted tree."""</span>
+<span class="linenos"> 3</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">tree</span><span class="p">:</span>
+<span class="linenos"> 4</span>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">path_sum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="linenos"> 7</span>    <span class="n">subtree_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">sum_to_parent</span><span class="p">):</span>
+<span class="linenos">10</span>        <span class="n">path_sum</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_to_parent</span> <span class="o">+</span> <span class="n">values</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+<span class="linenos">11</span>        <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Count this node.</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+<span class="linenos">14</span>            <span class="k">if</span> <span class="n">child</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">:</span>
+<span class="linenos">15</span>                <span class="n">size</span> <span class="o">+=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">path_sum</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>        <span class="n">subtree_size</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+<span class="linenos">18</span>        <span class="k">return</span> <span class="n">size</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="k">return</span> <span class="n">path_sum</span><span class="p">,</span> <span class="n">subtree_size</span>
+</pre></div>
+</div>
+<p>This takes <code class="docutils literal notranslate"><span class="pre">O(n)</span></code> time for a tree with <code class="docutils literal notranslate"><span class="pre">n</span></code> nodes and uses <code class="docutils literal notranslate"><span class="pre">O(H)</span></code> auxiliary space for the recursion stack, excluding the returned arrays. The arrays let you answer later questions in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code>. For example, cutting the edge from a non-root node <code class="docutils literal notranslate"><span class="pre">u</span></code> to its parent splits the tree into components of sizes <code class="docutils literal notranslate"><span class="pre">subtree_size[u]</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">subtree_size[u]</span></code>.</p>
+<p><strong>Tip on DFS entry indices.</strong> Record each node’s position in preorder as <code class="docutils literal notranslate"><span class="pre">entry[node]</span></code>, counting only the first visit to each node. DFS finishes the whole subtree before moving on, so its nodes occupy a contiguous range. After preprocessing, check whether <code class="docutils literal notranslate"><span class="pre">v</span></code> belongs to the subtree of <code class="docutils literal notranslate"><span class="pre">u</span></code> in <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">entry</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">entry</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">subtree_size</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="preorder-traversal">
 <h2>Preorder Traversal<a class="headerlink" href="#preorder-traversal" title="Link to this heading">#</a></h2>
@@ -679,7 +720,10 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breadth-first-search">Breadth First Search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-first-search">Depth First Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-first-search">Depth First Search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-value-for-every-node">Computing a Value for Every Node</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preorder-traversal">Preorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inorder-traversal">Inorder Traversal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postorder-traversal">Postorder Traversal</a></li>
