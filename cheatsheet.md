@@ -52,6 +52,7 @@ Use this chapter as a quick pattern-matching guide. First identify the data stru
 | [Breadth-First Search](7.md) | Explore an unweighted graph level by level, find a shortest path measured in edges, or process all nodes at the same distance together. |
 | [Multi-Source BFS](7d.md) | Find the distance to the nearest one of several sources by placing every source in the initial queue. |
 | [Depth-First Search](7.md) | Explore connected components, detect or traverse graph structure, search paths, or perform recursive enter/exit processing. |
+| [DFS with Discovery Rank](7a.md) | Find bridges in an undirected graph by identifying edges that belong to cycles. |
 | [Topological Sorting](7b.md) | Order tasks with directed dependencies, detect a cycle in a directed graph, or process a DAG so every prerequisite comes first. |
 | [Topological Sort + DP](7b.md) | Compute longest paths or other dependency-based DP values in a DAG after all incoming states have been processed. |
 | [Union Find](7b.md) | Merge components, test connectivity, track component sizes, detect redundant undirected edges, or support Kruskal's algorithm. |
